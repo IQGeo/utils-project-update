@@ -18,7 +18,7 @@ if (run('git', ['status', '-s'], { stdio: 'pipe' }).stdout.toString()) {
 
 run('npm', ['run', 'lint']);
 run('npm', ['version', args[0]]);
-run('npm', ['run', 'changenog']);
+run('npx', ['changenog']);
 run('git', ['add', '.']);
 
 const pkg = await import('../package.json');
