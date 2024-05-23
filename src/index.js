@@ -6,7 +6,9 @@ import { fileTransformers } from './transform.js';
 
 /**
  * Updates a IQGeo project.
- * Project structure should as per https://github.com/IQGeo/utils-project-template with a `.iqgeorc.jsonc` configuration file.
+ *
+ * Project structure should be as per https://github.com/IQGeo/utils-project-template with
+ * a `.iqgeorc.jsonc` configuration file at `root`.
  */
 export function update(root = process.cwd()) {
     let config;

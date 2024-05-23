@@ -1,1 +1,10 @@
-{}
+{
+    "type": "module",
+    "scripts": {
+        "cli": "project-update --root=./utils-project-template",
+        "js": "node ./script.js"
+    },
+    "dependencies": {
+        "project-update": "^0.0.0"
+    }
+}
