@@ -1,16 +1,12 @@
 // @ts-check
-import { spawnSync } from 'node:child_process';
+import { run } from './helpers.js';
+
+/*
+ * This script runs checks, updates the version, generates/updates the changelog,
+ * commits the changes, and pushes them along with the new version tag.
+ */
 
 const args = process.argv.slice(2);
-
-/**
- * @param {string} cmd
- * @param {string[]} passedArgs
- * @param {import('node:child_process').SpawnSyncOptions} options
- */
-function run(cmd, passedArgs, options = { stdio: 'inherit' }) {
-    return spawnSync(cmd, passedArgs, options);
-}
 
 if (run('git', ['status', '-s'], { stdio: 'pipe' }).stdout.toString()) {
     throw new Error('Please commit all changes before running this script.');

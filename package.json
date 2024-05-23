@@ -15,7 +15,8 @@
     ],
     "scripts": {
         "lint": "eslint . --ext .js",
-        "project-update": "node ./src/index.ts",
+        "project-update": "node ./src/index.js --root=./playground",
+        "playground:update": "node ./scripts/playground",
         "release:patch": "node ./scripts/release patch",
         "release:minor": "node ./scripts/release minor",
         "release:major": "node ./scripts/release major"
