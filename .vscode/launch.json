@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "project-update",
+            "request": "launch",
+            "runtimeArgs": ["run-script", "project-update"],
+            "runtimeExecutable": "npm",
+            "skipFiles": ["<node_internals>/**"],
+            "type": "node"
+        }
+    ]
+}

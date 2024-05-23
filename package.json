@@ -1,0 +1,38 @@
+{
+    "name": "project-update",
+    "version": "0.0.0",
+    "description": "Update an IQGeo project based on options in a .iqgeorc.jsonc configuration file.",
+    "author": "IQGeo",
+    "license": "ISC",
+    "repository": "https://github.com/IQGeo/utils-project-update",
+    "type": "module",
+    "main": "src/index.js",
+    "bin": {
+        "project-update": "src/bin/index.js"
+    },
+    "files": [
+        "src"
+    ],
+    "scripts": {
+        "lint": "eslint . --ext .js",
+        "project-update": "node ./src/index.ts",
+        "release:patch": "node ./scripts/release patch",
+        "release:minor": "node ./scripts/release minor",
+        "release:major": "node ./scripts/release major"
+    },
+    "dependencies": {
+        "jsonc": "^2.0.0"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@types/node": "^20.12.12",
+        "eslint": "^8.57.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-define-config": "^2.1.0",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-n": "^16.6.2",
+        "eslint-plugin-prettier": "^5.1.3",
+        "prettier": "^3.2.5"
+    }
+}
