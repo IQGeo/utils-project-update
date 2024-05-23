@@ -3,5 +3,22 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "search.exclude": {
         "playground": true
-    }
+    },
+    "cSpell.words": [
+        "appserver",
+        "autoremove",
+        "changenog",
+        "devcontainer",
+        "devenv",
+        "devserver",
+        "iqgeo",
+        "iqgeorc",
+        "libldap",
+        "libmemcached",
+        "libsasl",
+        "libxmlsec",
+        "myproj",
+        "myworldapp",
+        "trivago"
+    ]
 }
