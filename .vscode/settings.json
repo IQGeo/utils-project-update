@@ -20,5 +20,6 @@
         "myproj",
         "myworldapp",
         "trivago"
-    ]
+    ],
+    "markdown.extension.toc.levels": "2..6"
 }
