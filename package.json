@@ -18,7 +18,7 @@
     },
     "scripts": {
         "lint": "eslint . --ext .js",
-        "project-update": "node ./src/index.js --root=./playground/utils-project-template",
+        "project-update": "node ./src/bin/index.js --root=./playground/utils-project-template",
         "playground:update": "node ./scripts/playground",
         "release:patch": "node ./scripts/release patch",
         "release:minor": "node ./scripts/release minor",
