@@ -95,12 +95,12 @@ function getFileUpdater(root, config) {
 /**
  * @param {string} root
  * @param {Config} config
- * @returns {boolean}
+ * @returns {boolean} Whether all files were updated successfully
  */
 function updateFiles(root, config) {
     const fileUpdater = getFileUpdater(root, config);
 
-    const errors = Object.entries(fileTransformers).map(([relPath, transform]) => {
+    const results = Object.entries(fileTransformers).map(([relPath, transform]) => {
         try {
             return fileUpdater(relPath, transform);
         } catch (e) {
@@ -111,7 +111,7 @@ function updateFiles(root, config) {
         }
     });
 
-    return !errors.some(e => e);
+    return !results.some(res => res === false);
 }
 
 /**
