@@ -5,6 +5,62 @@ import path from 'node:path';
 import { fileTransformers } from './transform.js';
 
 /**
+ * Updates a IQGeo project.
+ * Project structure should as per https://github.com/IQGeo/utils-project-template with a `.iqgeorc.jsonc` configuration file.
+ */
+export function update(root = process.cwd()) {
+    let config;
+
+    try {
+        config = readConfig(root);
+    } catch (e) {
+        console.error('Failed to read configuration file');
+
+        return;
+    }
+
+    try {
+        const allUpdated = updateFiles(root, config);
+
+        if (allUpdated) {
+            console.log('IQGeo project configured successfully!');
+        } else {
+            console.warn('IQGeo project configured with warnings');
+        }
+    } catch (e) {
+        console.error('Failed to update files');
+        console.error(e);
+    }
+}
+
+/**
+ * @param {string} root
+ * @returns {Config}
+ */
+function readConfig(root) {
+    const configFilePath = path.join(root, '.iqgeorc.jsonc');
+    const configFile = fs.readFileSync(configFilePath, 'utf8');
+    /** @type {Config} */
+    const config = jsonc.parse(configFile);
+
+    if (!config.registry) {
+        config.registry = 'harbor.delivery.iqgeo.cloud/releases';
+    }
+
+    for (const module of config.modules) {
+        if (module.version && !module.shortVersion) {
+            module.shortVersion = module.version.replaceAll('.', '');
+        }
+
+        if (!module.version && !module.devSrc) {
+            module.devSrc = module.name;
+        }
+    }
+
+    return config;
+}
+
+/**
  * @param {string} root
  * @param {Config} config
  */
@@ -38,33 +94,6 @@ function getFileUpdater(root, config) {
 
 /**
  * @param {string} root
- * @returns {Config}
- */
-function readConfig(root) {
-    const configFilePath = path.join(root, '.iqgeorc.jsonc');
-    const configFile = fs.readFileSync(configFilePath, 'utf8');
-    /** @type {Config} */
-    const config = jsonc.parse(configFile);
-
-    if (!config.registry) {
-        config.registry = 'harbor.delivery.iqgeo.cloud/releases';
-    }
-
-    for (const module of config.modules) {
-        if (module.version && !module.shortVersion) {
-            module.shortVersion = module.version.replaceAll('.', '');
-        }
-
-        if (!module.version && !module.devSrc) {
-            module.devSrc = module.name;
-        }
-    }
-
-    return config;
-}
-
-/**
- * @param {string} root
  * @param {Config} config
  * @returns {boolean}
  */
@@ -83,35 +112,6 @@ function updateFiles(root, config) {
     });
 
     return !errors.some(e => e);
-}
-
-/**
- * Updates a IQGeo project.
- * Project structure should as per https://github.com/IQGeo/utils-project-template with a `.iqgeorc.jsonc` configuration file.
- */
-export function update(root = process.cwd()) {
-    let config;
-
-    try {
-        config = readConfig(root);
-    } catch (e) {
-        console.error('Failed to read configuration file');
-
-        return;
-    }
-
-    try {
-        const allUpdated = updateFiles(root, config);
-
-        if (allUpdated) {
-            console.log('IQGeo project configured successfully!');
-        } else {
-            console.warn('IQGeo project configured with warnings');
-        }
-    } catch (e) {
-        console.error('Failed to update files');
-        console.error(e);
-    }
 }
 
 /**

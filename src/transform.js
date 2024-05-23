@@ -10,6 +10,137 @@ const aptGetMappingsRuntime = {
     saml: ['libxml2-dev', 'libxmlsec1-dev'] // ENH: identify the correct runtime packages
 };
 
+// Transformers
+
+/**
+ * @type {Transformer}
+ */
+const initDbModifier = (config, content) => {
+    const { modules } = config;
+
+    const section1 = modules
+        .filter(({ version, dbInit = !!version }) => dbInit)
+        .map(
+            ({ name, schemaGrep = name }) =>
+                `if ! myw_db $MYW_DB_NAME list versions | grep ${schemaGrep}; then myw_db $MYW_DB_NAME install ${name}; fi`
+        )
+        .join('\n');
+
+    return content.replace(
+        /(# START SECTION db init.*)[\s\S]*?(# END SECTION)/,
+        `$1\n${section1}\n$2`
+    );
+};
+
+/**
+ * @type {Record<string, Transformer>}
+ */
+export const fileTransformers = {
+    '.devcontainer/dockerfile': (config, content) => {
+        const { modules, platform } = config;
+
+        content = replaceModuleInjection(content, modules, true);
+        content = replaceOptionalDeps(content, platform.devenv);
+        content = replaceFetchPipPackages(content, platform.devenv);
+
+        return content.replace(/platform-devenv:.*/, `platform-devenv:${platform.version}`);
+    },
+
+    '.devcontainer/docker-compose.yml': (config, content) => {
+        const { modules, prefix, db_name } = config;
+        const localModules = modules.filter(def => !def.version || def.devSrc);
+        const newContent = localModules
+            .map(
+                ({ name, devSrc }) =>
+                    `            - ../${devSrc}:/opt/iqgeo/platform/WebApps/myworldapp/modules/${name}:delegated`
+            )
+            .join('\n');
+
+        return content
+            .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
+            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
+            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`)
+            .replace(/iqgeo_devserver:/, `iqgeo_${prefix}_devserver:`);
+    },
+
+    '.devcontainer/.env.example': (config, content) => {
+        const { prefix, db_name } = config;
+
+        return content
+            .replace(`PROJ_PREFIX=myproj`, `PROJ_PREFIX=${prefix}`)
+            .replace(`COMPOSE_PROJECT_NAME=myproj_dev\n`, `COMPOSE_PROJECT_NAME=${prefix}_dev\n`)
+            .replace(`MYW_DB_NAME=dev_db\n`, `MYW_DB_NAME=${db_name}\n`);
+    },
+
+    '.devcontainer/devcontainer.json': (config, content) => {
+        const { prefix, display_name } = config;
+
+        return content
+            .replace(`"name": "IQGeo Module Development Template"`, `"name": "${display_name}"`)
+            .replace(`"service": "iqgeo_devserver"`, `"service": "iqgeo_${prefix}_devserver"`);
+    },
+
+    'deployment/dockerfile.build': (config, content) => {
+        const { modules, platform } = config;
+
+        return replaceModuleInjection(content, modules).replace(
+            /platform-build:\S+/g,
+            `platform-build:${platform.version}`
+        );
+    },
+
+    'deployment/dockerfile.appserver': (config, content) => {
+        const { modules, platform } = config;
+
+        content = replaceOptionalDeps(content, platform.appserver, 'build');
+        content = replaceOptionalDeps(content, platform.appserver, 'runtime');
+        content = replaceFetchPipPackages(content, platform.devenv);
+
+        content = content.replace(
+            /platform-appserver:\S+/g,
+            `platform-appserver:${platform.version}`
+        );
+
+        const section2 = modules
+            .filter(({ devOnly }) => !devOnly)
+            .map(
+                ({ name }) =>
+                    `COPY --chown=www-data:www-data --from=iqgeo_builder \${MODULES}/${name}/ \${MODULES}/${name}/`
+            )
+            .join('\n');
+
+        return content.replace(
+            /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
+            `$1\n${section2}\n$2`
+        );
+    },
+
+    'deployment/dockerfile.tools': (config, content) => {
+        const { platform } = config;
+
+        return content.replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`);
+    },
+
+    'deployment/docker-compose.yml': (config, content) => {
+        const { prefix, db_name } = config;
+
+        return content
+            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
+            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`);
+    },
+
+    'deployment/.env.example': (config, content) => {
+        const { prefix, db_name } = config;
+
+        return content
+            .replace(`PROJ_PREFIX=myproj\n`, `PROJ_PREFIX=${prefix}\n`)
+            .replace(`MYW_DB_NAME=myproj\n`, `MYW_DB_NAME=${db_name}\n`);
+    },
+
+    'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
+    '.devcontainer/entrypoint.d/600_init_db.sh': initDbModifier
+};
+
 // Helpers
 
 /**
@@ -89,139 +220,6 @@ function replaceFetchPipPackages(content, optionalDeps = []) {
             : 'RUN myw_product fetch pip_packages'
     );
 }
-
-// Transformers
-
-/**
- * @type {Transformer}
- */
-const initDbModifier = (config, content) => {
-    const { modules } = config;
-
-    const section1 = modules
-        .filter(({ version, dbInit = !!version }) => dbInit)
-        .map(
-            ({ name, schemaGrep = name }) =>
-                `if ! myw_db $MYW_DB_NAME list versions | grep ${schemaGrep}; then myw_db $MYW_DB_NAME install ${name}; fi`
-        )
-        .join('\n');
-
-    return content.replace(
-        /(# START SECTION db init.*)[\s\S]*?(# END SECTION)/,
-        `$1\n${section1}\n$2`
-    );
-};
-
-/**
- * @type {Record<string, Transformer>}
- */
-export const fileTransformers = {
-    '.devcontainer/dockerfile': (config, content) => {
-        const { modules, platform } = config;
-
-        let replacedContent = replaceModuleInjection(content, modules, true);
-
-        replacedContent = replaceOptionalDeps(replacedContent, platform.devenv);
-        replacedContent = replaceFetchPipPackages(replacedContent, platform.devenv);
-
-        return replacedContent.replace(/platform-devenv:.*/, `platform-devenv:${platform.version}`);
-    },
-
-    '.devcontainer/docker-compose.yml': (config, content) => {
-        const { modules, prefix, db_name } = config;
-        const localModules = modules.filter(def => !def.version || def.devSrc);
-        const newContent = localModules
-            .map(
-                ({ name, devSrc }) =>
-                    `            - ../${devSrc}:/opt/iqgeo/platform/WebApps/myworldapp/modules/${name}:delegated`
-            )
-            .join('\n');
-
-        return content
-            .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
-            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`)
-            .replace(/iqgeo_devserver:/, `iqgeo_${prefix}_devserver:`);
-    },
-
-    '.devcontainer/.env.example': (config, content) => {
-        const { prefix, db_name } = config;
-
-        return content
-            .replace(`PROJ_PREFIX=myproj`, `PROJ_PREFIX=${prefix}`)
-            .replace(`COMPOSE_PROJECT_NAME=myproj_dev\n`, `COMPOSE_PROJECT_NAME=${prefix}_dev\n`)
-            .replace(`MYW_DB_NAME=dev_db\n`, `MYW_DB_NAME=${db_name}\n`);
-    },
-
-    '.devcontainer/devcontainer.json': (config, content) => {
-        const { prefix, display_name } = config;
-
-        return content
-            .replace(`"name": "IQGeo Module Development Template"`, `"name": "${display_name}"`)
-            .replace(`"service": "iqgeo_devserver"`, `"service": "iqgeo_${prefix}_devserver"`);
-    },
-
-    'deployment/dockerfile.build': (config, content) => {
-        const { modules, platform } = config;
-
-        return replaceModuleInjection(content, modules).replace(
-            /platform-build:\S+/g,
-            `platform-build:${platform.version}`
-        );
-    },
-
-    'deployment/dockerfile.appserver': (config, content) => {
-        const { modules, platform } = config;
-
-        let replacedContent = replaceOptionalDeps(content, platform.appserver, 'build');
-
-        replacedContent = replaceOptionalDeps(replacedContent, platform.appserver, 'runtime');
-        replacedContent = replaceFetchPipPackages(replacedContent, platform.devenv);
-
-        replacedContent = replacedContent.replace(
-            /platform-appserver:\S+/g,
-            `platform-appserver:${platform.version}`
-        );
-
-        const section2 = modules
-            .filter(({ devOnly }) => !devOnly)
-            .map(
-                ({ name }) =>
-                    `COPY --chown=www-data:www-data --from=iqgeo_builder \${MODULES}/${name}/ \${MODULES}/${name}/`
-            )
-            .join('\n');
-
-        return replacedContent.replace(
-            /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
-            `$1\n${section2}\n$2`
-        );
-    },
-
-    'deployment/dockerfile.tools': (config, content) => {
-        const { platform } = config;
-
-        return content.replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`);
-    },
-
-    'deployment/docker-compose.yml': (config, content) => {
-        const { prefix, db_name } = config;
-
-        return content
-            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`);
-    },
-
-    'deployment/.env.example': (config, content) => {
-        const { prefix, db_name } = config;
-
-        return content
-            .replace(`PROJ_PREFIX=myproj\n`, `PROJ_PREFIX=${prefix}\n`)
-            .replace(`MYW_DB_NAME=myproj\n`, `MYW_DB_NAME=${db_name}\n`);
-    },
-
-    'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
-    '.devcontainer/entrypoint.d/600_init_db.sh': initDbModifier
-};
 
 // Types
 

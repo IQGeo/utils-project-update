@@ -7,40 +7,32 @@ module.exports = defineConfig({
         node: true
     },
     extends: [
-        'airbnb-base',
         'eslint:recommended',
         'prettier',
         'plugin:n/recommended',
-        'plugin:import/recommended'
+        'plugin:import/recommended',
+        'eslint-config-async'
     ],
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module'
     },
-    plugins: ['n', 'prettier'],
-    ignorePatterns: ['node_modules'],
+    plugins: ['prettier', 'n'],
+    ignorePatterns: ['node_modules', 'playground/utils-project-template'],
     rules: {
+        'linebreak-style': ['off', 'unix'],
         'no-console': 'off',
-        'no-param-reassign': [2, { props: false }],
-        'no-new': 'off',
-        'no-restricted-syntax': 'off',
-        'no-cond-assign': ['error', 'except-parens'],
-        'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        'arrow-body-style': 'off',
-        'consistent-return': 'off',
-        'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
-        camelcase: 'off',
-
-        'import/prefer-default-export': 'off',
-        'import/extensions': 'off',
-        'import/no-extraneous-dependencies': ['error', { devDependencies: ['.eslintrc.cjs'] }],
-
-        'n/shebang': 'off',
-        'n/no-process-exit': 'off'
-    },
-    settings: {
-        'import/resolver': {
-            node: true
-        }
+        'no-unused-vars': [
+            'error',
+            {
+                args: 'none'
+            }
+        ],
+        'keyword-spacing': ['error'],
+        'no-useless-escape': ['off'],
+        'require-atomic-updates': 'off',
+        'n/handle-callback-err': 'off',
+        'n/no-sync': 'off',
+        'n/no-callback-literal': 'off'
     }
 });
