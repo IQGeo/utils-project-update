@@ -44,22 +44,17 @@ npm run project-update
 ```js
 import { update } from 'project-update';
 
-update();
+update({
+    /* options */
+});
 ```
 
 ## Configuration
 
-Currently, only supports a `root` option to specify the root directory of the project.
-
-```bash
-npx project-update --root=/path/to/project
-```
-
-```js
-import { update } from 'project-update';
-
-update('/path/to/project');
-```
+| Option     | Type     | Description                         | Default                    | Via CLI |
+| ---------- | -------- | ----------------------------------- | -------------------------- | ------- |
+| `root`     | `string` | Path to the project root directory. | `process.cwd()`            | Yes     |
+| `progress` | `object` | Functions to output progress logs.  | `console.{log,warn,error}` | No      |
 
 ## Contributing
 

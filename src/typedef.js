@@ -31,3 +31,10 @@
 /**
  * @typedef {(config: Config, content: string) => string} Transformer
  */
+
+/**
+ * @typedef {object} ProgressHandler
+ * @property {(level: number, info: any) => void} log
+ * @property {(level: number, info: any) => void} warn
+ * @property {(level: number, info: any) => void} error
+ */

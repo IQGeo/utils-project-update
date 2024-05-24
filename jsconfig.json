@@ -1,25 +1,21 @@
 {
     "compilerOptions": {
-        "alwaysStrict": true,
-        "checkJs": true,
-        "forceConsistentCasingInFileNames": true,
+        "rootDir": "src",
         "lib": ["esnext"],
         "target": "ESNext",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
+        "typeRoots": ["./node_modules/@types"],
+        "resolveJsonModule": true,
+        "checkJs": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "rootDir": "src",
-        "strict": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "resolveJsonModule": true,
-        "typeRoots": ["./node_modules/@types"]
+        "noUnusedParameters": false
     },
     "include": ["./src"],
     "exclude": ["./node_modules/"]

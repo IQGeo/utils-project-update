@@ -9,29 +9,40 @@ import { fileTransformers } from './transform.js';
  *
  * Project structure should be as per https://github.com/IQGeo/utils-project-template with
  * a `.iqgeorc.jsonc` configuration file at `root`.
+ *
+ * @param {object} options
+ * @param {string} [options.root=process.cwd()] The root directory of the project
+ * @param {ProgressHandler} [options.progress] Functions to output progress logs (defaults to `console.{log,warn,error}`)
  */
-export function update(root = process.cwd()) {
+export function update({
+    root = process.cwd(),
+    progress = {
+        log: (level, info) => console.log(info),
+        warn: (level, info) => console.warn(info),
+        error: (level, info) => console.error(info)
+    }
+}) {
     let config;
 
     try {
         config = readConfig(root);
     } catch (e) {
-        console.error('Failed to read configuration file');
+        progress.error(1, 'Failed to read configuration file');
 
         return;
     }
 
     try {
-        const allUpdated = updateFiles(root, config);
+        const allUpdated = updateFiles(root, config, progress);
 
         if (allUpdated) {
-            console.log('IQGeo project configured successfully!');
+            progress.log(1, 'IQGeo project configured successfully!');
         } else {
-            console.warn('IQGeo project configured with warnings');
+            progress.warn(1, 'IQGeo project configured with warnings');
         }
     } catch (e) {
-        console.error('Failed to update files');
-        console.error(e);
+        progress.error(1, 'Failed to update files');
+        progress.error(3, e);
     }
 }
 
@@ -65,8 +76,9 @@ function readConfig(root) {
 /**
  * @param {string} root
  * @param {Config} config
+ * @param {ProgressHandler} progress
  */
-function getFileUpdater(root, config) {
+function getFileUpdater(root, config, progress) {
     /**
      * @param {string} relPath
      * @param {Transformer} transform
@@ -79,7 +91,7 @@ function getFileUpdater(root, config) {
         try {
             content = fs.readFileSync(filePath, 'utf8');
         } catch (e) {
-            console.warn(`Failed to read file ${filePath}`);
+            progress.warn(2, `Failed to read file ${filePath}`);
 
             return false;
         }
@@ -97,17 +109,18 @@ function getFileUpdater(root, config) {
 /**
  * @param {string} root
  * @param {Config} config
+ * @param {ProgressHandler} progress
  * @returns {boolean} Whether all files were updated successfully
  */
-function updateFiles(root, config) {
-    const fileUpdater = getFileUpdater(root, config);
+function updateFiles(root, config, progress) {
+    const fileUpdater = getFileUpdater(root, config, progress);
 
     const results = Object.entries(fileTransformers).map(([relPath, transform]) => {
         try {
             return fileUpdater(relPath, transform);
         } catch (e) {
-            console.warn(`Failed to update file ${relPath}`);
-            console.error(e);
+            progress.warn(2, `Failed to update file ${relPath}`);
+            progress.error(3, e);
 
             return e;
         }
@@ -121,4 +134,5 @@ function updateFiles(root, config) {
  * @typedef {import("./typedef.js").Module} Module
  * @typedef {import("./typedef.js").Config} Config
  * @typedef {import("./typedef.js").Transformer} Transformer
+ * @typedef {import("./typedef.js").ProgressHandler} ProgressHandler
  */

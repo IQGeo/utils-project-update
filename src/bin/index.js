@@ -3,4 +3,4 @@ import { update } from '../index.js';
 
 const root = process.argv.find(arg => arg.startsWith('--root='))?.replace('--root=', '');
 
-update(root);
+update({ root });
