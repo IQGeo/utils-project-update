@@ -1,7 +1,7 @@
 {
     "type": "module",
     "scripts": {
-        "cli": "project-update --root=./utils-project-template",
+        "cli": "node ../src/bin/index.js --root=./utils-project-template",
         "js": "node ./script.js"
     },
     "dependencies": {

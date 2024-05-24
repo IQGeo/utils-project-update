@@ -27,7 +27,8 @@
         "release:major": "node ./scripts/release major"
     },
     "dependencies": {
-        "jsonc": "^2.0.0"
+        "jsonc": "^2.0.0",
+        "yargs": "^17.7.2"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",

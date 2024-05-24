@@ -38,3 +38,13 @@
  * @property {(level: number, info: any) => void} warn
  * @property {(level: number, info: any) => void} error
  */
+
+/**
+ * @typedef {object} UpdateOptions
+ * @property {string} [root=process.cwd()] The root directory of the project
+ * @property {ProgressHandler} [progress] Functions used to output progress logs (defaults to `console.{log,warn,error}`)
+ */
+
+/**
+ * @typedef {Omit<UpdateOptions, 'progress'>} UpdateOptionsCLI
+ */

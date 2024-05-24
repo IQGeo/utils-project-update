@@ -1,6 +1,17 @@
 #!/usr/bin/env node
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
 import { update } from '../index.js';
 
-const root = process.argv.find(arg => arg.startsWith('--root='))?.replace('--root=', '');
+yargs.help(false);
+yargs.string('root').alias('r', 'root');
 
-update({ root });
+const argv = await /** @type {Argv} */ (yargs(hideBin(process.argv))).parse();
+
+update({ root: argv.root });
+
+/**
+ * @typedef {import('yargs').Argv<UpdateOptionsCLI>} Argv
+ * @typedef {import('../typedef.js').UpdateOptionsCLI} UpdateOptionsCLI
+ */

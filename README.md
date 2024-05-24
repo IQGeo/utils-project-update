@@ -51,10 +51,10 @@ update({
 
 ## Configuration
 
-| Option     | Type     | Description                         | Default                    | Via CLI |
-| ---------- | -------- | ----------------------------------- | -------------------------- | ------- |
-| `root`     | `string` | Path to the project root directory. | `process.cwd()`            | Yes     |
-| `progress` | `object` | Functions to output progress logs.  | `console.{log,warn,error}` | No      |
+| Option     | Type     | Description                             | Default                    | Via CLI |
+| ---------- | -------- | --------------------------------------- | -------------------------- | ------- |
+| `root`     | `string` | Path to the project root directory.     | `process.cwd()`            | Yes     |
+| `progress` | `object` | Functions used to output progress logs. | `console.{log,warn,error}` | No      |
 
 ## Contributing
 

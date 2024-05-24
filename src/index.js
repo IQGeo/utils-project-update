@@ -10,9 +10,7 @@ import { fileTransformers } from './transform.js';
  * Project structure should be as per https://github.com/IQGeo/utils-project-template with
  * a `.iqgeorc.jsonc` configuration file at `root`.
  *
- * @param {object} options
- * @param {string} [options.root=process.cwd()] The root directory of the project
- * @param {ProgressHandler} [options.progress] Functions to output progress logs (defaults to `console.{log,warn,error}`)
+ * @param {UpdateOptions} options
  */
 export function update({
     root = process.cwd(),
@@ -135,4 +133,5 @@ function updateFiles(root, config, progress) {
  * @typedef {import("./typedef.js").Config} Config
  * @typedef {import("./typedef.js").Transformer} Transformer
  * @typedef {import("./typedef.js").ProgressHandler} ProgressHandler
+ * @typedef {import("./typedef.js").UpdateOptions}UpdateOptions
  */
