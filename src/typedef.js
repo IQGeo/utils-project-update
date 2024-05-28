@@ -48,3 +48,5 @@
 /**
  * @typedef {Omit<UpdateOptions, 'progress'>} UpdateOptionsCLI
  */
+
+export {};
