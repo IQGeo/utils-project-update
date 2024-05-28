@@ -1,5 +1,9 @@
 // @ts-check
+import { createRequire } from 'node:module';
+
 import { run } from './helpers.js';
+
+const require = createRequire(import.meta.url);
 
 /*
  * This script runs checks, updates the version, generates/updates the changelog,
@@ -17,8 +21,8 @@ run('npm', ['version', args[0]]);
 run('npx', ['changenog']);
 run('git', ['add', '.']);
 
-const pkg = await import('../package.json');
+const pkg = require('../package.json');
 
-run('git', ['commit', '-m', `docs(changelog): v${pkg.default.version}`]);
+run('git', ['commit', '-m', `docs(changelog): v${pkg.version}`]);
 run('git', ['push']);
 run('git', ['push', '--tags']);
