@@ -36,6 +36,20 @@ const initDbModifier = (config, content) => {
  * @type {Record<string, Transformer>}
  */
 export const fileTransformers = {
+    '.gitignore': (config, content) => {
+        const { modules } = config;
+        const productModules = modules
+            .filter(({ version }) => !!version)
+            .concat([{ name: 'dev_tools' }]);
+        const newContent = productModules.map(({ name }) => `./${name}`).join('\n');
+
+        content = content.replace(
+            /(# START SECTION Product modules)[\s\S]*?(.*# END SECTION)/,
+            `$1\n${newContent}\n$2`
+        );
+        return content;
+    },
+    
     '.devcontainer/dockerfile': (config, content) => {
         const { modules, platform } = config;
 
