@@ -1,9 +1,9 @@
 /**
  * @typedef Platform
- * @property {string} [version]
- * @property {string[]} [devenv]
- * @property {string[]} [appserver]
- * @property {string[]} [tools]
+ * @property {string} version
+ * @property {string[]} devenv
+ * @property {string[]} appserver
+ * @property {string[]} tools
  */
 
 /**

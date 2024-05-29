@@ -44,6 +44,12 @@ export function update({
     }
 }
 
+//TBR: remove when modules can specify their own optional system dependencies
+/** @type {Record<string, any> } */
+const additionalModuleDependencies = {
+    nro: { appserver: [], tools: ['osm'] }
+};
+
 /**
  * @param {string} root
  * @returns {Config}
@@ -57,14 +63,23 @@ function readConfig(root) {
     if (!config.registry) {
         config.registry = 'harbor.delivery.iqgeo.cloud/releases';
     }
+    if (!config.platform.devenv) config.platform.devenv = [];
+    if (!config.platform.appserver) config.platform.appserver = [];
+    if (!config.platform.tools) config.platform.tools = [];
 
     for (const module of config.modules) {
         if (module.version && !module.shortVersion) {
             module.shortVersion = module.version.replaceAll('.', '');
         }
 
-        if (!module.version && !module.devSrc) {
-            module.devSrc = module.name;
+        if (!module.version && !module.devSrc) module.devSrc = module.name;
+
+        //TBR: remove when modules can specify their own optional system dependencies
+        const addDep = additionalModuleDependencies[module.name];
+        if (addDep) {
+            config.platform.devenv.push(...addDep.appserver, ...addDep.tools);
+            config.platform.tools.push(...addDep.tools);
+            config.platform.appserver.push(...addDep.appserver);
         }
     }
 
