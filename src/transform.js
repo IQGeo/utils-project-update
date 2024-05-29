@@ -1,13 +1,23 @@
-const aptGetMappingsBuild = {
-    memcached: ['libmemcached-dev'],
-    ldap: ['libsasl2-dev', 'libldap2-dev'],
-    saml: ['libxml2-dev', 'libxmlsec1-dev']
+const aptGetMappings = {
+    build: {
+        memcached: ['libmemcached-dev'],
+        ldap: ['libsasl2-dev', 'libldap2-dev'],
+        saml: ['libxml2-dev', 'libxmlsec1-dev']
+    },
+    runtime: {
+        memcached: ['libmemcached11'],
+        ldap: ['libsasl2-dev', 'libldap2-dev'], //ENH: identify the correct runtime packages
+        saml: ['libxml2-dev', 'libxmlsec1-dev'], //ENH: identify the correct runtime packages
+        osm: ['osm2pgsql', 'osmctools']
+    },
+    dev: {
+        //dev is a combination of build and runtime, calculated further down
+    }
 };
 
-const aptGetMappingsRuntime = {
-    memcached: ['libmemcached11'],
-    ldap: ['libsasl2-dev', 'libldap2-dev'], // ENH: identify the correct runtime packages
-    saml: ['libxml2-dev', 'libxmlsec1-dev'] // ENH: identify the correct runtime packages
+/** @type {Record<string, any> } */
+const pipPackagesMappings = {
+    osm: []
 };
 
 // Transformers
@@ -54,7 +64,7 @@ export const fileTransformers = {
         const { modules, platform } = config;
 
         content = replaceModuleInjection(content, modules, true);
-        content = replaceOptionalDeps(content, platform.devenv);
+        content = replaceOptionalDeps(content, platform.devenv, 'dev');
         content = replaceFetchPipPackages(content, platform.devenv);
 
         return content.replace(/platform-devenv:.*/, `platform-devenv:${platform.version}`);
@@ -132,7 +142,11 @@ export const fileTransformers = {
     'deployment/dockerfile.tools': (config, content) => {
         const { platform } = config;
 
-        return content.replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`);
+        content = replaceOptionalDeps(content, platform.tools, 'build');
+        content = replaceOptionalDeps(content, platform.tools, 'runtime');
+
+        content = content.replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`);
+        return content;
     },
 
     'deployment/docker-compose.yml': (config, content) => {
@@ -199,26 +213,27 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
 
 /**
  * @param {string} content
- * @param {string[]} [optionalDeps=[]]
- * @param {'build' | 'runtime'} [type='build']
+ * @param {string[]} optionalDeps=[]
+ * @param {keyof typeof aptGetMappings} type
  * @returns {string}
  */
-function replaceOptionalDeps(content, optionalDeps = [], type = 'build') {
-    const aptGetMappings = type === 'build' ? aptGetMappingsBuild : aptGetMappingsRuntime;
+function replaceOptionalDeps(content, optionalDeps, type) {
     const aptGets = optionalDeps
-        .map(name => aptGetMappings[/** @type {keyof typeof aptGetMappings} */ (name)] ?? [])
+        // @ts-ignore
+        .map(name => aptGetMappings[type][name] ?? [])
         .flat()
         .join(' ');
     const section1 = aptGets
         ? `RUN apt-get update && \\\n    apt-get install -y ${aptGets} \\\n    && apt-get autoremove && apt-get clean`
         : '';
 
-    return content.replace(
-        type === 'build'
-            ? /(# START SECTION optional dependencies \(build.*)[\s\S]*?(# END SECTION)/
-            : /(# START SECTION optional dependencies \(runtime.*)[\s\S]*?(# END SECTION)/,
-        `$1\n${section1}\n$2`
+    const typeMatch = type === 'dev' ? '\\(.*' : `\\(${type}.*`; // to handle older versions of the dev file
+    const regexp = new RegExp(
+        `(# START SECTION optional dependencies ${typeMatch})[\\s\\S]*?(# END SECTION)`
     );
+    content = content.replace(regexp, `$1\n${section1}\n$2`);
+
+    return content;
 }
 
 /**
@@ -227,13 +242,30 @@ function replaceOptionalDeps(content, optionalDeps = [], type = 'build') {
  * @returns {string}
  */
 function replaceFetchPipPackages(content, optionalDeps = []) {
-    return content.replace(
+    const includeValue = optionalDeps
+        .map(name => pipPackagesMappings[name] ?? name)
+        .flat()
+        .join(' ');
+    content = content.replace(
         /(RUN myw_product fetch pip_packages.*)/,
         optionalDeps?.length
-            ? `RUN myw_product fetch pip_packages --include ${optionalDeps.join(' ')}`
+            ? `RUN myw_product fetch pip_packages --include ${includeValue}`
             : 'RUN myw_product fetch pip_packages'
     );
+    return content;
 }
+
+//merge build and runtime into dev
+const keys = [
+    ...new Set([...Object.keys(aptGetMappings.build), ...Object.keys(aptGetMappings.runtime)])
+];
+aptGetMappings.dev = keys.reduce((acc, key) => {
+    acc[key] = [
+        // @ts-ignore
+        ...new Set([...(aptGetMappings.build[key] ?? []), ...(aptGetMappings.runtime[key] ?? [])])
+    ];
+    return acc;
+}, /** @type {Record<string, any>} */ ({}));
 
 // Types
 
