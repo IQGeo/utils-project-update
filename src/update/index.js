@@ -19,7 +19,7 @@ export function update({
         warn: (level, info) => console.warn(info),
         error: (level, info) => console.error(info)
     }
-}) {
+} = {}) {
     let config;
 
     try {

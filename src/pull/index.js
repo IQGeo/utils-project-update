@@ -12,7 +12,7 @@ export function pull({
         warn: (level, info) => console.warn(info),
         error: (level, info) => console.error(info)
     }
-}) {
+} = {}) {
     const gitCheckResult = run('git', ['-v'], { stdio: 'pipe' });
 
     if (gitCheckResult.error) {
