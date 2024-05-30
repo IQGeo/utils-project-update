@@ -1,4 +1,3 @@
-// @ts-check
 import { spawnSync } from 'node:child_process';
 
 /**
@@ -11,4 +10,13 @@ import { spawnSync } from 'node:child_process';
  */
 export function run(cmd, passedArgs, options = { stdio: 'inherit' }) {
     return spawnSync(cmd, passedArgs, options);
+}
+
+/**
+ * Ensures the Git working tree is clean, throws if not.
+ */
+export function ensureCleanWorkingTree() {
+    if (run('git', ['status', '-s'], { stdio: 'pipe' }).stdout.toString()) {
+        throw new Error('Uncommitted changes in working tree.');
+    }
 }

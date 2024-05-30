@@ -48,6 +48,16 @@
  */
 
 /**
+ * @typedef {object} PullOptions
+ * @property {string} [out='./utils-project-template'] The output directory for all template files and folders (defaults to `'./utils-project-template'`)
+ * @property {ProgressHandler} [progress] Functions used to output progress logs (defaults to `console.{log,warn,error}`)
+ */
+
+/**
+ * @typedef {Omit<PullOptions, 'progress'>} PullOptionsCLI
+ */
+
+/**
  * @typedef Dependencies
  * @property {string[]} appserver
  * @property {string[]} tools

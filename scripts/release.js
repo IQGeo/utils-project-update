@@ -1,7 +1,7 @@
 // @ts-check
 import { createRequire } from 'node:module';
 
-import { run } from './helpers.js';
+import { ensureCleanWorkingTree, run } from '../src/helpers.js';
 
 const require = createRequire(import.meta.url);
 
@@ -12,9 +12,7 @@ const require = createRequire(import.meta.url);
 
 const args = process.argv.slice(2);
 
-if (run('git', ['status', '-s'], { stdio: 'pipe' }).stdout.toString()) {
-    throw new Error('Please commit all changes before running this script.');
-}
+ensureCleanWorkingTree();
 
 run('npm', ['run', 'lint']);
 run('npm', ['version', args[0]]);

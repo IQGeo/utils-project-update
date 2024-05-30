@@ -1,9 +1,17 @@
 {
     "configurations": [
         {
-            "name": "project-update",
+            "name": "update",
             "request": "launch",
             "runtimeArgs": ["run-script", "playground:cli"],
+            "runtimeExecutable": "npm",
+            "skipFiles": ["<node_internals>/**"],
+            "type": "node"
+        },
+        {
+            "name": "pull",
+            "request": "launch",
+            "runtimeArgs": ["run-script", "playground:pull"],
             "runtimeExecutable": "npm",
             "skipFiles": ["<node_internals>/**"],
             "type": "node"
