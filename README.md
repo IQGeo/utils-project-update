@@ -80,7 +80,7 @@ Pulls the latest IQGeo project template from GitHub.
 
 `playground/` contains a direct copy of [`utils-project-template`](https://github.com/IQGeo/utils-project-template) for manual testing.
 
-Any changes made in that repo should be copied back to this repo. To do this, you can run `npm run playground:pull` - if you have any untracked changes in your working tree, you can comment out the check in [`./src/pull.js`](./src/pull.js#L25) and rerun it.
+Any changes made in that repo should be copied back to this repo. To do this, you can run `npm run playground:pull` - if you have any untracked changes in your working tree, you can comment out the check in [`./src/pull/index.js`](./src/pull/index.js#L25) and rerun it.
 
 To use the playground dev scripts, first you have to set up symlinks via `npm link`:
 

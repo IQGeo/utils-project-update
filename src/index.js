@@ -1,2 +1,2 @@
-export * from './update.js';
-export * from './pull.js';
+export * from './update/index.js';
+export * from './pull/index.js';

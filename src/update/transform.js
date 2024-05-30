@@ -270,8 +270,8 @@ aptGetMappings.dev = keys.reduce((acc, key) => {
 // Types
 
 /**
- * @typedef {import("./typedef.js").Platform} Platform
- * @typedef {import("./typedef.js").Module} Module
- * @typedef {import("./typedef.js").Config} Config
- * @typedef {import("./typedef.js").Transformer} Transformer
+ * @typedef {import("../typedef.js").Platform} Platform
+ * @typedef {import("../typedef.js").Module} Module
+ * @typedef {import("../typedef.js").Config} Config
+ * @typedef {import("../typedef.js").Transformer} Transformer
  */

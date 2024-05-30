@@ -9,7 +9,7 @@ yargs(hideBin(process.argv))
         /** @param {import('yargs').Argv<UpdateOptionsCLI>} y */
         y => y.string('root').alias('r', 'root'),
         async ({ root }) => {
-            const { update } = await import('../update.js');
+            const { update } = await import('../update/index.js');
 
             update({ root });
         }
@@ -20,7 +20,7 @@ yargs(hideBin(process.argv))
         /** @param {import('yargs').Argv<PullOptionsCLI>} y */
         y => y.string('out').alias('o', 'out'),
         async ({ out }) => {
-            const { pull } = await import('../pull.js');
+            const { pull } = await import('../pull/index.js');
 
             pull({ out });
         }

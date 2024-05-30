@@ -1,4 +1,4 @@
-import { ensureCleanWorkingTree, run } from './helpers.js';
+import { ensureCleanWorkingTree, run } from '../helpers.js';
 
 /**
  * Pulls the latest IQGeo project template from GitHub.
@@ -54,5 +54,5 @@ export function pull({
 }
 
 /**
- * @typedef {import('./typedef.js').PullOptions} PullOptions
+ * @typedef {import('../typedef.js').PullOptions} PullOptions
  */
