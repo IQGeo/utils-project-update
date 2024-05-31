@@ -1,4 +1,4 @@
-import { jsonc } from 'jsonc';
+import * as jsonc from 'jsonc-parser';
 import fs from 'node:fs';
 import path from 'node:path';
 
