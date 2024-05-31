@@ -3,7 +3,7 @@
         {
             "name": "update",
             "request": "launch",
-            "runtimeArgs": ["run-script", "playground:cli"],
+            "runtimeArgs": ["run-script", "playground:update"],
             "runtimeExecutable": "npm",
             "skipFiles": ["<node_internals>/**"],
             "type": "node"
