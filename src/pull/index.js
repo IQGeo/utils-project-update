@@ -1,4 +1,11 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
 import { ensureCleanWorkingTree, run } from '../helpers.js';
+import { update } from '../update/index.js';
+
+import { mergeIqgeorcFiles } from './merge.js';
 
 /**
  * Pulls the latest IQGeo project template from GitHub.
@@ -31,11 +38,11 @@ export function pull({
         return;
     }
 
-    run('rm', ['-rf', out]);
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), '.tmp-'));
 
     const cloneErr = run(
         'git',
-        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', out],
+        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
         { stdio: 'pipe' }
     )
         .stderr.toString()
@@ -45,12 +52,37 @@ export function pull({
         progress.error(1, 'Failed to pull IQGeo project template');
         progress.error(3, cloneErr);
 
+        fs.rmSync(tmp, { recursive: true, force: true });
+
         return;
     }
 
-    run('rm', ['-rf', `${out}/.git`]);
+    fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
 
-    progress.log(1, 'IQGeo project template pulled successfully');
+    const hasExistingIqgeorc = fs.existsSync(`${out}/.iqgeorc.jsonc`);
+    const templateIqgeorc = fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8');
+
+    const iqgeorc = /** @type {string} */ (
+        hasExistingIqgeorc
+            ? mergeIqgeorcFiles(
+                  fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8'),
+                  templateIqgeorc,
+                  progress
+              )
+            : templateIqgeorc
+    );
+
+    // TODO: move custom sections to tmp
+
+    fs.writeFileSync(`${tmp}/.iqgeorc.jsonc`, iqgeorc);
+    fs.rmSync(out, { recursive: true, force: true });
+    fs.mkdirSync(out, { recursive: true });
+    fs.renameSync(tmp, out);
+
+    // TODO: add silent progress option?
+    update({ root: out, progress });
+
+    progress.log(1, 'IQGeo project template pulled successfully!');
 }
 
 /**
