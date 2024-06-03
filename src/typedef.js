@@ -31,6 +31,22 @@
  */
 
 /**
+  @typedef {    
+    '.devcontainer/dockerfile' |
+    '.devcontainer/docker-compose.yml' |
+    '.devcontainer/.env.example' |
+    '.devcontainer/devcontainer.json' |
+    'deployment/dockerfile.build' |
+    'deployment/dockerfile.appserver' |
+    'deployment/dockerfile.tools' |
+    'deployment/docker-compose.yml' |
+    'deployment/.env.example' |
+    'deployment/entrypoint.d/600_init_db.sh' |
+    '.devcontainer/entrypoint.d/600_init_db.sh'
+  } TransformFile
+ */
+
+/**
  * @typedef {object} ProgressHandler
  * @property {(level: number, info: any) => void} log
  * @property {(level: number, info: any) => void} warn

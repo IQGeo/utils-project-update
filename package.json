@@ -28,6 +28,7 @@
         "release:major": "node ./scripts/release major"
     },
     "dependencies": {
+        "diff": "^5.2.0",
         "jsonc-parser": "^3.2.1",
         "yargs": "^17.7.2"
     },

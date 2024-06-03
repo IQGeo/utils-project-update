@@ -43,7 +43,7 @@ const initDbModifier = (config, content) => {
 };
 
 /**
- * @type {Record<string, Transformer>}
+ * @satisfies {Record<TransformFile, Transformer>}
  */
 export const fileTransformers = {
     '.gitignore': (config, content) => {
@@ -274,4 +274,5 @@ aptGetMappings.dev = keys.reduce((acc, key) => {
  * @typedef {import("../typedef.js").Module} Module
  * @typedef {import("../typedef.js").Config} Config
  * @typedef {import("../typedef.js").Transformer} Transformer
+ * @typedef {import("../typedef.js").TransformFile} TransformFile
  */

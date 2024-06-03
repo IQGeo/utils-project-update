@@ -1,3 +1,4 @@
+import * as diff from 'diff';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -5,14 +6,28 @@ import path from 'node:path';
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
 
-import { mergeIqgeorcFiles } from './merge.js';
+import { mergeIqgeorcFiles } from './iqgeorc.js';
+
+/**
+ * @satisfies {ReadonlyArray<TransformFile>}
+ */
+const CUSTOM_SECTION_FILES = [
+    '.devcontainer/dockerfile',
+    '.devcontainer/docker-compose.yml',
+    '.devcontainer/.env.example',
+    'deployment/dockerfile.build',
+    'deployment/dockerfile.appserver',
+    'deployment/dockerfile.tools',
+    'deployment/docker-compose.yml',
+    'deployment/.env.example'
+];
 
 /**
  * Pulls the latest IQGeo project template from GitHub.
  *
  * @param {PullOptions} options
  */
-export function pull({
+export async function pull({
     out = './utils-project-template',
     progress = {
         log: (level, info) => console.log(info),
@@ -59,32 +74,77 @@ export function pull({
 
     fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
 
-    const hasExistingIqgeorc = fs.existsSync(`${out}/.iqgeorc.jsonc`);
-    const templateIqgeorc = fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8');
+    // If existing iqgeorc.jsonc, merge with template version
+    if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
+        const templateIqgeorc = fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8');
+        const projectIqgeorc = fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8');
+        const mergedIqgeorc = /** @type {string} */ (
+            mergeIqgeorcFiles(projectIqgeorc, templateIqgeorc, progress)
+        );
 
-    const iqgeorc = /** @type {string} */ (
-        hasExistingIqgeorc
-            ? mergeIqgeorcFiles(
-                  fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8'),
-                  templateIqgeorc,
-                  progress
-              )
-            : templateIqgeorc
+        fs.writeFileSync(`${tmp}/.iqgeorc.jsonc`, mergedIqgeorc);
+    }
+
+    update({
+        root: tmp,
+        progress: {
+            // ENH: merge options so we don't have to spread
+            ...progress,
+            log: () => {}
+        }
+    });
+
+    await Promise.allSettled(
+        CUSTOM_SECTION_FILES.map(filepath => {
+            const templateFileStr = fs.readFileSync(`${tmp}/${filepath}`, 'utf8');
+            const projectFileStr = fs.readFileSync(`${out}/${filepath}`, 'utf8');
+            if (templateFileStr === projectFileStr) return;
+
+            const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
+
+            return fs.promises.writeFile(`${tmp}/${filepath}`, mergedText);
+        })
     );
 
-    // TODO: move custom sections to tmp
-
-    fs.writeFileSync(`${tmp}/.iqgeorc.jsonc`, iqgeorc);
     fs.rmSync(out, { recursive: true, force: true });
     fs.mkdirSync(out, { recursive: true });
     fs.renameSync(tmp, out);
-
-    // TODO: add silent progress option?
-    update({ root: out, progress });
 
     progress.log(1, 'IQGeo project template pulled successfully!');
 }
 
 /**
+ * Merges custom sections from `projectFileStr` into `templateFileStr`.
+ *
+ * @param {string} templateFileStr
+ * @param {string} projectFileStr
+ */
+function mergeCustomSections(templateFileStr, projectFileStr) {
+    const diffs = diff.diffLines(templateFileStr, projectFileStr);
+
+    let mergedText = '';
+
+    diffs.forEach(part => {
+        if (!part.added) {
+            mergedText += part.value;
+
+            if (!mergedText.endsWith('\n')) {
+                mergedText += '\n\n';
+            }
+
+            return;
+        }
+
+        const customSectionRegex =
+            /# START CUSTOM SECTION.*# END CUSTOM SECTION\s*|# (START|END) CUSTOM SECTION\s*/gs;
+
+        mergedText += part.value.match(customSectionRegex)?.join('') || '';
+    });
+
+    return mergedText;
+}
+
+/**
  * @typedef {import('../typedef.js').PullOptions} PullOptions
+ * @typedef {import('../typedef.js').TransformFile} TransformFile
  */

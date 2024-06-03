@@ -1,6 +1,10 @@
 import * as jsonc from 'jsonc-parser';
 
-// Key paths to overwrite template value with project value
+/**
+ * Key paths to overwrite template value with project value.
+ *
+ * @type {ReadonlyArray<JSONPath>}
+ */
 const OVERWRITE_PATHS = [['modules']];
 
 /**
@@ -132,7 +136,7 @@ export function mergeIqgeorcFiles(projectConfigStr, templateConfigStr, progress)
 /**
  * Returns true if `path` is a subpath of any of the paths in `excludePaths`.
  *
- * @param {JSONPath[]} excludePaths
+ * @param {ReadonlyArray<JSONPath>} excludePaths
  * @param {JSONPath} path
  */
 function isSubPath(excludePaths, path) {
@@ -142,7 +146,7 @@ function isSubPath(excludePaths, path) {
 /**
  * Returns true if `path` is an exact match of any of the paths in `excludePaths`.
  *
- * @param {JSONPath[]} excludePaths
+ * @param {ReadonlyArray<JSONPath>} excludePaths
  * @param {JSONPath} path
  */
 function isExactPath(excludePaths, path) {
