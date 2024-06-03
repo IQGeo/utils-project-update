@@ -49,7 +49,7 @@ export const fileTransformers = {
         );
         return content;
     },
-    
+
     '.devcontainer/dockerfile': (config, content) => {
         const { modules, platform } = config;
 
@@ -108,7 +108,7 @@ export const fileTransformers = {
 
         content = replaceOptionalDeps(content, platform.appserver, 'build');
         content = replaceOptionalDeps(content, platform.appserver, 'runtime');
-        content = replaceFetchPipPackages(content, platform.devenv);
+        content = replaceFetchPipPackages(content, platform.appserver);
 
         content = content.replace(
             /platform-appserver:\S+/g,
