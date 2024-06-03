@@ -108,21 +108,21 @@ export async function pull({
         })
     );
 
-    fs.rmSync(out, { recursive: true, force: true });
-    fs.mkdirSync(out, { recursive: true });
-    fs.renameSync(tmp, out);
-
     // Format files
     const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
         ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
     );
 
-    const formatResult = run('prettier', ['--write', `${out}/{${filesToFormat.join(',')}}`]);
+    const formatResult = run('prettier', ['--write', `${tmp}/{${filesToFormat.join(',')}}`]);
 
     if (formatResult.error) {
         progress.warn(2, 'Failed to format files');
         progress.warn(3, formatResult.error);
     }
+
+    fs.rmSync(out, { recursive: true, force: true });
+    fs.mkdirSync(out, { recursive: true });
+    fs.renameSync(tmp, out);
 
     progress.log(1, 'IQGeo project template pulled successfully!');
 }
