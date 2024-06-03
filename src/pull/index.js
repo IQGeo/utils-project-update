@@ -8,7 +8,20 @@ import { update } from '../update/index.js';
 
 import { mergeIqgeorcFiles } from './iqgeorc.js';
 
-// TODO: join paths with path.join
+/*
+  Steps:
+
+  1. Ensure Git is installed
+  2. Ensure working tree is clean
+  3. Create tmp directory
+  4. Clone project template into tmp directory
+  5. Remove `.git` directory from tmp directory
+  6. Merge `.iqgeorc.jsonc` files
+  7. Run `update` on tmp directory
+  8. Merge custom sections from project files
+  9. Format files
+  10. Replace existing project directory with tmp directory
+*/
 
 /**
  * @satisfies {ReadonlyArray<TransformFile>}
@@ -25,7 +38,7 @@ const CUSTOM_SECTION_FILES = [
 ];
 
 /**
- * Pulls the latest IQGeo project template from GitHub.
+ * Pulls the latest IQGeo project template from GitHub and merges with existing files.
  *
  * @param {PullOptions} options
  */
@@ -55,6 +68,7 @@ export async function pull({
         return;
     }
 
+    // Create temporary directory to clone template into
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), '.tmp-'));
 
     const cloneErr = run(
@@ -96,6 +110,7 @@ export async function pull({
         }
     });
 
+    // Merge custom sections of project files that support them
     await Promise.allSettled(
         CUSTOM_SECTION_FILES.map(filepath => {
             const templateFileStr = fs.readFileSync(`${tmp}/${filepath}`, 'utf8');
@@ -120,6 +135,7 @@ export async function pull({
         progress.warn(3, formatResult.error);
     }
 
+    // Replace out directory with tmp directory
     fs.rmSync(out, { recursive: true, force: true });
     fs.mkdirSync(out, { recursive: true });
     fs.renameSync(tmp, out);
@@ -139,6 +155,9 @@ function mergeCustomSections(templateFileStr, projectFileStr) {
     let mergedText = '';
 
     diffs.forEach(part => {
+        // `part.added` is true for project file changes, so we parse
+        // and add custom sections from those below.
+        // Otherwise, we just add the template text as-is.
         if (!part.added) {
             mergedText += part.value;
 

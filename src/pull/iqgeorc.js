@@ -8,6 +8,8 @@ import * as jsonc from 'jsonc-parser';
 const OVERWRITE_PATHS = [['modules']];
 
 /**
+ * Merges project iqgeorc with template iqgeorc.
+ *
  * @param {string} projectConfigStr
  * @param {string} templateConfigStr
  * @param {ProgressHandler} progress
@@ -22,8 +24,12 @@ export function mergeIqgeorcFiles(projectConfigStr, templateConfigStr, progress)
     const templateConfigRootNode = jsonc.parseTree(templateConfigStr);
     if (!templateConfigRootNode) return;
 
-    /** @type {JSONPath[]} */
-    const visitedPaths = []; // Key paths of visited properties
+    /**
+     * Key paths of visited properties.
+     *
+     * @type {JSONPath[]}
+     */
+    const visitedPaths = [];
     /** @type {Edit[]} */
     const editOps = [];
     /** @type {Edit[]} */
