@@ -31,7 +31,8 @@
  */
 
 /**
-  @typedef {    
+  @typedef {
+    '.gitignore' |
     '.devcontainer/dockerfile' |
     '.devcontainer/docker-compose.yml' |
     '.devcontainer/.env.example' |
