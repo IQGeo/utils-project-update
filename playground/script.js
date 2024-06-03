@@ -1,3 +1,3 @@
 import { update } from 'project-update';
 
-update('./utils-project-template');
+update({ root: './utils-project-template' });
