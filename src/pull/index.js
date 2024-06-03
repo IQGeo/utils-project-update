@@ -8,6 +8,8 @@ import { update } from '../update/index.js';
 
 import { mergeIqgeorcFiles } from './iqgeorc.js';
 
+// TODO: join paths with path.join
+
 /**
  * @satisfies {ReadonlyArray<TransformFile>}
  */
@@ -35,7 +37,7 @@ export async function pull({
         error: (level, info) => console.error(info)
     }
 } = {}) {
-    const gitCheckResult = run('git', ['-v'], { stdio: 'pipe' });
+    const gitCheckResult = run('git', ['-v']);
 
     if (gitCheckResult.error) {
         progress.error(1, 'Unable to find Git executable');
@@ -109,6 +111,18 @@ export async function pull({
     fs.rmSync(out, { recursive: true, force: true });
     fs.mkdirSync(out, { recursive: true });
     fs.renameSync(tmp, out);
+
+    // Format files
+    const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
+        ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
+    );
+
+    const formatResult = run('prettier', ['--write', `${out}/{${filesToFormat.join(',')}}`]);
+
+    if (formatResult.error) {
+        progress.warn(2, 'Failed to format files');
+        progress.warn(3, formatResult.error);
+    }
 
     progress.log(1, 'IQGeo project template pulled successfully!');
 }
