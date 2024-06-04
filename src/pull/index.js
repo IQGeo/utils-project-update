@@ -71,6 +71,7 @@ export async function pull({
     // Create temporary directory to clone template into
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), '.tmp-'));
 
+    // ENH: clone directly into out if it's empty
     const cloneErr = run(
         'git',
         ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
@@ -90,19 +91,63 @@ export async function pull({
 
     fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
 
+    /** @type {WriteOp[]} */
+    const writeOps = [];
+
     // If existing iqgeorc.jsonc, merge with template version
     if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
         const templateIqgeorc = fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8');
         const projectIqgeorc = fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8');
-        const mergedIqgeorc = /** @type {string} */ (
-            mergeIqgeorcFiles(projectIqgeorc, templateIqgeorc, progress)
-        );
 
-        fs.writeFileSync(`${tmp}/.iqgeorc.jsonc`, mergedIqgeorc);
+        writeOps.push({
+            dest: `${out}/.iqgeorc.jsonc`,
+            content: /** @type {string} */ (
+                mergeIqgeorcFiles(projectIqgeorc, templateIqgeorc, progress)
+            )
+        });
+    }
+
+    // Merge custom sections of project files that support them
+    CUSTOM_SECTION_FILES.map(filepath => {
+        const templateFileStr = fs.readFileSync(`${tmp}/${filepath}`, 'utf8');
+        const projectFileStr = fs.readFileSync(`${out}/${filepath}`, 'utf8');
+        if (templateFileStr === projectFileStr) return;
+
+        const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
+
+        writeOps.push({
+            dest: `${out}/${filepath}`,
+            content: mergedText
+        });
+    });
+
+    // Remove tmp directory
+    fs.rmSync(tmp, { recursive: true, force: true });
+
+    // Write merged files
+    const writeResults = await Promise.allSettled(
+        writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
+    );
+
+    let hasRejections = false;
+
+    writeResults.forEach((result, i) => {
+        if (result.status !== 'rejected') return;
+
+        hasRejections = true;
+
+        progress.warn(2, `Failed to write merged file: ${writeOps[i].dest}`);
+        progress.warn(3, result.reason);
+    });
+
+    if (hasRejections) {
+        progress.warn(1, 'Failed to write one or more merged files');
+
+        return;
     }
 
     update({
-        root: tmp,
+        root: out,
         progress: {
             // ENH: merge options so we don't have to spread
             ...progress,
@@ -110,35 +155,17 @@ export async function pull({
         }
     });
 
-    // Merge custom sections of project files that support them
-    await Promise.allSettled(
-        CUSTOM_SECTION_FILES.map(filepath => {
-            const templateFileStr = fs.readFileSync(`${tmp}/${filepath}`, 'utf8');
-            const projectFileStr = fs.readFileSync(`${out}/${filepath}`, 'utf8');
-            if (templateFileStr === projectFileStr) return;
-
-            const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
-
-            return fs.promises.writeFile(`${tmp}/${filepath}`, mergedText);
-        })
-    );
-
     // Format files
     const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
         ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
     );
 
-    const formatResult = run('prettier', ['--write', `${tmp}/{${filesToFormat.join(',')}}`]);
+    const formatResult = run('npx', ['prettier', '--write', `${out}/{${filesToFormat.join(',')}}`]);
 
     if (formatResult.error) {
         progress.warn(2, 'Failed to format files');
         progress.warn(3, formatResult.error);
     }
-
-    // Replace out directory with tmp directory
-    fs.rmSync(out, { recursive: true, force: true });
-    fs.mkdirSync(out, { recursive: true });
-    fs.renameSync(tmp, out);
 
     progress.log(1, 'IQGeo project template pulled successfully!');
 }
@@ -184,4 +211,7 @@ function mergeCustomSections(templateFileStr, projectFileStr) {
 /**
  * @typedef {import('../typedef.js').PullOptions} PullOptions
  * @typedef {import('../typedef.js').TransformFile} TransformFile
+ * @typedef {import('../typedef.js').ProgressHandler} ProgressHandler
+ *
+ * @typedef {{ dest: string; content: string; }} WriteOp
  */
