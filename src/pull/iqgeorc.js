@@ -32,44 +32,12 @@ export function mergeIqgeorcFiles(projectConfigStr, templateConfigStr, progress)
     const visitedPaths = [];
     /** @type {Edit[]} */
     const editOps = [];
-    /** @type {Edit[]} */
-    const overwriteOps = [];
 
     // Visit template config
     jsonc.visit(templateConfigStr, {
         onObjectProperty: (property, offset, length, startLine, startCharacter, pathSupplier) => {
             const propertyPath = [...pathSupplier(), property];
-
-            // Push overwrite ops
-            if (isExactPath(OVERWRITE_PATHS, propertyPath)) {
-                const projectValNode = jsonc.findNodeAtLocation(
-                    projectConfigRootNode,
-                    propertyPath
-                );
-                if (!projectValNode) return;
-
-                const templateValNode = jsonc.findNodeAtLocation(
-                    templateConfigRootNode,
-                    propertyPath
-                );
-                if (!templateValNode) return;
-
-                const projectValStr = projectConfigStr.slice(
-                    projectValNode.offset,
-                    projectValNode.offset + projectValNode.length
-                );
-
-                overwriteOps.push({
-                    offset: templateValNode.offset,
-                    length: templateValNode.length,
-                    content: projectValStr
-                });
-
-                return;
-            }
-
-            // Will be overwritten, so return
-            if (isSubPath(OVERWRITE_PATHS, propertyPath)) return;
+            if (isSubPath(OVERWRITE_PATHS, propertyPath)) return; // Will be overwritten
 
             visitedPaths.push(propertyPath);
 
@@ -128,12 +96,23 @@ export function mergeIqgeorcFiles(projectConfigStr, templateConfigStr, progress)
         onError: code => onError(code, progress)
     });
 
-    // Apply overwrite ops
-    const overwrittenTemplateConfigStr = overwriteOps.reduce((str, op) => {
-        const head = str.slice(0, op.offset);
-        const tail = str.slice(op.offset + op.length);
+    // Apply overwrites
+    const overwrittenTemplateConfigStr = OVERWRITE_PATHS.reduce((str, path) => {
+        const projectValNode = jsonc.findNodeAtLocation(projectConfigRootNode, path);
+        if (!projectValNode) return str;
 
-        return `${head}${op.content}${tail}`;
+        const templateValNode = jsonc.findNodeAtLocation(templateConfigRootNode, path);
+        if (!templateValNode) return str;
+
+        const projectValStr = projectConfigStr.slice(
+            projectValNode.offset,
+            projectValNode.offset + projectValNode.length
+        );
+
+        const head = str.slice(0, templateValNode.offset);
+        const tail = str.slice(templateValNode.offset + templateValNode.length);
+
+        return `${head}${projectValStr}${tail}`;
     }, templateConfigStr);
 
     return jsonc.applyEdits(overwrittenTemplateConfigStr, editOps);
@@ -147,18 +126,6 @@ export function mergeIqgeorcFiles(projectConfigStr, templateConfigStr, progress)
  */
 function isSubPath(excludePaths, path) {
     return excludePaths.some(excPath => excPath.every((val, i) => val === path[i]));
-}
-
-/**
- * Returns true if `path` is an exact match of any of the paths in `excludePaths`.
- *
- * @param {ReadonlyArray<JSONPath>} excludePaths
- * @param {JSONPath} path
- */
-function isExactPath(excludePaths, path) {
-    return excludePaths.some(
-        excPath => excPath.length === path.length && excPath.every((val, i) => val === path[i])
-    );
 }
 
 /**
