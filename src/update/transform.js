@@ -84,7 +84,7 @@ export const fileTransformers = {
             .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
             .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
             .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`)
-            .replace(/iqgeo_devserver:/, `iqgeo_${prefix}_devserver:`);
+            .replace(/iqgeo_myproj_devserver:/, `iqgeo_${prefix}_devserver:`);
     },
 
     '.devcontainer/.env.example': (config, content) => {
@@ -92,16 +92,23 @@ export const fileTransformers = {
 
         return content
             .replace(`PROJ_PREFIX=myproj`, `PROJ_PREFIX=${prefix}`)
-            .replace(`COMPOSE_PROJECT_NAME=myproj_dev\n`, `COMPOSE_PROJECT_NAME=${prefix}_dev\n`)
-            .replace(`MYW_DB_NAME=dev_db\n`, `MYW_DB_NAME=${db_name}\n`);
+            .replace(
+                `COMPOSE_PROJECT_NAME=\${PROJ_PREFIX}\n`,
+                `COMPOSE_PROJECT_NAME=${prefix}_dev\n`
+            )
+            .replace(`MYW_DB_NAME=iqgeo\n`, `MYW_DB_NAME=${db_name}\n`);
     },
 
     '.devcontainer/devcontainer.json': (config, content) => {
         const { prefix, display_name } = config;
 
+        // ENH: use jsonc-parser to replace these values
         return content
             .replace(`"name": "IQGeo Module Development Template"`, `"name": "${display_name}"`)
-            .replace(`"service": "iqgeo_devserver"`, `"service": "iqgeo_${prefix}_devserver"`);
+            .replace(
+                `"service": "iqgeo_myproj_devserver"`,
+                `"service": "iqgeo_${prefix}_devserver"`
+            );
     },
 
     'deployment/dockerfile.build': (config, content) => {
@@ -162,7 +169,7 @@ export const fileTransformers = {
 
         return content
             .replace(`PROJ_PREFIX=myproj\n`, `PROJ_PREFIX=${prefix}\n`)
-            .replace(`MYW_DB_NAME=myproj\n`, `MYW_DB_NAME=${db_name}\n`);
+            .replace(`MYW_DB_NAME=iqgeo\n`, `MYW_DB_NAME=${db_name}\n`);
     },
 
     'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
