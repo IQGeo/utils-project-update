@@ -164,18 +164,18 @@ function mergeCustomSections(templateFileStr, projectFileStr) {
             return;
         }
 
-        part.value
-            .match(
-                // Parts can either have complete custom sections, or just the start or end of one
-                /# START CUSTOM SECTION.*?# END CUSTOM SECTION\s*|# START CUSTOM SECTION\s.*|.*?# END CUSTOM SECTION(\s+|$)/gs
-            )
-            ?.forEach(section => {
-                if (!mergedText.endsWith('\n') && !section.startsWith('\n')) {
-                    mergedText += '\n';
-                }
+        // Parts can either have complete custom sections, or just the start or end of one
+        const matches =
+            part.value.match(/# START CUSTOM SECTION\s.*?# END CUSTOM SECTION\s*/gs) ||
+            part.value.match(/# START CUSTOM SECTION\s.*|.*?# END CUSTOM SECTION(\s+|$)/gs);
 
-                mergedText += section;
-            });
+        matches?.forEach(section => {
+            if (!mergedText.endsWith('\n') && !section.startsWith('\n')) {
+                mergedText += '\n';
+            }
+
+            mergedText += section;
+        });
     });
 
     return mergedText;
