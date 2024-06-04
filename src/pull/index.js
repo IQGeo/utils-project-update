@@ -9,18 +9,17 @@ import { update } from '../update/index.js';
 import { mergeIqgeorcFiles } from './iqgeorc.js';
 
 /*
-  Steps:
+    Pseudocode:
 
-  1. Ensure Git is installed
-  2. Ensure working tree is clean
-  3. Create tmp directory
-  4. Clone project template into tmp directory
-  5. Remove `.git` directory from tmp directory
-  6. Merge `.iqgeorc.jsonc` files
-  7. Run `update` on tmp directory
-  8. Merge custom sections from project files
-  9. Format files
-  10. Replace existing project directory with tmp directory
+    Ensure Git is installed and working tree is clean
+    Clone template into tmp directory
+    If out directory is empty
+        Move tmp to out and return
+    Merge `.iqgeorc.jsonc` files
+    Merge custom sections from project files
+    Remove tmp directory
+    Write files to out
+    Format files
 */
 
 /**
@@ -37,6 +36,8 @@ const CUSTOM_SECTION_FILES = [
     'deployment/.env.example'
 ];
 
+const SUCCESS_MSG = 'IQGeo project template pulled successfully!';
+
 /**
  * Pulls the latest IQGeo project template from GitHub and merges with existing files.
  *
@@ -50,46 +51,19 @@ export async function pull({
         error: (level, info) => console.error(info)
     }
 } = {}) {
-    const gitCheckResult = run('git', ['-v']);
+    if (!ensureGit(progress)) return;
 
-    if (gitCheckResult.error) {
-        progress.error(1, 'Unable to find Git executable');
-        progress.error(3, gitCheckResult.error);
+    const tmp = cloneTemplate(progress);
+    if (!tmp) return;
 
-        return;
-    }
+    if (!fs.existsSync(out) || fs.readdirSync(out).length === 0) {
+        fs.mkdirSync(out, { recursive: true });
+        fs.renameSync(tmp, out);
 
-    try {
-        ensureCleanWorkingTree();
-    } catch (e) {
-        progress.error(1, 'Working tree must be clean to pull template');
-        progress.error(3, e);
+        progress.log(1, SUCCESS_MSG);
 
         return;
     }
-
-    // Create temporary directory to clone template into
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), '.tmp-'));
-
-    // ENH: clone directly into out if it's empty
-    const cloneErr = run(
-        'git',
-        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
-        { stdio: 'pipe' }
-    )
-        .stderr.toString()
-        .trim();
-
-    if (cloneErr) {
-        progress.error(1, 'Failed to pull IQGeo project template');
-        progress.error(3, cloneErr);
-
-        fs.rmSync(tmp, { recursive: true, force: true });
-
-        return;
-    }
-
-    fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
 
     /** @type {WriteOp[]} */
     const writeOps = [];
@@ -125,6 +99,85 @@ export async function pull({
     fs.rmSync(tmp, { recursive: true, force: true });
 
     // Write merged files
+    await writeFiles(writeOps, progress, out);
+
+    // Format files
+    const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
+        ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
+    );
+
+    const formatResult = run('npx', ['prettier', '--write', `${out}/{${filesToFormat.join(',')}}`]);
+
+    if (formatResult.error) {
+        progress.warn(2, 'Failed to format files');
+        progress.warn(3, formatResult.error);
+    }
+
+    progress.log(1, SUCCESS_MSG);
+}
+
+// Functions
+
+/**
+ * @param {ProgressHandler} progress
+ */
+function ensureGit(progress) {
+    const gitCheckResult = run('git', ['-v']);
+
+    if (gitCheckResult.error) {
+        progress.error(1, 'Unable to find Git executable');
+        progress.error(3, gitCheckResult.error);
+
+        return false;
+    }
+
+    try {
+        ensureCleanWorkingTree();
+    } catch (e) {
+        progress.error(1, 'Working tree must be clean to pull template');
+        progress.error(3, e);
+
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @param {ProgressHandler} progress
+ */
+function cloneTemplate(progress) {
+    // Create temporary directory to clone template into
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), '.tmp-'));
+
+    const cloneErr = run(
+        'git',
+        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
+        { stdio: 'pipe' }
+    )
+        .stderr.toString()
+        .trim();
+
+    if (cloneErr) {
+        progress.error(1, 'Failed to pull IQGeo project template');
+        progress.error(3, cloneErr);
+
+        fs.rmSync(tmp, { recursive: true, force: true });
+
+        return;
+    }
+
+    fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
+
+    return tmp;
+}
+
+/**
+ * @param {WriteOp[]} writeOps
+ * @param {ProgressHandler} progress
+ * @param {string} out
+ */
+async function writeFiles(writeOps, progress, out) {
     const writeResults = await Promise.allSettled(
         writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
     );
@@ -154,20 +207,6 @@ export async function pull({
             log: () => {}
         }
     });
-
-    // Format files
-    const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
-        ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
-    );
-
-    const formatResult = run('npx', ['prettier', '--write', `${out}/{${filesToFormat.join(',')}}`]);
-
-    if (formatResult.error) {
-        progress.warn(2, 'Failed to format files');
-        progress.warn(3, formatResult.error);
-    }
-
-    progress.log(1, 'IQGeo project template pulled successfully!');
 }
 
 /**
