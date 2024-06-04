@@ -56,8 +56,11 @@ export async function pull({
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
 
-    if (!fs.existsSync(out) || fs.readdirSync(out).length === 0) {
+    if (!fs.existsSync(out)) {
         fs.mkdirSync(out, { recursive: true });
+    }
+
+    if (fs.readdirSync(out).length === 0) {
         fs.renameSync(tmp, out);
 
         progress.log(1, SUCCESS_MSG);
