@@ -13,6 +13,7 @@ import { mergeIqgeorcFiles } from './iqgeorc.js';
 
     Ensure Git is installed and working tree is clean
     Clone template into tmp directory
+    Ensure out directory exists
     If out directory is empty
         Move tmp to out and return
     Merge `.iqgeorc.jsonc` files
@@ -56,10 +57,12 @@ export async function pull({
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
 
+    // Ensure out directory exists
     if (!fs.existsSync(out)) {
         fs.mkdirSync(out, { recursive: true });
     }
 
+    // If out directory is empty, move tmp to out and return
     if (fs.readdirSync(out).length === 0) {
         fs.renameSync(tmp, out);
 
@@ -176,43 +179,6 @@ function cloneTemplate(progress) {
 }
 
 /**
- * @param {WriteOp[]} writeOps
- * @param {ProgressHandler} progress
- * @param {string} out
- */
-async function writeFiles(writeOps, progress, out) {
-    const writeResults = await Promise.allSettled(
-        writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
-    );
-
-    let hasRejections = false;
-
-    writeResults.forEach((result, i) => {
-        if (result.status !== 'rejected') return;
-
-        hasRejections = true;
-
-        progress.warn(2, `Failed to write merged file: ${writeOps[i].dest}`);
-        progress.warn(3, result.reason);
-    });
-
-    if (hasRejections) {
-        progress.warn(1, 'Failed to write one or more merged files');
-
-        return;
-    }
-
-    update({
-        root: out,
-        progress: {
-            // ENH: merge options so we don't have to spread
-            ...progress,
-            log: () => {}
-        }
-    });
-}
-
-/**
  * Merges custom sections from `projectFileStr` into `templateFileStr`.
  *
  * @param {string} templateFileStr
@@ -248,6 +214,43 @@ function mergeCustomSections(templateFileStr, projectFileStr) {
     });
 
     return mergedText;
+}
+
+/**
+ * @param {WriteOp[]} writeOps
+ * @param {ProgressHandler} progress
+ * @param {string} out
+ */
+async function writeFiles(writeOps, progress, out) {
+    const writeResults = await Promise.allSettled(
+        writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
+    );
+
+    let hasRejections = false;
+
+    writeResults.forEach((result, i) => {
+        if (result.status !== 'rejected') return;
+
+        hasRejections = true;
+
+        progress.warn(2, `Failed to write merged file: ${writeOps[i].dest}`);
+        progress.warn(3, result.reason);
+    });
+
+    if (hasRejections) {
+        progress.warn(1, 'Failed to write one or more merged files');
+
+        return;
+    }
+
+    update({
+        root: out,
+        progress: {
+            // ENH: merge options so we don't have to spread
+            ...progress,
+            log: () => {}
+        }
+    });
 }
 
 /**
