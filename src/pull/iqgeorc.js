@@ -10,6 +10,11 @@ const OVERWRITE_PATHS = [['modules']];
 /**
  * Merges project iqgeorc with template iqgeorc.
  *
+ * Walks through template config properties and replaces each value with matching
+ * values from the project config, then walks through project config properties
+ * and discards any unexpected ones, and finally, overwrites template values
+ * with project values using properties specified in {@link OVERWRITE_PATHS}.
+ *
  * @param {string} projectConfigStr
  * @param {string} templateConfigStr
  * @param {ProgressHandler} progress

@@ -181,6 +181,9 @@ function cloneTemplate(progress) {
 /**
  * Merges custom sections from `projectFileStr` into `templateFileStr`.
  *
+ * **NOTE:** If text in a custom section block matches text from the template,
+ * the template text is discarded in favour of the project text.
+ *
  * @param {string} templateFileStr
  * @param {string} projectFileStr
  */
