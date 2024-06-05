@@ -1,3 +1,11 @@
+## [0.2.0](https://github.com/IQGeo/utils-project-update/compare/v0.1.0...v0.2.0) (6/5/24)
+
+- transform: handle NRO/OSM dependencies ([fc6c5d6](https://github.com/IQGeo/utils-project-update/commit/fc6c5d61a96647fcfc4bd4cf05992cd27ac47962))
+- fix to playground script ([5e505e9](https://github.com/IQGeo/utils-project-update/commit/5e505e91d6b470decc212cafa96500d31ba37bcd))
+- transform: fix issue where devenv dependencies were being applied to appserver ([e0b9ac7](https://github.com/IQGeo/utils-project-update/commit/e0b9ac720f2549a7d0bde3645deefa9a3dac8fdc))
+- transform: set .gitignore for product modules ([dbb7004](https://github.com/IQGeo/utils-project-update/commit/dbb70048f2d41d1dec7298d7bb3d7b87ea840681))
+- docs(changelog): v0.1.0 ([dbae705](https://github.com/IQGeo/utils-project-update/commit/dbae7050a83bb21e61ab5bdb1d4186c77728f425))
+
 ## [0.1.0](https://github.com/IQGeo/utils-project-update/tags) (5/28/24)
 
 - release: use require instead of import for json ([8028b04](https://github.com/IQGeo/utils-project-update/commit/8028b04af9dc8c91d9dffde00b0a58c938715de5))
