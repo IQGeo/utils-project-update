@@ -47,7 +47,22 @@ export function update({
 //TBR: remove when modules can specify their own optional system dependencies
 /** @type {Record<string, any> } */
 const additionalModuleDependencies = {
-    nro: { appserver: [], tools: ['osm'] }
+    network_revenue_optimizer: { appserver: [], tools: ['osm'] }
+};
+
+//schema version names for modules are not consistently named, so we need a mapping
+/** @type {Record<string, any> } */
+const moduleSchemaVersionNames = {
+    capture: 'capture_schema',
+    workflow_manager: 'mywmywwfm_schema',
+    survey: 'mywis_schema',
+    gas: 'mywgas_schema',
+    electric: 'iqg_electric_schema',
+    comms: 'myw_comms_schema',
+    comsof: 'iqg_comsof_schema',
+    comms_cloud: 'iqg_comms_cloud_schema',
+    network_revenue_optimizer: 'mywnro_schema',
+    pia_interface: 'myw_pia_schema'
 };
 
 /**
@@ -81,6 +96,11 @@ function readConfig(root) {
             config.platform.tools.push(...addDep.tools);
             config.platform.appserver.push(...addDep.appserver);
         }
+        //TBR: remove when modules can specify their schema version name
+        module.schemaVersionName =
+            module.schemaVersionName ?? moduleSchemaVersionNames[module.name];
+        if (module.dbInit === true && !module.schemaVersionName)
+            module.schemaVersionName = `${module.name}_schema`;
     }
 
     return config;

@@ -13,7 +13,7 @@
  * @property {boolean} [devOnly]
  * @property {string} [devSrc]
  * @property {boolean} [dbInit]
- * @property {string} [schemaGrep]
+ * @property {string} [schemaVersionName]
  * @property {string} [shortVersion]
  */
 
