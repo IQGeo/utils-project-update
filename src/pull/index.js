@@ -39,7 +39,8 @@ const CUSTOM_SECTION_FILES = [
     // Custom content of shell files should be in separate files
 ];
 
-const SUCCESS_MSG = 'IQGeo project template pulled successfully!';
+const SUCCESS_MSG =
+    'IQGeo project template pulled successfully! Please check changes to ensure they are correct';
 
 /**
  * Pulls the latest IQGeo project template from GitHub and merges with existing files.
