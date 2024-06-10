@@ -27,6 +27,7 @@ import { mergeIqgeorcFiles } from './iqgeorc.js';
  * @satisfies {ReadonlyArray<TransformFile>}
  */
 const CUSTOM_SECTION_FILES = [
+    '.gitignore',
     '.devcontainer/dockerfile',
     '.devcontainer/docker-compose.yml',
     '.devcontainer/.env.example',
@@ -35,6 +36,7 @@ const CUSTOM_SECTION_FILES = [
     'deployment/dockerfile.tools',
     'deployment/docker-compose.yml',
     'deployment/.env.example'
+    // Custom content of shell files should be in separate files
 ];
 
 const SUCCESS_MSG = 'IQGeo project template pulled successfully!';
