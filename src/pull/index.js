@@ -73,7 +73,11 @@ export async function pull({
 
     // Compare `.iqgeorc.jsonc` keys and value types
     const iqgeorcDiffs = compareIqgeorc(out, tmp);
-    if (iqgeorcDiffs) {
+    if (
+        iqgeorcDiffs?.missingKeys.length ||
+        iqgeorcDiffs?.unexpectedKeys.length ||
+        iqgeorcDiffs?.typeMismatches.length
+    ) {
         progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
     }
 
@@ -168,7 +172,7 @@ function compareIqgeorc(out, tmp) {
     /** @type {Config} */
     const templateIqgeorc = jsonc.parse(fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8'));
 
-    /** @type {Record<string, string[]>} */
+    /** @type {Record<"missingKeys" | "unexpectedKeys" | "typeMismatches", string[]>} */
     const diffs = {
         missingKeys: [],
         unexpectedKeys: [],
