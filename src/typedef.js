@@ -49,9 +49,9 @@
 
 /**
  * @typedef {object} ProgressHandler
- * @property {(level: number, info: any) => void} log
- * @property {(level: number, info: any) => void} warn
- * @property {(level: number, info: any) => void} error
+ * @property {(level: number, info: any, moreDetails?: any) => void} log
+ * @property {(level: number, info: any, moreDetails?: any) => void} warn
+ * @property {(level: number, info: any, moreDetails?: any) => void} error
  */
 
 /**

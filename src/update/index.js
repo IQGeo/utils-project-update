@@ -25,7 +25,7 @@ export function update({
     try {
         config = readConfig(root);
     } catch (e) {
-        progress.error(1, 'Failed to read configuration file');
+        progress.error(1, 'Failed to read configuration file', e);
 
         return;
     }
@@ -39,8 +39,7 @@ export function update({
             progress.warn(1, 'IQGeo project configured with warnings');
         }
     } catch (e) {
-        progress.error(1, 'Failed to update files');
-        progress.error(3, e);
+        progress.error(1, 'Failed to update files', e);
     }
 }
 
@@ -132,8 +131,7 @@ function updateFiles(root, config, progress) {
         try {
             return fileUpdater(relPath, transform);
         } catch (e) {
-            progress.warn(2, `Failed to update file ${relPath}`);
-            progress.error(3, e);
+            progress.warn(2, `Failed to update file ${relPath}`, e);
 
             return e;
         }

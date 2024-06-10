@@ -1,12 +1,11 @@
 import * as diff from 'diff';
+import * as jsonc from 'jsonc-parser';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
-
-import { mergeIqgeorcFiles } from './iqgeorc.js';
 
 /*
     Pseudocode:
@@ -16,11 +15,10 @@ import { mergeIqgeorcFiles } from './iqgeorc.js';
     Ensure out directory exists
     If out directory is empty
         Move tmp to out and return
-    Merge `.iqgeorc.jsonc` files
+    Compare `.iqgeorc.jsonc` schemas
     Merge custom sections from project files
     Remove tmp directory
     Write files to out
-    Format files
 */
 
 /**
@@ -74,21 +72,14 @@ export async function pull({
         return;
     }
 
+    // Compare `.iqgeorc.jsonc` keys and value types
+    const iqgeorcDiffs = compareIqgeorc(out, tmp);
+    if (iqgeorcDiffs) {
+        progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
+    }
+
     /** @type {WriteOp[]} */
     const writeOps = [];
-
-    // If existing iqgeorc.jsonc, merge with template version
-    if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
-        const templateIqgeorc = fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8');
-        const projectIqgeorc = fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8');
-
-        writeOps.push({
-            dest: `${out}/.iqgeorc.jsonc`,
-            content: /** @type {string} */ (
-                mergeIqgeorcFiles(projectIqgeorc, templateIqgeorc, progress)
-            )
-        });
-    }
 
     // Merge custom sections of project files that support them
     CUSTOM_SECTION_FILES.map(filepath => {
@@ -110,18 +101,6 @@ export async function pull({
     // Write merged files
     await writeFiles(writeOps, progress, out);
 
-    // Format files
-    const filesToFormat = [...CUSTOM_SECTION_FILES, '.iqgeorc.jsonc'].filter(filepath =>
-        ['.jsonc', '.json', '.yml'].includes(path.extname(filepath))
-    );
-
-    const formatResult = run('npx', ['prettier', '--write', `${out}/{${filesToFormat.join(',')}}`]);
-
-    if (formatResult.error) {
-        progress.warn(2, 'Failed to format files');
-        progress.warn(3, formatResult.error);
-    }
-
     progress.log(1, SUCCESS_MSG);
 }
 
@@ -134,8 +113,7 @@ function ensureGit(progress) {
     const gitCheckResult = run('git', ['-v']);
 
     if (gitCheckResult.error) {
-        progress.error(1, 'Unable to find Git executable');
-        progress.error(3, gitCheckResult.error);
+        progress.error(1, 'Unable to find Git executable', gitCheckResult.error);
 
         return false;
     }
@@ -143,8 +121,7 @@ function ensureGit(progress) {
     try {
         ensureCleanWorkingTree();
     } catch (e) {
-        progress.error(1, 'Working tree must be clean to pull template');
-        progress.error(3, e);
+        progress.error(1, 'Working tree must be clean to pull template', e);
 
         return false;
     }
@@ -168,8 +145,7 @@ function cloneTemplate(progress) {
         .trim();
 
     if (cloneErr) {
-        progress.error(1, 'Failed to pull IQGeo project template');
-        progress.error(3, cloneErr);
+        progress.error(1, 'Failed to pull IQGeo project template', cloneErr);
 
         fs.rmSync(tmp, { recursive: true, force: true });
 
@@ -179,6 +155,70 @@ function cloneTemplate(progress) {
     fs.rmSync(`${tmp}/.git`, { recursive: true, force: true });
 
     return tmp;
+}
+
+/**
+ * @param {string} out
+ * @param {string} tmp
+ */
+function compareIqgeorc(out, tmp) {
+    if (!fs.existsSync(`${out}/.iqgeorc.jsonc`)) return;
+
+    /** @type {Record<string, unknown>} */
+    const projectIqgeorc = jsonc.parse(fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8'));
+    /** @type {Config} */
+    const templateIqgeorc = jsonc.parse(fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8'));
+
+    /** @type {Record<string, string[]>} */
+    const diffs = {
+        missingKeys: [],
+        unexpectedKeys: [],
+        typeMismatches: []
+    };
+
+    /**
+     * @param {Record<string, unknown>} obj1
+     * @param {Record<string, unknown>} obj2
+     * @param {string} path
+     */
+    function compareObjects(obj1, obj2, path = '') {
+        Object.keys(obj1).forEach(key => {
+            const joinedPath = path ? `${path}.${key}` : key;
+            const val2 = obj2[key];
+
+            delete obj2[key];
+
+            // Check missing keys
+            if (val2 === undefined) {
+                diffs.missingKeys.push(joinedPath);
+
+                return;
+            }
+
+            const isArr = Array.isArray(obj1[key]);
+
+            // Check type mismatches
+            if ((isArr && !Array.isArray(val2)) || typeof obj1[key] !== typeof val2) {
+                diffs.typeMismatches.push(joinedPath);
+
+                return;
+            }
+
+            // Check nested objects
+            if (typeof obj1[key] === 'object' && !isArr) {
+                // @ts-ignore
+                compareObjects(obj1[key], val2, joinedPath);
+
+                return;
+            }
+        });
+
+        diffs.unexpectedKeys = Object.keys(obj2);
+
+        return diffs;
+    }
+
+    return compareObjects(templateIqgeorc, projectIqgeorc);
 }
 
 /**
@@ -239,8 +279,7 @@ async function writeFiles(writeOps, progress, out) {
 
         hasRejections = true;
 
-        progress.warn(2, `Failed to write merged file: ${writeOps[i].dest}`);
-        progress.warn(3, result.reason);
+        progress.warn(2, `Failed to write merged file: ${writeOps[i].dest}`, result.reason);
     });
 
     if (hasRejections) {
@@ -260,6 +299,7 @@ async function writeFiles(writeOps, progress, out) {
 }
 
 /**
+ * @typedef {import('../typedef.js').Config} Config
  * @typedef {import('../typedef.js').PullOptions} PullOptions
  * @typedef {import('../typedef.js').TransformFile} TransformFile
  * @typedef {import('../typedef.js').ProgressHandler} ProgressHandler
