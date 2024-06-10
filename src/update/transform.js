@@ -92,10 +92,6 @@ export const fileTransformers = {
 
         return content
             .replace(`PROJ_PREFIX=myproj`, `PROJ_PREFIX=${prefix}`)
-            .replace(
-                `COMPOSE_PROJECT_NAME=\${PROJ_PREFIX}\n`,
-                `COMPOSE_PROJECT_NAME=${prefix}_dev\n`
-            )
             .replace(`MYW_DB_NAME=iqgeo\n`, `MYW_DB_NAME=${db_name}\n`);
     },
 
