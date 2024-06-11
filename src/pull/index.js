@@ -59,7 +59,7 @@ export async function pull({
         error: (level, info) => console.error(info)
     }
 } = {}) {
-    if (!ensureGit(progress)) return;
+    if (!ensureGit(out, progress)) return;
 
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
@@ -145,9 +145,10 @@ export async function pull({
 // Functions
 
 /**
+ * @param {string} out
  * @param {ProgressHandler} progress
  */
-function ensureGit(progress) {
+function ensureGit(out, progress) {
     const gitCheckResult = run('git', ['-v']);
 
     if (gitCheckResult.error) {
@@ -157,7 +158,7 @@ function ensureGit(progress) {
     }
 
     try {
-        ensureCleanWorkingTree();
+        ensureCleanWorkingTree(out);
     } catch (e) {
         progress.error(1, 'Working tree must be clean to pull template', e);
 

@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 
 const args = process.argv.slice(2);
 
-ensureCleanWorkingTree();
+ensureCleanWorkingTree(process.cwd());
 
 run('npm', ['run', 'lint']);
 run('npm', ['version', args[0]]);
