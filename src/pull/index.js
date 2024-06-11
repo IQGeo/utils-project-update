@@ -96,7 +96,7 @@ export async function pull({
             progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
         }
     } else {
-        progress.warn(2, '`.iqgeorc.jsonc` not found in project, copying from template');
+        progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
 
         writeOps.push({
             dest: `${out}/.iqgeorc.jsonc`,
@@ -110,6 +110,8 @@ export async function pull({
             const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
 
             if (!fs.existsSync(`${out}/${filepath}`)) {
+                progress.log(2, `\`${filepath}\` not found in project, copying from template`);
+
                 // Copy as-is if not present in project
                 writeOps.push({
                     dest: `${out}/${filepath}`,
