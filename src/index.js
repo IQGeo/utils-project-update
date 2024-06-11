@@ -45,13 +45,13 @@ export function update({
 }
 
 //TBR: remove when modules can specify their own optional system dependencies
-/** @type {Record<string, any> } */
+/** @type {Record<string, Dependencies> } */
 const additionalModuleDependencies = {
     network_revenue_optimizer: { appserver: [], tools: ['osm'] }
 };
 
 //schema version names for modules are not consistently named, so we need a mapping
-/** @type {Record<string, any> } */
+/** @type {Record<string, string> } */
 const moduleSchemaVersionNames = {
     capture: 'capture_schema',
     workflow_manager: 'mywmywwfm_schema',
@@ -169,4 +169,5 @@ function updateFiles(root, config, progress) {
  * @typedef {import("./typedef.js").Transformer} Transformer
  * @typedef {import("./typedef.js").ProgressHandler} ProgressHandler
  * @typedef {import("./typedef.js").UpdateOptions}UpdateOptions
+ * @typedef {import("./typedef.js").Dependencies}Dependencies
  */
