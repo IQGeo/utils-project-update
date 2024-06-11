@@ -71,23 +71,47 @@ export async function pull({
         return;
     }
 
-    // Compare `.iqgeorc.jsonc` keys and value types
-    const iqgeorcDiffs = compareIqgeorc(out, tmp);
-    if (
-        iqgeorcDiffs?.missingKeys.length ||
-        iqgeorcDiffs?.unexpectedKeys.length ||
-        iqgeorcDiffs?.typeMismatches.length
-    ) {
-        progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
-    }
-
     /** @type {WriteOp[]} */
     const writeOps = [];
+
+    const templateIqgeorcStr = await fs.promises.readFile(`${tmp}/.iqgeorc.jsonc`, 'utf8');
+
+    if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
+        const projectIqgeorcStr = await fs.promises.readFile(`${out}/.iqgeorc.jsonc`, 'utf8');
+
+        // Compare `.iqgeorc.jsonc` keys and value types
+        const iqgeorcDiffs = compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr);
+        if (
+            iqgeorcDiffs.missingKeys.length ||
+            iqgeorcDiffs.unexpectedKeys.length ||
+            iqgeorcDiffs.typeMismatches.length
+        ) {
+            progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
+        }
+    } else {
+        progress.warn(2, '`.iqgeorc.jsonc` not found in project, copying from template');
+
+        writeOps.push({
+            dest: `${out}/.iqgeorc.jsonc`,
+            content: templateIqgeorcStr
+        });
+    }
 
     // Merge custom sections of project files that support them
     await Promise.allSettled(
         CUSTOM_SECTION_FILES.map(async filepath => {
             const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
+
+            if (!fs.existsSync(`${out}/${filepath}`)) {
+                // Copy as-is if not present in project
+                writeOps.push({
+                    dest: `${out}/${filepath}`,
+                    content: templateFileStr
+                });
+
+                return;
+            }
+
             const projectFileStr = await fs.promises.readFile(`${out}/${filepath}`, 'utf8');
             if (templateFileStr === projectFileStr) return;
 
@@ -163,16 +187,17 @@ function cloneTemplate(progress) {
 }
 
 /**
- * @param {string} out
- * @param {string} tmp
+ * Compares `.iqgeorc.jsonc` files from project and template, checking for missing keys,
+ * unexpected keys, and type mismatches.
+ *
+ * @param {string} projectIqgeorcStr
+ * @param {string} templateIqgeorcStr
  */
-function compareIqgeorc(out, tmp) {
-    if (!fs.existsSync(`${out}/.iqgeorc.jsonc`)) return;
-
+function compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr) {
     /** @type {Record<string, unknown>} */
-    const projectIqgeorc = jsonc.parse(fs.readFileSync(`${out}/.iqgeorc.jsonc`, 'utf8'));
+    const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
     /** @type {Config} */
-    const templateIqgeorc = jsonc.parse(fs.readFileSync(`${tmp}/.iqgeorc.jsonc`, 'utf8'));
+    const templateIqgeorc = jsonc.parse(templateIqgeorcStr);
 
     /** @type {Record<"missingKeys" | "unexpectedKeys" | "typeMismatches", string[]>} */
     const diffs = {
