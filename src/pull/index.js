@@ -85,18 +85,20 @@ export async function pull({
     const writeOps = [];
 
     // Merge custom sections of project files that support them
-    CUSTOM_SECTION_FILES.map(filepath => {
-        const templateFileStr = fs.readFileSync(`${tmp}/${filepath}`, 'utf8');
-        const projectFileStr = fs.readFileSync(`${out}/${filepath}`, 'utf8');
-        if (templateFileStr === projectFileStr) return;
+    await Promise.allSettled(
+        CUSTOM_SECTION_FILES.map(async filepath => {
+            const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
+            const projectFileStr = await fs.promises.readFile(`${out}/${filepath}`, 'utf8');
+            if (templateFileStr === projectFileStr) return;
 
-        const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
+            const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
 
-        writeOps.push({
-            dest: `${out}/${filepath}`,
-            content: mergedText
-        });
-    });
+            writeOps.push({
+                dest: `${out}/${filepath}`,
+                content: mergedText
+            });
+        })
+    );
 
     // Remove tmp directory
     fs.rmSync(tmp, { recursive: true, force: true });
@@ -189,7 +191,7 @@ function compareIqgeorc(out, tmp) {
             const joinedPath = path ? `${path}.${key}` : key;
             const val2 = obj2[key];
 
-            delete obj2[key];
+            delete obj2[key]; // Delete expected keys so we're left with only unexpected ones below
 
             // Check missing keys
             if (val2 === undefined) {
@@ -209,7 +211,7 @@ function compareIqgeorc(out, tmp) {
 
             // Check nested objects
             if (typeof obj1[key] === 'object' && !isArr) {
-                // @ts-ignore
+                // @ts-expect-error TS can't infer the correct type, but we know it's an object
                 compareObjects(obj1[key], val2, joinedPath);
 
                 return;
