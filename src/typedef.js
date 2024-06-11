@@ -1,7 +1,5 @@
 /**
- * @typedef {Dependencies} Platform
- * @property {string} version
- * @property {string[]} devenv
+ * @typedef {{version: string} & Required<Dependencies>} Platform
  */
 
 /**
