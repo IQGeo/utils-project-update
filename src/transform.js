@@ -29,10 +29,10 @@ const initDbModifier = (config, content) => {
     const { modules } = config;
 
     const section1 = modules
-        .filter(({ version, dbInit = !!version }) => dbInit)
+        .filter(({ version, dbInit = !!version, schemaVersionName }) => dbInit && schemaVersionName)
         .map(
-            ({ name, schemaGrep = name }) =>
-                `if ! myw_db $MYW_DB_NAME list versions | grep ${schemaGrep}; then myw_db $MYW_DB_NAME install ${name}; fi`
+            ({ name, schemaVersionName }) =>
+                `if ! myw_db $MYW_DB_NAME list versions --layout keys | grep ${schemaVersionName} | grep version=; then myw_db $MYW_DB_NAME install ${name}; fi`
         )
         .join('\n');
 

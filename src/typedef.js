@@ -1,9 +1,7 @@
 /**
- * @typedef Platform
+ * @typedef {Dependencies} Platform
  * @property {string} version
  * @property {string[]} devenv
- * @property {string[]} appserver
- * @property {string[]} tools
  */
 
 /**
@@ -13,7 +11,7 @@
  * @property {boolean} [devOnly]
  * @property {string} [devSrc]
  * @property {boolean} [dbInit]
- * @property {string} [schemaGrep]
+ * @property {string} [schemaVersionName]
  * @property {string} [shortVersion]
  */
 
@@ -47,6 +45,13 @@
 
 /**
  * @typedef {Omit<UpdateOptions, 'progress'>} UpdateOptionsCLI
+ */
+
+/**
+ * @typedef Dependencies
+ * @property {string[]} appserver
+ * @property {string[]} tools
+ * @property {string[]} [devenv]
  */
 
 export {};
