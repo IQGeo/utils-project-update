@@ -15,8 +15,15 @@ import { update } from '../update/index.js';
     Ensure out directory exists
     If out directory is empty
         Move tmp to out and return
-    Compare `.iqgeorc.jsonc` schemas
-    Merge custom sections from project files
+    If `iqgeorc.jsonc` exists in project
+        Compare `.iqgeorc.jsonc` schemas
+    Else
+        Copy from template
+    For each custom section file
+        If file doesn't exist in project
+            Copy from template
+        Else
+            Merge custom sections
     Remove tmp directory
     Write files to out
 */
