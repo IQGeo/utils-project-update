@@ -15,6 +15,8 @@ export function run(cmd, passedArgs, options = { stdio: 'inherit' }) {
 /**
  * Ensures the Git working tree is clean, throws if not.
  *
+ * `cwd` is required as different contexts can have unexpected working directories.
+ *
  * @param {string} cwd
  */
 export function ensureCleanWorkingTree(cwd) {
