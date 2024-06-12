@@ -2,16 +2,17 @@
 
 Update an IQGeo project based on options in a `.iqgeorc.jsonc` configuration file.
 
--   [Installation](#installation)
--   [Usage](#usage)
-    -   [CLI](#cli)
-    -   [JS](#js)
--   [Commands](#commands)
-    -   [Default (update)](#default-update)
-    -   [`pull`](#pull)
--   [Contributing](#contributing)
-    -   [Playground](#playground)
-    -   [Debugging](#debugging)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [CLI](#cli)
+  - [JS](#js)
+- [Commands](#commands)
+  - [Default (update)](#default-update)
+  - [`pull`](#pull)
+    - [Custom sections](#custom-sections)
+- [Contributing](#contributing)
+  - [Playground](#playground)
+  - [Debugging](#debugging)
 
 ## Installation
 
@@ -73,6 +74,22 @@ Pulls the latest IQGeo project template from GitHub and merges with existing fil
 | ---------- | -------- | -------------------------------------------------------- | -------------------------- | ------- |
 | `out`      | `string` | The output directory for all template files and folders. | `./utils-project-template` | Yes     |
 | `progress` | `object` | Functions used to output progress logs.                  | `console.{log,warn,error}` | No      |
+
+#### Custom sections
+
+To preserve content that isn't part of the project-template, you must wrap it in a custom section block:
+
+```dockerfile
+# CUSTOM SECTION START
+...
+# CUSTOM SECTION END
+```
+
+These sections will be sliced out and reinserted into the template files. Their positions will be preserved as best as possible, but please double-check to ensure nothing added or removed will affect it.
+
+If content within a custom section is also detected in the template, the template content will be replaced in favour of the custom content.
+
+**NOTE:** This doesn't apply to values pulled from the `.iqgeorc.jsonc` file. They will be re-inserted via [`update`](#default-update) once files have been pulled and merged.
 
 ## Contributing
 
