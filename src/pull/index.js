@@ -59,7 +59,7 @@ export async function pull({
         error: (level, info) => console.error(info)
     }
 } = {}) {
-    if (!ensureGit(out, progress)) return;
+    // if (!ensureGit(out, progress)) return;
 
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
@@ -285,18 +285,42 @@ function mergeCustomSections(templateFileStr, projectFileStr) {
             return;
         }
 
-        // Parts can either have complete custom sections, or just the start or end of one
-        const matches =
-            part.value.match(/# START CUSTOM SECTION\s.*?# END CUSTOM SECTION\s*/gs) ||
-            part.value.match(/# START CUSTOM SECTION\s.*|.*?# END CUSTOM SECTION(\s+|$)/gs);
+        // Start of part value is continuation of custom section content
+        if (
+            /.*# START CUSTOM SECTION(\s.*?\s*?)?$/.test(mergedText) &&
+            !/^\s*# START CUSTOM SECTION\s.*/.test(part.value)
+        ) {
+            mergedText += part.value.split(/# END CUSTOM SECTION/)[0];
+        }
 
-        matches?.forEach(section => {
-            if (!mergedText.endsWith('\n') && !section.startsWith('\n')) {
-                mergedText += '\n';
+        // Extract custom sections from project file
+        const sections =
+            // Parts can either have complete custom sections, or just the start or end of one
+            part.value.match(/\s*# START CUSTOM SECTION\s.*?# END CUSTOM SECTION\s*/gs) ||
+            part.value.match(/\s*# START CUSTOM SECTION\s.*|.*?# END CUSTOM SECTION\s/gs);
+        if (!sections) return;
+
+        const joinedSections = sections.join('');
+        if (mergedText.endsWith(joinedSections)) return;
+
+        // Ensure no duplicate custom section lines/blocks
+        if (/^\s*# START CUSTOM SECTION/.test(joinedSections)) {
+            const splitByStartDelimiter = mergedText.split(/(?=# START CUSTOM SECTION)/g);
+            const popped = splitByStartDelimiter.pop();
+
+            // If merged text ends with a custom section block, remove it before adding new ones
+            if (
+                popped &&
+                /# START CUSTOM SECTION/.test(popped) &&
+                (/# END CUSTOM SECTION\s*$/.test(popped) || !/# END CUSTOM SECTION\s/.test(popped))
+            ) {
+                mergedText = splitByStartDelimiter.join('') + joinedSections.trimStart();
+
+                return;
             }
+        }
 
-            mergedText += section;
-        });
+        mergedText += joinedSections;
     });
 
     return mergedText;
