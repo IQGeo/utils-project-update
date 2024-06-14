@@ -69,9 +69,6 @@ export function compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr) {
 /**
  * Merges custom sections from `projectFileStr` into `templateFileStr`.
  *
- * **NOTE:** If text in a custom section block matches text from the template,
- * the template text is discarded in favour of the project text.
- *
  * @param {string} templateFileStr
  * @param {string} projectFileStr
  */
@@ -92,8 +89,8 @@ export function mergeCustomSections(templateFileStr, projectFileStr) {
 
         // Start of part value is continuation of custom section content
         if (
-            /.*# START CUSTOM SECTION(\s.*?\s*?)?$/.test(mergedText) &&
-            !/^\s*# START CUSTOM SECTION\s.*/.test(part.value)
+            /# START CUSTOM SECTION((?!\s*# END CUSTOM SECTION).*?\s*?)?$/.test(mergedText) &&
+            !/^\s*# START CUSTOM SECTION.*/.test(part.value)
         ) {
             mergedText += part.value.split(/# END CUSTOM SECTION/)[0];
         }
@@ -101,8 +98,8 @@ export function mergeCustomSections(templateFileStr, projectFileStr) {
         // Extract custom sections from project file
         const sections =
             // Parts can either have complete custom sections, or just the start or end of one
-            part.value.match(/\s*# START CUSTOM SECTION\s.*?# END CUSTOM SECTION\s*/gs) ||
-            part.value.match(/\s*# START CUSTOM SECTION\s.*|.*?# END CUSTOM SECTION\s/gs);
+            part.value.match(/\s*# START CUSTOM SECTION.*?# END CUSTOM SECTION\s*/gs) ||
+            part.value.match(/\s*# START CUSTOM SECTION.*|.*?# END CUSTOM SECTION\s/gs);
         if (!sections) return;
 
         const joinedSections = sections.join('');
