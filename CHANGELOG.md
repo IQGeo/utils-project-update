@@ -1,3 +1,9 @@
+## [0.3.0](https://github.com/IQGeo/utils-project-update/compare/v0.2.0...v0.3.0) (6/17/24)
+
+- pull: add pull command (#2) ([1d416c5](https://github.com/IQGeo/utils-project-update/commit/1d416c55adbb07d09bc505cb220f34e3104d2bb8))
+- update: improve init_db entrypoint (#3) ([f341eca](https://github.com/IQGeo/utils-project-update/commit/f341ecabad4074d6d10c611c1f0ce4a1ffd2456e))
+- docs(changelog): v0.2.0 ([90006b3](https://github.com/IQGeo/utils-project-update/commit/90006b3262351cdbcf8917c3639e5a0d80d8113f))
+
 ## [0.2.0](https://github.com/IQGeo/utils-project-update/compare/v0.1.0...v0.2.0) (6/5/24)
 
 - transform: handle NRO/OSM dependencies ([fc6c5d6](https://github.com/IQGeo/utils-project-update/commit/fc6c5d61a96647fcfc4bd4cf05992cd27ac47962))
