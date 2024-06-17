@@ -19,15 +19,17 @@
     "scripts": {
         "lint": "eslint . --ext .js",
         "link": "npm link && cd ./playground && npm link project-update",
-        "playground:cli": "cd ./playground && npm run cli",
-        "playground:js": "cd ./playground && npm run js",
-        "playground:update": "node ./scripts/playground",
+        "playground:update": "cd ./playground && npm run update",
+        "playground:pull": "cd ./playground && npm run pull",
+        "playground:update:js": "cd ./playground && npm run update:js",
+        "playground:pull:js": "cd ./playground && npm run pull:js",
         "release:patch": "node ./scripts/release patch",
         "release:minor": "node ./scripts/release minor",
         "release:major": "node ./scripts/release major"
     },
     "dependencies": {
-        "jsonc": "^2.0.0",
+        "diff": "^5.2.0",
+        "jsonc-parser": "^3.2.1",
         "yargs": "^17.7.2"
     },
     "devDependencies": {

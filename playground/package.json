@@ -1,8 +1,10 @@
 {
     "type": "module",
     "scripts": {
-        "cli": "node ../src/bin/index.js --root=./utils-project-template",
-        "js": "node ./script.js"
+        "update": "node ../src/bin/index.js --root=./utils-project-template",
+        "pull": "node ../src/bin/index.js pull --out=./utils-project-template",
+        "update:js": "node ./update.js",
+        "pull:js": "node ./pull.js"
     },
     "dependencies": {
         "project-update": "^0.0.0"

@@ -14,14 +14,10 @@ FROM ${CONTAINER_REGISTRY}platform-devenv:7.1
 
 USER root
 
-# START SECTION optional dependencies - if you edit these lines manually note that your change will get lost if you run the IQGeo Project Update tool
-
-# END SECTION
-
 RUN mkdir -p ${MYWORLD_DATA_HOME}/tests
 RUN chown iqgeo:iqgeo ${MYWORLD_DATA_HOME}/tests
 
-# START SECTION optional dependencies (build) - if you edit these lines manually note that your change will get lost if you run the IQGeo Project Update tool
+# START SECTION optional dependencies (dev) - if you edit these lines manually note that your change will get lost if you run the IQGeo Project Update tool
 RUN apt-get update && \
     apt-get install -y libmemcached-dev libmemcached11 \
     && apt-get autoremove && apt-get clean
@@ -32,6 +28,9 @@ RUN pip install cryptojwt
 # START SECTION Copy the modules - beware this section is updated by the IQGeo project configuration tool
 COPY --link --from=comms / ${MODULES}/
 # END SECTION
+
+# START CUSTOM SECTION - root user
+# END CUSTOM SECTION
 
 # Give iqgeo user ownership of the modules
 RUN chown -R iqgeo:iqgeo ${MODULES}
@@ -56,3 +55,5 @@ COPY --chown=iqgeo:iqgeo devserver_config/ /opt/iqgeo/config/
 # configuration
 # paths for tools from modules
 # aditional environment variables
+# START CUSTOM SECTION - root user
+# END CUSTOM SECTION

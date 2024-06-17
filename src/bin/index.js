@@ -2,16 +2,33 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-import { update } from '../index.js';
+yargs(hideBin(process.argv))
+    .command(
+        '$0',
+        '',
+        /** @param {import('yargs').Argv<UpdateOptionsCLI>} y */
+        y => y.string('root').alias('r', 'root'),
+        async ({ root }) => {
+            const { update } = await import('../update/index.js');
 
-yargs.help(false);
-yargs.string('root').alias('r', 'root');
+            update({ root });
+        }
+    )
+    .command(
+        'pull',
+        '',
+        /** @param {import('yargs').Argv<PullOptionsCLI>} y */
+        y => y.string('out').alias('o', 'out'),
+        async ({ out }) => {
+            const { pull } = await import('../pull/index.js');
 
-const argv = await /** @type {Argv} */ (yargs(hideBin(process.argv))).parse();
-
-update({ root: argv.root });
+            pull({ out });
+        }
+    )
+    .help(false)
+    .parse();
 
 /**
- * @typedef {import('yargs').Argv<UpdateOptionsCLI>} Argv
  * @typedef {import('../typedef.js').UpdateOptionsCLI} UpdateOptionsCLI
+ * @typedef {import('../typedef.js').PullOptionsCLI} PullOptionsCLI
  */

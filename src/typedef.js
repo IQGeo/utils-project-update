@@ -1,7 +1,5 @@
 /**
- * @typedef {Dependencies} Platform
- * @property {string} version
- * @property {string[]} devenv
+ * @typedef {{version: string} & Required<Dependencies>} Platform
  */
 
 /**
@@ -31,10 +29,27 @@
  */
 
 /**
+  @typedef {
+    '.gitignore' |
+    '.devcontainer/dockerfile' |
+    '.devcontainer/docker-compose.yml' |
+    '.devcontainer/.env.example' |
+    '.devcontainer/devcontainer.json' |
+    'deployment/dockerfile.build' |
+    'deployment/dockerfile.appserver' |
+    'deployment/dockerfile.tools' |
+    'deployment/docker-compose.yml' |
+    'deployment/.env.example' |
+    'deployment/entrypoint.d/600_init_db.sh' |
+    '.devcontainer/entrypoint.d/600_init_db.sh'
+  } TransformFile
+ */
+
+/**
  * @typedef {object} ProgressHandler
- * @property {(level: number, info: any) => void} log
- * @property {(level: number, info: any) => void} warn
- * @property {(level: number, info: any) => void} error
+ * @property {(level: number, info: any, moreDetails?: any) => void} log
+ * @property {(level: number, info: any, moreDetails?: any) => void} warn
+ * @property {(level: number, info: any, moreDetails?: any) => void} error
  */
 
 /**
@@ -45,6 +60,16 @@
 
 /**
  * @typedef {Omit<UpdateOptions, 'progress'>} UpdateOptionsCLI
+ */
+
+/**
+ * @typedef {object} PullOptions
+ * @property {string} [out='./utils-project-template'] The output directory for all template files and folders (defaults to `'./utils-project-template'`)
+ * @property {ProgressHandler} [progress] Functions used to output progress logs (defaults to `console.{log,warn,error}`)
+ */
+
+/**
+ * @typedef {Omit<PullOptions, 'progress'>} PullOptionsCLI
  */
 
 /**
