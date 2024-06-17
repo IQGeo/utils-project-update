@@ -87,42 +87,47 @@ export function mergeCustomSections(templateFileStr, projectFileStr) {
             return;
         }
 
-        // Start of part value is continuation of custom section content
-        if (
-            /# START CUSTOM SECTION((?!\s*# END CUSTOM SECTION).*?\s*?)?$/.test(mergedText) &&
-            !/^\s*# START CUSTOM SECTION.*/.test(part.value)
-        ) {
-            mergedText += part.value.split(/# END CUSTOM SECTION/)[0];
-        }
-
-        // Extract custom sections from project file
         const sections =
-            // Parts can either have complete custom sections, or just the start or end of one
+            // Parts can either have complete custom sections, or just the start/end tag
             part.value.match(/\s*# START CUSTOM SECTION.*?# END CUSTOM SECTION\s*/gs) ||
-            part.value.match(/\s*# START CUSTOM SECTION.*|.*?# END CUSTOM SECTION\s/gs);
-        if (!sections) return;
+            part.value.match(/\s*# START CUSTOM SECTION.*|.*?# END CUSTOM SECTION\s*/gs);
 
-        const joinedSections = sections.join('');
-        if (mergedText.endsWith(joinedSections)) return;
+        const extraText =
+            !/^\s*# START CUSTOM SECTION.*/s.test(part.value) &&
+            part.value.split(/# END CUSTOM SECTION/)[0];
 
-        // Ensure no duplicate custom section lines/blocks
-        if (/^\s*# START CUSTOM SECTION/.test(joinedSections)) {
-            const splitByStartDelimiter = mergedText.split(/(?=# START CUSTOM SECTION)/g);
-            const popped = splitByStartDelimiter.pop();
-
-            // If merged text ends with a custom section block, remove it before adding new ones
-            if (
-                popped &&
-                /# START CUSTOM SECTION/.test(popped) &&
-                (/# END CUSTOM SECTION\s*$/.test(popped) || !/# END CUSTOM SECTION\s/.test(popped))
-            ) {
-                mergedText = splitByStartDelimiter.join('') + joinedSections.trimStart();
-
-                return;
-            }
+        if (!sections && !extraText) {
+            return;
         }
 
-        mergedText += joinedSections;
+        const mergedTextSplitByStartTag = mergedText.split(/(?=# START CUSTOM SECTION)/g);
+
+        let mergedTextSectionPop = /** @type {string} */ (mergedTextSplitByStartTag.pop());
+
+        const isContinuation =
+            /# START CUSTOM SECTION/.test(mergedTextSectionPop) &&
+            !/# END CUSTOM SECTION/.test(mergedTextSectionPop);
+
+        // Add any extra text from start of part.value as continuation of open section
+        if (extraText && isContinuation) {
+            mergedText =
+                mergedTextSplitByStartTag.join('') +
+                mergedTextSectionPop.replace(/(?<=\n\s*).*/s, '') + // Remove placeholder text
+                extraText;
+        }
+
+        if (sections) {
+            // Prevent leaving duplicate section from template
+            if (
+                !extraText &&
+                (isContinuation || /# END CUSTOM SECTION\s*$/s.test(mergedTextSectionPop))
+            ) {
+                // Discard last section and normalise indentation
+                mergedText = mergedTextSplitByStartTag.join('').replace(/[ \t]*$/, '');
+            }
+
+            mergedText += sections.join('');
+        }
     });
 
     return mergedText;
