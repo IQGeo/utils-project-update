@@ -1,3 +1,8 @@
+## [0.3.1](https://github.com/IQGeo/utils-project-update/compare/v0.3.0...v0.3.1) (6/19/24)
+
+- update: fix .gitignore generation for modules ([0f274dc](https://github.com/IQGeo/utils-project-update/commit/0f274dccc41040c01c8e17c27c015fb22686aee2))
+- docs(changelog): v0.3.0 ([91a6300](https://github.com/IQGeo/utils-project-update/commit/91a63005de6acdc05acda07c66415324b0db53ee))
+
 ## [0.3.0](https://github.com/IQGeo/utils-project-update/compare/v0.2.0...v0.3.0) (6/17/24)
 
 - pull: add pull command (#2) ([1d416c5](https://github.com/IQGeo/utils-project-update/commit/1d416c55adbb07d09bc505cb220f34e3104d2bb8))
