@@ -2,17 +2,17 @@
 
 Update an IQGeo project based on options in a `.iqgeorc.jsonc` configuration file.
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [CLI](#cli)
-  - [JS](#js)
-- [Commands](#commands)
-  - [Default (update)](#default-update)
-  - [`pull`](#pull)
-    - [Custom sections](#custom-sections)
-- [Contributing](#contributing)
-  - [Playground](#playground)
-  - [Debugging](#debugging)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [CLI](#cli)
+    -   [JS](#js)
+-   [Commands](#commands)
+    -   [Default (update)](#default-update)
+    -   [`pull`](#pull)
+        -   [Custom sections](#custom-sections)
+-   [Contributing](#contributing)
+    -   [Playground](#playground)
+    -   [Debugging](#debugging)
 
 ## Installation
 
@@ -99,13 +99,9 @@ If content within a custom section is also detected in the template, the templat
 
 Any changes made in that repo should be copied back to this repo. To do this, you can run `npm run playground:pull` - if you have any untracked changes in your working tree, you can comment out the check in [`./src/pull/index.js`](./src/pull/index.js) and rerun it.
 
-To use the playground dev scripts, first you have to set up symlinks via `npm link`:
+To use the playground JS scripts, run `npm run link` to create a symlink dependency of this package in the playground's `node_modules`.
 
-1. Run `npm link` in the root of this repo
-2. `cd playground`
-3. Run `npm link project-update`
-
-Then any changes made in `src/` will be reflected in the playground when you run the dev scripts.
+**TIP:** You can use `npm link` to create a symlink in `utils-vscode` for testing your changes in the VSCode extension.
 
 ### Debugging
 
