@@ -51,7 +51,7 @@ export const fileTransformers = {
         const productModules = modules
             .filter(({ version }) => !!version)
             .concat([{ name: 'dev_tools' }]);
-        const newContent = productModules.map(({ name }) => `./${name}`).join('\n');
+        const newContent = productModules.map(({ name }) => `/${name}`).join('\n');
 
         content = content.replace(
             /(# START SECTION Product modules)[\s\S]*?(.*# END SECTION)/,
