@@ -188,7 +188,7 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
 
     const section1 = modules
         .filter(filter1)
-        .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} as ${name}`)
+        .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} AS ${name}`)
         .join('\n');
 
     const replacedContent = content.replace(
