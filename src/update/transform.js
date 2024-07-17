@@ -67,7 +67,7 @@ export const fileTransformers = {
         content = replaceOptionalDeps(content, platform.devenv, 'dev');
         content = replaceFetchPipPackages(content, platform.devenv);
 
-        return content.replace(/platform-devenv:.*/, `platform-devenv:${platform.version}`);
+        return content.replace(/platform-devenv(.*):.*/, `platform-devenv$1:${platform.version}`);
     },
 
     '.devcontainer/docker-compose.yml': (config, content) => {
