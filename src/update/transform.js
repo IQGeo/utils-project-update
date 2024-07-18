@@ -67,7 +67,7 @@ export const fileTransformers = {
         content = replaceOptionalDeps(content, platform.devenv, 'dev');
         content = replaceFetchPipPackages(content, platform.devenv);
 
-        return content.replace(/platform-devenv:.*/, `platform-devenv:${platform.version}`);
+        return content.replace(/platform-devenv(.*):.*/, `platform-devenv$1:${platform.version}`);
     },
 
     '.devcontainer/docker-compose.yml': (config, content) => {
@@ -188,7 +188,7 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
 
     const section1 = modules
         .filter(filter1)
-        .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} as ${name}`)
+        .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} AS ${name}`)
         .join('\n');
 
     const replacedContent = content.replace(
