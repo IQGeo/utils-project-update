@@ -55,7 +55,7 @@ const moduleSchemaVersionNames = {
     capture: 'capture_schema',
     workflow_manager: 'mywmywwfm_schema',
     mywapp_common: 'mywapp_schema',
-	groups: 'groups',
+    groups: 'groups',
     survey: 'mywis_schema',
     gas: 'mywgas_schema',
     electric: 'iqg_electric_schema',
