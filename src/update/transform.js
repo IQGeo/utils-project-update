@@ -100,11 +100,18 @@ export const fileTransformers = {
 
         // ENH: use jsonc-parser to replace these values
         return content
-            .replace(`"name": "IQGeo Module Development Template"`, `"name": "${display_name}"`)
+            .replace(/\"name\": \".*\"/, `"name": "${display_name}"`)
             .replace(
                 `"service": "iqgeo_myproj_devserver"`,
                 `"service": "iqgeo_${prefix}_devserver"`
             );
+    },
+
+    '.devcontainer/remote_host/devcontainer.json': (config, content) => {
+        const { display_name } = config;
+
+        // ENH: use jsonc-parser to replace these values
+        return content.replace(/\"name\": \".*\"/, `"name": "${display_name} (Remote)"`);
     },
 
     'deployment/dockerfile.build': (config, content) => {
