@@ -35,6 +35,10 @@
     '.devcontainer/docker-compose.yml' |
     '.devcontainer/.env.example' |
     '.devcontainer/devcontainer.json' |
+    '.devcontainer/remote_host/devcontainer.json' |
+    '.devcontainer/remote_host/dockerfile' |
+    '.devcontainer/remote_host/docker-compose.yml' |
+    '.devcontainer/remote_host/docker-compose-shared.yml' |
     'deployment/dockerfile.build' |
     'deployment/dockerfile.appserver' |
     'deployment/dockerfile.tools' |
