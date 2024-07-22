@@ -1,3 +1,13 @@
+## [0.4.0](https://github.com/IQGeo/utils-project-update/compare/v0.3.2...v0.4.0) (7/22/24)
+
+- transform: include new files ([321aa9a](https://github.com/IQGeo/utils-project-update/commit/321aa9a6eb7a8279ab447335be86dbd5ffab2720))
+- pull: rename variable and improve comments ([17e8122](https://github.com/IQGeo/utils-project-update/commit/17e81224ca719cde8ff4051d0318bb828094f23a))
+- update: update transform for new template ([f917bd1](https://github.com/IQGeo/utils-project-update/commit/f917bd1b1ad747d63deb815cd929dd3861ea216d))
+- playground: pull ([fd752c9](https://github.com/IQGeo/utils-project-update/commit/fd752c9315ae3f26ef7bd6863c005583b6347c15))
+- ensure new directories exist ([ed05409](https://github.com/IQGeo/utils-project-update/commit/ed054092d1aebd74d123e8b6f892b374122a57eb))
+- pull: add new files in template to list ([ca37aad](https://github.com/IQGeo/utils-project-update/commit/ca37aadaecff9a263a278322312c2c07523d33ce))
+- docs(changelog): v0.3.2 ([755af4b](https://github.com/IQGeo/utils-project-update/commit/755af4bb89f9e789cd7ce6016c9c3bf3c53be39f))
+
 ## [0.3.2](https://github.com/IQGeo/utils-project-update/compare/v0.3.1...v0.3.2) (7/22/24)
 
 - modules: schema names: add missing schema names (#6) ([3d219f4](https://github.com/IQGeo/utils-project-update/commit/3d219f43108c63a9395bd4c78ca342e537a5e776))
