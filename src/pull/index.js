@@ -31,7 +31,7 @@ import { compareIqgeorc, mergeCustomSections } from './diff.js';
 /**
  * @satisfies {ReadonlyArray<TransformFile>}
  */
-const CUSTOM_SECTION_FILES = [
+const INCLUDE_FILES = [
     '.gitignore',
     '.devcontainer/dockerfile',
     '.devcontainer/docker-compose.yml',
@@ -109,9 +109,9 @@ export async function pull({
         });
     }
 
-    // Merge custom sections of project files that support them
+    // add missing files and merge custom sections of project files that support them
     await Promise.allSettled(
-        CUSTOM_SECTION_FILES.map(async filepath => {
+        INCLUDE_FILES.map(async filepath => {
             const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
 
             if (!fs.existsSync(`${out}/${filepath}`)) {
