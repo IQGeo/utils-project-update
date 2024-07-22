@@ -1,3 +1,10 @@
+## [0.3.2](https://github.com/IQGeo/utils-project-update/compare/v0.3.1...v0.3.2) (7/22/24)
+
+- modules: schema names: add missing schema names (#6) ([3d219f4](https://github.com/IQGeo/utils-project-update/commit/3d219f43108c63a9395bd4c78ca342e537a5e776))
+- transform: support newer platform-devenv (#5) ([5233b43](https://github.com/IQGeo/utils-project-update/commit/5233b43de3b76c8dc9ac0e03869cd64ec5e7c57f))
+- docs: update npm link notes in readme ([3a72252](https://github.com/IQGeo/utils-project-update/commit/3a7225286f44a7b0280bfefbf0f6138b267e7328))
+- docs(changelog): v0.3.1 ([e3378e5](https://github.com/IQGeo/utils-project-update/commit/e3378e5edff703596cdb616a40f1f32d6ed8a9c3))
+
 ## [0.3.1](https://github.com/IQGeo/utils-project-update/compare/v0.3.0...v0.3.1) (6/19/24)
 
 - update: fix .gitignore generation for modules ([0f274dc](https://github.com/IQGeo/utils-project-update/commit/0f274dccc41040c01c8e17c27c015fb22686aee2))
