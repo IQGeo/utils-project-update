@@ -87,6 +87,12 @@ export const fileTransformers = {
             .replace(/iqgeo_myproj_devserver:/, `iqgeo_${prefix}_devserver:`);
     },
 
+    '.devcontainer/remote_host/docker-compose.yml': (config, content) =>
+        content.replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
+
+    '.devcontainer/remote_host/docker-compose-shared.yml': (config, content) =>
+        content.replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
+
     '.devcontainer/.env.example': (config, content) => {
         const { prefix, db_name } = config;
 
