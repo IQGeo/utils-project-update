@@ -207,6 +207,10 @@ function cloneTemplate(progress) {
  * @param {string} out
  */
 async function writeFiles(writeOps, progress, out) {
+    // Ensure parent directories exist
+    await Promise.allSettled(
+        writeOps.map(({ dest, content }) => fs.mkdirSync(path.dirname(dest), { recursive: true }))
+    );
     const writeResults = await Promise.allSettled(
         writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
     );
