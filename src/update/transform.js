@@ -51,6 +51,10 @@ export const fileTransformers = {
         const productModules = modules
             .filter(({ version }) => !!version)
             .concat([{ name: 'dev_tools' }]);
+
+        const names = modules.map(({ name }) => name);
+        if (!names.includes('custom')) productModules.push({ name: 'custom' });
+
         const newContent = productModules.map(({ name }) => `/${name}`).join('\n');
 
         content = content.replace(
