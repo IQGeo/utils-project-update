@@ -201,7 +201,7 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
     /** @type {(module: Module) => boolean} */
     const isFromInjectorFn = ({ version, devSrc }) => !!version && !devSrc;
     /** @type {(module: Module) => boolean} */
-    const filter1 = isDevEnv ? isFromInjectorFn : ({ version }) => !!version;
+    const filter1 = isDevEnv ? isFromInjectorFn : ({ version, devOnly }) => !!version && !devOnly;
 
     const section1 = modules
         .filter(filter1)
