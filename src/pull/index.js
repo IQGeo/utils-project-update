@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
+import { readConfig } from '../config.js';
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
 
