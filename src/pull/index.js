@@ -77,7 +77,7 @@ export async function pull({
     let excludes = [];
     try {
         const config = readConfig(out);
-        excludes = config.template_pull.exclude_file_paths ?? [];
+        excludes = config.template_pull?.exclude_file_paths ?? [];
     } catch (e) {
         progress.log(2, 'No configuration file', e);
     }
