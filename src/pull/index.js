@@ -73,13 +73,6 @@ export async function pull({
     }
 } = {}) {
     if (!ensureGit(out, progress)) return;
-    let config;
-    try {
-        config = readConfig(out);
-    } catch (e) {
-        progress.log(2, 'No configuration file', e);
-    }
-    const excludes = config?.exclude_file_paths ?? [];
 
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
@@ -123,6 +116,9 @@ export async function pull({
             content: templateIqgeorcStr
         });
     }
+
+    const config = readConfig(out);
+    const excludes = config.exclude_file_paths ?? [];
 
     // add missing files and merge custom sections of project files that support them
     await Promise.allSettled(
