@@ -80,8 +80,6 @@ export async function pull({
         excludes = config.template_pull.exclude_file_paths ?? [];
     } catch (e) {
         progress.log(2, 'No configuration file', e);
-
-        return;
     }
 
     const tmp = cloneTemplate(progress);
