@@ -73,6 +73,16 @@ export async function pull({
     }
 } = {}) {
     if (!ensureGit(out, progress)) return;
+    /** @type string[] */
+    let excludes = [];
+    try {
+        const config = readConfig(out);
+        excludes = config.template_pull.exclude_file_paths ?? [];
+    } catch (e) {
+        progress.log(2, 'No configuration file', e);
+
+        return;
+    }
 
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
@@ -121,6 +131,8 @@ export async function pull({
     await Promise.allSettled(
         INCLUDE_FILES.map(async filepath => {
             const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
+            // check if path matches any of the excludes patterns
+            if (excludes.some(exclude => new RegExp(exclude).test(filepath))) return;
 
             if (!fs.existsSync(`${out}/${filepath}`)) {
                 progress.log(2, `\`${filepath}\` not found in project, copying from template`);

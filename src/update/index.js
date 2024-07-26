@@ -55,6 +55,10 @@ function getFileUpdater(root, config, progress) {
      * @param {Transformer} transform
      */
     return (relPath, transform) => {
+        // check if path matches any of the excludes patterns
+        const excludes = config.template_pull.exclude_file_paths ?? [];
+        if (excludes.some(exclude => new RegExp(exclude).test(relPath))) return;
+
         const filePath = path.join(root, relPath);
 
         let content;

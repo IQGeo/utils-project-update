@@ -22,6 +22,7 @@
  * @property {string} [registry]
  * @property {Platform} platform
  * @property {Module[]} modules
+ * @property {TemplatePullOptions} template_pull
  */
 
 /**
@@ -75,6 +76,7 @@
  * @typedef {object} PullOptions
  * @property {string} [out='./utils-project-template'] The output directory for all template files and folders (defaults to `'./utils-project-template'`)
  * @property {ProgressHandler} [progress] Functions used to output progress logs (defaults to `console.{log,warn,error}`)
+ * @property {string[]} [excludes] A list of files/folders to exclude from the pull operation
  */
 
 /**
@@ -86,6 +88,11 @@
  * @property {string[]} appserver
  * @property {string[]} tools
  * @property {string[]} [devenv]
+ */
+
+/**
+ * @typedef TemplatePullOptions
+ * @property {string[]} [exclude_file_paths]
  */
 
 export {};
