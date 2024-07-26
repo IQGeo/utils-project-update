@@ -201,10 +201,12 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
     /** @type {(module: Module) => boolean} */
     const isFromInjectorFn = ({ version, devSrc }) => !!version && !devSrc;
     /** @type {(module: Module) => boolean} */
-    const filter1 = isDevEnv ? isFromInjectorFn : ({ version, devOnly }) => !!version && !devOnly;
+    const fromAsFilter = isDevEnv
+        ? isFromInjectorFn
+        : ({ version, devOnly }) => !!version && !devOnly;
 
     const section1 = modules
-        .filter(filter1)
+        .filter(fromAsFilter)
         .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} AS ${name}`)
         .join('\n');
 
@@ -214,10 +216,10 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
     );
 
     /** @type {(module: Module) => boolean} */
-    const filter2 = isDevEnv ? isFromInjectorFn : ({ devOnly }) => !devOnly;
+    const copyFilter = isDevEnv ? isFromInjectorFn : ({ devOnly }) => !devOnly;
 
     const section2 = modules
-        .filter(filter2)
+        .filter(copyFilter)
         .map(({ name, version }) =>
             version
                 ? `COPY --link --from=${name} / \${MODULES}/`
