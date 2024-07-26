@@ -22,7 +22,7 @@
  * @property {string} [registry]
  * @property {Platform} platform
  * @property {Module[]} modules
- * @property {TemplatePullOptions} [template_pull]
+ * @property {string[]} [exclude_file_paths]
  */
 
 /**
@@ -87,11 +87,6 @@
  * @property {string[]} appserver
  * @property {string[]} tools
  * @property {string[]} [devenv]
- */
-
-/**
- * @typedef TemplatePullOptions
- * @property {string[]} [exclude_file_paths]
  */
 
 export {};

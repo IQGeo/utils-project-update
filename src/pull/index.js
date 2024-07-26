@@ -73,14 +73,13 @@ export async function pull({
     }
 } = {}) {
     if (!ensureGit(out, progress)) return;
-    /** @type string[] */
-    let excludes = [];
+    let config;
     try {
-        const config = readConfig(out);
-        excludes = config.template_pull?.exclude_file_paths ?? [];
+        config = readConfig(out);
     } catch (e) {
         progress.log(2, 'No configuration file', e);
     }
+    const excludes = config?.exclude_file_paths ?? [];
 
     const tmp = cloneTemplate(progress);
     if (!tmp) return;
