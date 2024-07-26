@@ -30,7 +30,7 @@ import { compareIqgeorc, mergeCustomSections } from './diff.js';
 */
 
 /**
- * @satisfies {ReadonlyArray<TransformFile>}
+ * @satisfies {ReadonlyArray<TemplateFilePath>}
  */
 const INCLUDE_FILES = [
     '.gitignore',
@@ -262,7 +262,7 @@ async function writeFiles(writeOps, progress, out) {
 /**
  * @typedef {import('../typedef.js').Config} Config
  * @typedef {import('../typedef.js').PullOptions} PullOptions
- * @typedef {import('../typedef.js').TransformFile} TransformFile
+ * @typedef {import('../typedef.js').TemplateFilePath} TemplateFilePath
  * @typedef {import('../typedef.js').ProgressHandler} ProgressHandler
  *
  * @typedef {{ dest: string; content: string; }} WriteOp

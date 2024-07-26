@@ -22,7 +22,7 @@
  * @property {string} [registry]
  * @property {Platform} platform
  * @property {Module[]} modules
- * @property {TemplatePullOptions} template_pull
+ * @property {TemplatePullOptions} [template_pull]
  */
 
 /**
@@ -52,7 +52,7 @@
     'deployment/entrypoint.d/270_adjust_oidc_conf.sh' |
     'deployment/entrypoint.d/600_init_db.sh' |
     'deployment/appserver_config/oidc/conf.json'
-  } TransformFile
+  } TemplateFilePath
  */
 
 /**
@@ -76,7 +76,6 @@
  * @typedef {object} PullOptions
  * @property {string} [out='./utils-project-template'] The output directory for all template files and folders (defaults to `'./utils-project-template'`)
  * @property {ProgressHandler} [progress] Functions used to output progress logs (defaults to `console.{log,warn,error}`)
- * @property {string[]} [excludes] A list of files/folders to exclude from the pull operation
  */
 
 /**
