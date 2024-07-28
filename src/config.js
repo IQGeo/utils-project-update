@@ -47,7 +47,10 @@ export function readConfig(root) {
             module.shortVersion = module.version.replaceAll('.', '');
         }
 
-        if (!module.version && !module.devSrc) module.devSrc = module.name;
+        module.isExternal = !!module.version || !!module.devSrc;
+        if (!module.version && !module.devSrc) {
+            module.devSrc = module.name;
+        }
 
         //TBR: remove when modules can specify their own optional system dependencies
         const addDep = additionalModuleDependencies[module.name];

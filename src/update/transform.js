@@ -49,7 +49,7 @@ export const fileTransformers = {
     '.gitignore': (config, content) => {
         const { modules } = config;
         const productModules = modules
-            .filter(({ version }) => !!version)
+            .filter(({ isExternal }) => isExternal)
             .concat([{ name: 'dev_tools' }]);
 
         const names = modules.map(({ name }) => name);

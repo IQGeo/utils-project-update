@@ -11,6 +11,7 @@
  * @property {boolean} [dbInit]
  * @property {string} [schemaVersionName]
  * @property {string} [shortVersion]
+ * @property {boolean} [isExternal] Whether the module is external (i.e. not part of the project)
  */
 
 /**
