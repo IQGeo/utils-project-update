@@ -1,3 +1,4 @@
+import * as jsonc from 'jsonc-parser';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -91,16 +92,22 @@ export async function pull({
         return;
     }
 
+    /** @type {string[]} */
+    let excludes = [];
+
     /** @type {WriteOp[]} */
     const writeOps = [];
 
     const templateIqgeorcStr = await fs.promises.readFile(`${tmp}/.iqgeorc.jsonc`, 'utf8');
-
+    /** @type {Config} */
+    const templateIqgeorc = jsonc.parse(templateIqgeorcStr);
     if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
         const projectIqgeorcStr = await fs.promises.readFile(`${out}/.iqgeorc.jsonc`, 'utf8');
+        /** @type {Record<string, unknown>} */
+        const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
 
         // Compare `.iqgeorc.jsonc` keys and value types
-        const iqgeorcDiffs = compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr);
+        const iqgeorcDiffs = compareIqgeorc(projectIqgeorc, templateIqgeorc);
         if (
             iqgeorcDiffs.missingKeys.length ||
             iqgeorcDiffs.unexpectedKeys.length ||
@@ -108,6 +115,10 @@ export async function pull({
         ) {
             progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
         }
+
+        excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
+            ? projectIqgeorc.exclude_file_paths ?? []
+            : [];
     } else {
         progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
 
@@ -116,9 +127,6 @@ export async function pull({
             content: templateIqgeorcStr
         });
     }
-
-    const config = readConfig(out);
-    const excludes = config.exclude_file_paths ?? [];
 
     // add missing files and merge custom sections of project files that support them
     await Promise.allSettled(
