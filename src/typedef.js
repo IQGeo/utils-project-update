@@ -11,6 +11,7 @@
  * @property {boolean} [dbInit]
  * @property {string} [schemaVersionName]
  * @property {string} [shortVersion]
+ * @property {boolean} [isExternal] Whether the module is external (i.e. not part of the project)
  */
 
 /**
@@ -22,6 +23,7 @@
  * @property {string} [registry]
  * @property {Platform} platform
  * @property {Module[]} modules
+ * @property {string[]} [exclude_file_paths]
  */
 
 /**
@@ -35,6 +37,10 @@
     '.devcontainer/docker-compose.yml' |
     '.devcontainer/.env.example' |
     '.devcontainer/devcontainer.json' |
+    '.devcontainer/entrypoint.d/270_adjust_oidc_conf.sh' |
+    '.devcontainer/entrypoint.d/600_init_db.sh' |
+    '.devcontainer/entrypoint.d/850_fetch.sh' |
+    '.devcontainer/devserver_config/oidc/conf.json' |
     '.devcontainer/remote_host/devcontainer.json' |
     '.devcontainer/remote_host/dockerfile' |
     '.devcontainer/remote_host/docker-compose.yml' |
@@ -44,9 +50,10 @@
     'deployment/dockerfile.tools' |
     'deployment/docker-compose.yml' |
     'deployment/.env.example' |
+    'deployment/entrypoint.d/270_adjust_oidc_conf.sh' |
     'deployment/entrypoint.d/600_init_db.sh' |
-    '.devcontainer/entrypoint.d/600_init_db.sh'
-  } TransformFile
+    'deployment/appserver_config/oidc/conf.json'
+  } TemplateFilePath
  */
 
 /**

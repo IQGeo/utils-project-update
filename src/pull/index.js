@@ -1,7 +1,9 @@
+import * as jsonc from 'jsonc-parser';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
+import { readConfig } from '../config.js';
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
 
@@ -29,7 +31,7 @@ import { compareIqgeorc, mergeCustomSections } from './diff.js';
 */
 
 /**
- * @satisfies {ReadonlyArray<TransformFile>}
+ * @satisfies {ReadonlyArray<TemplateFilePath>}
  */
 const INCLUDE_FILES = [
     '.gitignore',
@@ -37,6 +39,10 @@ const INCLUDE_FILES = [
     '.devcontainer/docker-compose.yml',
     '.devcontainer/.env.example',
     '.devcontainer/devcontainer.json',
+    '.devcontainer/entrypoint.d/270_adjust_oidc_conf.sh',
+    '.devcontainer/entrypoint.d/600_init_db.sh',
+    '.devcontainer/entrypoint.d/850_fetch.sh',
+    '.devcontainer/devserver_config/oidc/conf.json',
     '.devcontainer/remote_host/devcontainer.json',
     '.devcontainer/remote_host/dockerfile',
     '.devcontainer/remote_host/docker-compose.yml',
@@ -45,7 +51,10 @@ const INCLUDE_FILES = [
     'deployment/dockerfile.appserver',
     'deployment/dockerfile.tools',
     'deployment/docker-compose.yml',
-    'deployment/.env.example'
+    'deployment/.env.example',
+    'deployment/entrypoint.d/270_adjust_oidc_conf.sh',
+    'deployment/entrypoint.d/600_init_db.sh',
+    'deployment/appserver_config/oidc/conf.json'
     // Custom content of shell files should be in separate files
 ];
 
@@ -83,16 +92,22 @@ export async function pull({
         return;
     }
 
+    /** @type {string[]} */
+    let excludes = [];
+
     /** @type {WriteOp[]} */
     const writeOps = [];
 
     const templateIqgeorcStr = await fs.promises.readFile(`${tmp}/.iqgeorc.jsonc`, 'utf8');
-
+    /** @type {Config} */
+    const templateIqgeorc = jsonc.parse(templateIqgeorcStr);
     if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
         const projectIqgeorcStr = await fs.promises.readFile(`${out}/.iqgeorc.jsonc`, 'utf8');
+        /** @type {Record<string, unknown>} */
+        const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
 
         // Compare `.iqgeorc.jsonc` keys and value types
-        const iqgeorcDiffs = compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr);
+        const iqgeorcDiffs = compareIqgeorc(projectIqgeorc, templateIqgeorc);
         if (
             iqgeorcDiffs.missingKeys.length ||
             iqgeorcDiffs.unexpectedKeys.length ||
@@ -100,6 +115,10 @@ export async function pull({
         ) {
             progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
         }
+
+        excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
+            ? projectIqgeorc.exclude_file_paths ?? []
+            : [];
     } else {
         progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
 
@@ -113,6 +132,8 @@ export async function pull({
     await Promise.allSettled(
         INCLUDE_FILES.map(async filepath => {
             const templateFileStr = await fs.promises.readFile(`${tmp}/${filepath}`, 'utf8');
+            // check if path matches any of the excludes patterns
+            if (excludes.some(exclude => new RegExp(exclude).test(filepath))) return;
 
             if (!fs.existsSync(`${out}/${filepath}`)) {
                 progress.log(2, `\`${filepath}\` not found in project, copying from template`);
@@ -244,7 +265,7 @@ async function writeFiles(writeOps, progress, out) {
 /**
  * @typedef {import('../typedef.js').Config} Config
  * @typedef {import('../typedef.js').PullOptions} PullOptions
- * @typedef {import('../typedef.js').TransformFile} TransformFile
+ * @typedef {import('../typedef.js').TemplateFilePath} TemplateFilePath
  * @typedef {import('../typedef.js').ProgressHandler} ProgressHandler
  *
  * @typedef {{ dest: string; content: string; }} WriteOp

@@ -43,14 +43,18 @@ const initDbModifier = (config, content) => {
 };
 
 /**
- * @satisfies {Record<TransformFile, Transformer>}
+ * @satisfies {Partial<Record<TemplateFilePath, Transformer>>}
  */
 export const fileTransformers = {
     '.gitignore': (config, content) => {
         const { modules } = config;
         const productModules = modules
-            .filter(({ version }) => !!version)
+            .filter(({ isExternal }) => isExternal)
             .concat([{ name: 'dev_tools' }]);
+
+        const names = modules.map(({ name }) => name);
+        if (!names.includes('custom')) productModules.push({ name: 'custom' });
+
         const newContent = productModules.map(({ name }) => `/${name}`).join('\n');
 
         content = content.replace(
@@ -197,10 +201,12 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
     /** @type {(module: Module) => boolean} */
     const isFromInjectorFn = ({ version, devSrc }) => !!version && !devSrc;
     /** @type {(module: Module) => boolean} */
-    const filter1 = isDevEnv ? isFromInjectorFn : ({ version }) => !!version;
+    const fromAsFilter = isDevEnv
+        ? isFromInjectorFn
+        : ({ version, devOnly }) => !!version && !devOnly;
 
     const section1 = modules
-        .filter(filter1)
+        .filter(fromAsFilter)
         .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} AS ${name}`)
         .join('\n');
 
@@ -210,10 +216,10 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
     );
 
     /** @type {(module: Module) => boolean} */
-    const filter2 = isDevEnv ? isFromInjectorFn : ({ devOnly }) => !devOnly;
+    const copyFilter = isDevEnv ? isFromInjectorFn : ({ devOnly }) => !devOnly;
 
     const section2 = modules
-        .filter(filter2)
+        .filter(copyFilter)
         .map(({ name, version }) =>
             version
                 ? `COPY --link --from=${name} / \${MODULES}/`
@@ -290,5 +296,5 @@ aptGetMappings.dev = keys.reduce((acc, key) => {
  * @typedef {import("../typedef.js").Module} Module
  * @typedef {import("../typedef.js").Config} Config
  * @typedef {import("../typedef.js").Transformer} Transformer
- * @typedef {import("../typedef.js").TransformFile} TransformFile
+ * @typedef {import("../typedef.js").TemplateFilePath} TemplateFilePath
  */

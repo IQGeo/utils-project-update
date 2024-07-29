@@ -1,19 +1,13 @@
 import * as diff from 'diff';
-import * as jsonc from 'jsonc-parser';
 
 /**
  * Compares `.iqgeorc.jsonc` files from project and template, checking for missing keys,
  * unexpected keys, and type mismatches.
  *
- * @param {string} projectIqgeorcStr
- * @param {string} templateIqgeorcStr
+ * @param {Record<string, unknown>} projectIqgeorc
+ * @param {Record<string, unknown>} templateIqgeorc
  */
-export function compareIqgeorc(projectIqgeorcStr, templateIqgeorcStr) {
-    /** @type {Record<string, unknown>} */
-    const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
-    /** @type {Config} */
-    const templateIqgeorc = jsonc.parse(templateIqgeorcStr);
-
+export function compareIqgeorc(projectIqgeorc, templateIqgeorc) {
     /** @type {Record<"missingKeys" | "unexpectedKeys" | "typeMismatches", string[]>} */
     const diffs = {
         missingKeys: [],
