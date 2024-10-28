@@ -86,23 +86,23 @@ export const fileTransformers = {
 
         return content
             .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
-            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`)
+            .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
+            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
             .replace(/iqgeo_myproj_devserver:/, `iqgeo_${prefix}_devserver:`);
     },
 
     '.devcontainer/remote_host/docker-compose.yml': (config, content) =>
-        content.replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
+        content.replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
 
     '.devcontainer/remote_host/docker-compose-shared.yml': (config, content) =>
-        content.replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
+        content.replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${config.prefix}}`),
 
     '.devcontainer/.env.example': (config, content) => {
         const { prefix, db_name } = config;
 
         return content
-            .replace(`PROJ_PREFIX=myproj`, `PROJ_PREFIX=${prefix}`)
-            .replace(`MYW_DB_NAME=iqgeo\n`, `MYW_DB_NAME=${db_name}\n`);
+            .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
+            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`)
     },
 
     '.devcontainer/devcontainer.json': (config, content) => {
@@ -111,10 +111,7 @@ export const fileTransformers = {
         // ENH: use jsonc-parser to replace these values
         return content
             .replace(/\"name\": \".*\"/, `"name": "${display_name}"`)
-            .replace(
-                `"service": "iqgeo_myproj_devserver"`,
-                `"service": "iqgeo_${prefix}_devserver"`
-            );
+            .replace(/"service": "iqgeo_(.*?)_devserver"/, `"service": "iqgeo_${prefix}_$1_devserver"`);
     },
 
     '.devcontainer/remote_host/devcontainer.json': (config, content) => {
@@ -173,16 +170,16 @@ export const fileTransformers = {
         const { prefix, db_name } = config;
 
         return content
-            .replace(/\${PROJ_PREFIX:-myproj}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME:-iqgeo}/g, `\${MYW_DB_NAME:-${db_name}}`);
+            .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
+            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
     },
 
     'deployment/.env.example': (config, content) => {
         const { prefix, db_name } = config;
 
         return content
-            .replace(`PROJ_PREFIX=myproj\n`, `PROJ_PREFIX=${prefix}\n`)
-            .replace(`MYW_DB_NAME=iqgeo\n`, `MYW_DB_NAME=${db_name}\n`);
+            .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
+            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`)
     },
 
     'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
