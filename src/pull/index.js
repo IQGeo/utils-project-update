@@ -119,6 +119,20 @@ export async function pull({
         excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
             ? projectIqgeorc.exclude_file_paths ?? []
             : [];
+
+        // Update template version
+        if (projectIqgeorc.version !== templateIqgeorc.version) {
+            const edit = jsonc.modify(projectIqgeorcStr, ['version'], templateIqgeorc.version, {
+                formattingOptions: {
+                    insertSpaces: true
+                }
+            });
+
+            writeOps.push({
+                dest: `${out}/.iqgeorc.jsonc`,
+                content: jsonc.applyEdits(projectIqgeorcStr, edit)
+            });
+        }
     } else {
         progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
 

@@ -24,6 +24,7 @@
  * @property {Platform} platform
  * @property {Module[]} modules
  * @property {string[]} [exclude_file_paths]
+ * @property {string} version
  */
 
 /**
