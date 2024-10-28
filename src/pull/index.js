@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { readConfig } from '../config.js';
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
 
@@ -47,6 +46,7 @@ const INCLUDE_FILES = [
     '.devcontainer/remote_host/dockerfile',
     '.devcontainer/remote_host/docker-compose.yml',
     '.devcontainer/remote_host/docker-compose-shared.yml',
+    '.vscode/tasks.json',
     'deployment/dockerfile.build',
     'deployment/dockerfile.appserver',
     'deployment/dockerfile.tools',
