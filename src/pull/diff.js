@@ -21,11 +21,13 @@ export function compareIqgeorc(projectIqgeorc, templateIqgeorc) {
      * @param {string} path
      */
     function compareObjects(obj1, obj2, path = '') {
+        const obj2Copy = { ...obj2 };
+
         Object.keys(obj1).forEach(key => {
             const joinedPath = path ? `${path}.${key}` : key;
-            const val2 = obj2[key];
+            const val2 = obj2Copy[key];
 
-            delete obj2[key]; // Delete expected keys so we're left with only unexpected ones below
+            delete obj2Copy[key]; // Delete expected keys so we're left with only unexpected ones below
 
             // Check missing keys
             if (val2 === undefined) {
@@ -52,12 +54,15 @@ export function compareIqgeorc(projectIqgeorc, templateIqgeorc) {
             }
         });
 
-        diffs.unexpectedKeys = Object.keys(obj2);
+        // Any keys left over from previous loop are unexpected
+        Object.keys(obj2Copy).forEach(key => {
+            diffs.unexpectedKeys.push(path ? `${path}.${key}` : key);
+        });
 
         return diffs;
     }
 
-    return compareObjects({ ...templateIqgeorc }, { ...projectIqgeorc });
+    return compareObjects(templateIqgeorc, projectIqgeorc);
 }
 
 /**
