@@ -57,7 +57,7 @@ export function compareIqgeorc(projectIqgeorc, templateIqgeorc) {
         return diffs;
     }
 
-    return compareObjects(templateIqgeorc, projectIqgeorc);
+    return compareObjects({ ...templateIqgeorc }, { ...projectIqgeorc });
 }
 
 /**
