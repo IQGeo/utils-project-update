@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { readConfig } from '../config.js';
 import { ensureCleanWorkingTree, run } from '../helpers.js';
 import { update } from '../update/index.js';
 
@@ -119,6 +118,20 @@ export async function pull({
         excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
             ? projectIqgeorc.exclude_file_paths ?? []
             : [];
+
+        // Update template version
+        if (projectIqgeorc.version !== templateIqgeorc.version) {
+            const edit = jsonc.modify(projectIqgeorcStr, ['version'], templateIqgeorc.version, {
+                formattingOptions: {
+                    insertSpaces: true
+                }
+            });
+
+            writeOps.push({
+                dest: `${out}/.iqgeorc.jsonc`,
+                content: jsonc.applyEdits(projectIqgeorcStr, edit)
+            });
+        }
     } else {
         progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
 
