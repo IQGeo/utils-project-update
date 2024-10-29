@@ -102,7 +102,7 @@ export const fileTransformers = {
 
         return content
             .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
-            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`)
+            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
     },
 
     '.devcontainer/devcontainer.json': (config, content) => {
@@ -111,7 +111,10 @@ export const fileTransformers = {
         // ENH: use jsonc-parser to replace these values
         return content
             .replace(/\"name\": \".*\"/, `"name": "${display_name}"`)
-            .replace(/"service": "iqgeo_(.*?)_devserver"/, `"service": "iqgeo_${prefix}_$1_devserver"`);
+            .replace(
+                /"service": "iqgeo_(.*?)_devserver"/,
+                `"service": "iqgeo_${prefix}_$1_devserver"`
+            );
     },
 
     '.devcontainer/remote_host/devcontainer.json': (config, content) => {
@@ -171,7 +174,7 @@ export const fileTransformers = {
 
         return content
             .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
+            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`);
     },
 
     'deployment/.env.example': (config, content) => {
@@ -179,7 +182,7 @@ export const fileTransformers = {
 
         return content
             .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
-            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`)
+            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
     },
 
     'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
