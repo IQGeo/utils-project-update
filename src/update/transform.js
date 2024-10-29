@@ -134,7 +134,7 @@ export const fileTransformers = {
     },
 
     'deployment/dockerfile.appserver': (config, content) => {
-        const { modules, platform } = config;
+        const { modules, platform, prefix } = config;
 
         content = replaceOptionalDeps(content, platform.appserver, 'build');
         content = replaceOptionalDeps(content, platform.appserver, 'runtime');
@@ -153,20 +153,29 @@ export const fileTransformers = {
             )
             .join('\n');
 
-        return content.replace(
-            /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
-            `$1\n${section2}\n$2`
-        );
+        return content
+            .replace(
+                /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
+                `$1\n${section2}\n$2`
+            )
+            .replace(/FROM iqgeo-.*-build as/, `FROM iqgeo-${prefix}-build as`);
     },
 
     'deployment/dockerfile.tools': (config, content) => {
-        const { platform } = config;
+        const { platform, prefix } = config;
 
         content = replaceOptionalDeps(content, platform.tools, 'build');
         content = replaceOptionalDeps(content, platform.tools, 'runtime');
 
-        content = content.replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`);
-        return content;
+        return content
+            .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
+            .replace(/FROM iqgeo-.*-build as/, `FROM iqgeo-${prefix}-build as`);
+    },
+
+    'deployment/README.md': (config, content) => {
+        const { prefix } = config;
+
+        return content.replace(/ -t iqgeo-.*-(build|tools)\n/g, ` -t iqgeo-${prefix}-$1\n`);
     },
 
     'deployment/docker-compose.yml': (config, content) => {

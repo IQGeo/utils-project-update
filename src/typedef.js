@@ -18,7 +18,7 @@
  * @typedef Config
  * @property {string} [name]
  * @property {string} [display_name]
- * @property {string} [prefix]
+ * @property {string} prefix
  * @property {string} [db_name]
  * @property {string} [registry]
  * @property {Platform} platform
@@ -50,6 +50,7 @@
     'deployment/dockerfile.build' |
     'deployment/dockerfile.appserver' |
     'deployment/dockerfile.tools' |
+    'deployment/README.md' |
     'deployment/docker-compose.yml' |
     'deployment/.env.example' |
     'deployment/entrypoint.d/270_adjust_oidc_conf.sh' |
