@@ -88,7 +88,7 @@ export const fileTransformers = {
             .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
             .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
             .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
-            .replace(/iqgeo_myproj_devserver:/, `iqgeo_${prefix}_devserver:`);
+            .replace(/iqgeo_.*_devserver:/, `iqgeo_${prefix}_devserver:`);
     },
 
     '.devcontainer/remote_host/docker-compose.yml': (config, content) =>
@@ -101,7 +101,7 @@ export const fileTransformers = {
         const { prefix, db_name } = config;
 
         return content
-            .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
+            .replace(/PROJ_PREFIX=.*\n/, `PROJ_PREFIX=${prefix}\n`)
             .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
     },
 
@@ -158,7 +158,7 @@ export const fileTransformers = {
                 /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
                 `$1\n${section2}\n$2`
             )
-            .replace(/FROM iqgeo-.*-build as/, `FROM iqgeo-${prefix}-build as`);
+            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`);
     },
 
     'deployment/dockerfile.tools': (config, content) => {
@@ -169,7 +169,7 @@ export const fileTransformers = {
 
         return content
             .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
-            .replace(/FROM iqgeo-.*-build as/, `FROM iqgeo-${prefix}-build as`);
+            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`);
     },
 
     'deployment/README.md': (config, content) => {
@@ -190,7 +190,7 @@ export const fileTransformers = {
         const { prefix, db_name } = config;
 
         return content
-            .replace(/PROJ_PREFIX=.*$/, `PROJ_PREFIX=${prefix}`)
+            .replace(/PROJ_PREFIX=.*\n/, `PROJ_PREFIX=${prefix}\n`)
             .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
     },
 
