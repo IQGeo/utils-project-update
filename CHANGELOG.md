@@ -1,3 +1,12 @@
+## [0.6.0](https://github.com/IQGeo/utils-project-update/compare/v0.5.0...v0.6.0) (10/31/24)
+
+- PLAT-9955: pull: better handling of unexpected keys (#11) ([9f0ab57](https://github.com/IQGeo/utils-project-update/commit/9f0ab5777783d029a78fdc4b83bc4e9c227e4ef3))
+- PLAT-9953: update: update build image tag with prefix ([92a7164](https://github.com/IQGeo/utils-project-update/commit/92a71648ec2d3784a43dbe48ab7e7e119230f215))
+- chore(transform): format ([7b129cd](https://github.com/IQGeo/utils-project-update/commit/7b129cdafe812cf6e9f338ad643678d290b6708a))
+- PLAT-9954: pull: update template version in project iqgeorc ([0b6ee46](https://github.com/IQGeo/utils-project-update/commit/0b6ee462a266a5319f10619519c9c78d68822e06))
+- PLAT-9957: pull: include .vscode/tasks.json ([8e28d59](https://github.com/IQGeo/utils-project-update/commit/8e28d595e5a27226158376653c3c17e68972c72e))
+- transform.js: improve replacement pattern matching (#9) ([b839cbf](https://github.com/IQGeo/utils-project-update/commit/b839cbf869109ec57a42bb526a8dfa8538a5f394))
+
 ## [0.5.0](https://github.com/IQGeo/utils-project-update/compare/v0.4.0...v0.5.0) (7/29/24)
 
 -   PLAT-9863: several improvements (a5ab0b)(https://github.com/IQGeo/utils-project-update/commit/a5ab0bc70c1accfd8a926d238ceef2fd5de95b5a)
