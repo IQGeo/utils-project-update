@@ -1,3 +1,8 @@
+## [0.6.1](https://github.com/IQGeo/utils-project-update/compare/v0.6.0...v0.6.1) (10/31/24)
+
+- update: some minor transform regex fixes ([25f9697](https://github.com/IQGeo/utils-project-update/commit/25f96973f09dc1db8f5325fa36b323d39b387ef0))
+- docs(changelog): v0.6.0 ([e4122bd](https://github.com/IQGeo/utils-project-update/commit/e4122bd4c11101bad23bae6f774ce81135647326))
+
 ## [0.6.0](https://github.com/IQGeo/utils-project-update/compare/v0.5.0...v0.6.0) (10/31/24)
 
 - PLAT-9955: pull: better handling of unexpected keys (#11) ([9f0ab57](https://github.com/IQGeo/utils-project-update/commit/9f0ab5777783d029a78fdc4b83bc4e9c227e4ef3))
