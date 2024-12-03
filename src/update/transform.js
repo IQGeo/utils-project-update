@@ -231,7 +231,7 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
         .filter(copyFilter)
         .map(({ name, version }) =>
             version
-                ? `COPY --link --from=${name} / \${MODULES}/`
+                ? `COPY --from=${name} / \${MODULES}/`
                 : `COPY --link ${name} \${MODULES}/${name}`
         )
         .join('\n');
