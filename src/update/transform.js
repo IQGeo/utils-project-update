@@ -166,6 +166,7 @@ export const fileTransformers = {
 
         content = replaceOptionalDeps(content, platform.tools, 'build');
         content = replaceOptionalDeps(content, platform.tools, 'runtime');
+        content = replaceFetchPipPackages(content, platform.tools);
 
         return content
             .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
