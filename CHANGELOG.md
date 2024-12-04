@@ -1,3 +1,8 @@
+## [0.6.2](https://github.com/IQGeo/utils-project-update/compare/v0.6.1...v0.6.2) (12/4/24)
+
+- PLAT-11001: transform: module injection: remove --link when using COPY --from (#15) ([5e607e9](https://github.com/IQGeo/utils-project-update/commit/5e607e9fa6f1e04fc2b3de8233015c760bdfda7b))
+- docs(changelog): v0.6.1 ([6b7bef0](https://github.com/IQGeo/utils-project-update/commit/6b7bef043538936c4ac15fc6390e2802a53d65b1))
+
 ## [0.6.1](https://github.com/IQGeo/utils-project-update/compare/v0.6.0...v0.6.1) (10/31/24)
 
 - update: some minor transform regex fixes ([25f9697](https://github.com/IQGeo/utils-project-update/commit/25f96973f09dc1db8f5325fa36b323d39b387ef0))
