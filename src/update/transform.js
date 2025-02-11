@@ -65,9 +65,9 @@ export const fileTransformers = {
     },
 
     '.devcontainer/dockerfile': (config, content) => {
-        const { modules, platform } = config;
+        const { platform } = config;
 
-        content = replaceModuleInjection(content, modules, true);
+        content = replaceModuleInjection(content, config, true);
         content = replaceOptionalDeps(content, platform.devenv, 'dev');
         content = replaceFetchPipPackages(content, platform.devenv);
 
@@ -125,9 +125,9 @@ export const fileTransformers = {
     },
 
     'deployment/dockerfile.build': (config, content) => {
-        const { modules, platform } = config;
+        const { platform } = config;
 
-        return replaceModuleInjection(content, modules).replace(
+        return replaceModuleInjection(content, config).replace(
             /platform-build:\S+/g,
             `platform-build:${platform.version}`
         );
@@ -202,11 +202,12 @@ export const fileTransformers = {
 
 /**
  * @param {string} content
- * @param {Module[]} modules
+ * @param {Config} config
  * @param {boolean} [isDevEnv=false]
  * @returns {string}
  */
-function replaceModuleInjection(content, modules, isDevEnv = false) {
+function replaceModuleInjection(content, config, isDevEnv = false) {
+    const { modules, version } = config;
     /** @type {(module: Module) => boolean} */
     const isFromInjectorFn = ({ version, devSrc }) => !!version && !devSrc;
     /** @type {(module: Module) => boolean} */
@@ -214,10 +215,15 @@ function replaceModuleInjection(content, modules, isDevEnv = false) {
         ? isFromInjectorFn
         : ({ version, devOnly }) => !!version && !devOnly;
 
-    const section1 = modules
-        .filter(fromAsFilter)
-        .map(({ name, version }) => `FROM \${CONTAINER_REGISTRY}${name}:${version} AS ${name}`)
-        .join('\n');
+    // use new registry paths only if version in jsonc file is higher than 0.6.0
+    const isNewRegistry = parseFloat(version.split('.').slice(0, 2).join('.')) >= 0.6;
+    /** @type {(module: Module) => string} */
+    const fromStatement = ({ name, version, registryProject }) => {
+        const registryProjectPath = isNewRegistry ? `${registryProject}/` : '';
+        return `FROM \${CONTAINER_REGISTRY}${registryProjectPath}/${name}:${version} AS ${name}`;
+    };
+
+    const section1 = modules.filter(fromAsFilter).map(fromStatement).join('\n');
 
     const replacedContent = content.replace(
         /(# START SECTION Aliases for Injector images.*)[\s\S]*?(# END SECTION)/,

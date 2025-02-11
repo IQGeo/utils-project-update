@@ -25,6 +25,33 @@ const moduleSchemaVersionNames = {
     pia_interface: 'myw_pia_schema'
 };
 
+const projectTomoduleMapping = {
+    capture: ['capture'],
+    comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db'],
+    electric: ['electric', 'electric_dev_db'],
+    gas: ['gas', 'gas_dev_db'],
+    network_revenue_optimizer: ['network_revenue_optimizer', 'network_revenue_optimizer_dev_db'],
+    survey: ['survey', 'survey_dev_db'],
+    workflow_manager: ['workflow_manager'],
+    platform: [
+        'dev_db',
+        'dev_tools',
+        'embedded_examples',
+        'vector_tile_styles',
+        'groups',
+        'mywapp_common'
+    ],
+    pia_interface: ['pia_interface']
+};
+const moduleToProjectMapping = Object.entries(projectTomoduleMapping).reduce(
+    (acc, [project, modules]) =>
+        modules.reduce((acc, module) => {
+            acc[module] = project;
+            return acc;
+        }, acc),
+    /** @type {Record<string, string>} */ ({})
+);
+
 /**
  * @param {string} root
  * @returns {Config}
@@ -62,6 +89,9 @@ export function readConfig(root) {
         //TBR: remove when modules can specify their schema version name
         module.schemaVersionName =
             module.schemaVersionName ?? moduleSchemaVersionNames[module.name];
+
+        module.registryProject = module.registryProject ?? moduleToProjectMapping[module.name];
+
         if (module.dbInit === true && !module.schemaVersionName)
             module.schemaVersionName = `${module.name}_schema`;
     }
