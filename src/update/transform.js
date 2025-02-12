@@ -219,8 +219,10 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
     const isNewRegistry = parseFloat(version.split('.').slice(0, 2).join('.')) >= 0.6;
     /** @type {(module: Module) => string} */
     const fromStatement = ({ name, version, registryProject }) => {
-        const registryProjectPath = isNewRegistry ? `${registryProject}/` : '';
-        return `FROM \${CONTAINER_REGISTRY}${registryProjectPath}/${name}:${version} AS ${name}`;
+        const registryPath = isNewRegistry
+            ? `\${PRODUCT_REGISTRY}${registryProject}`
+            : `\${CONTAINER_REGISTRY}`;
+        return `FROM ${registryPath}/${name}:${version} AS ${name}`;
     };
 
     const section1 = modules.filter(fromAsFilter).map(fromStatement).join('\n');
