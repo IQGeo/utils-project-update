@@ -1,3 +1,12 @@
+## [0.7.0](https://github.com/IQGeo/utils-project-update/compare/v0.6.2...v0.7.0) (2/12/25)
+
+- chore: playground pull (#17) ([cd553ab](https://github.com/IQGeo/utils-project-update/commit/cd553ab2cf08f889c4045b062673af66c69985fc))
+- ET-274: transform: fix semver version check (gt instead of gte) and slash fix ([370df49](https://github.com/IQGeo/utils-project-update/commit/370df49f8d41c7654628d4bb1f7920ee16abbfb2))
+- ET-274: transform: fix semver version check, add semver package ([880bf63](https://github.com/IQGeo/utils-project-update/commit/880bf63a435f6b4c16faec76a6aba2294fc8fadb))
+- fix transform to handle new PRODUCT_REGISTRY variable in the template ([4bef769](https://github.com/IQGeo/utils-project-update/commit/4bef7698919a5a9d94a77e4a35e2184f6bb78a98))
+- ET-274: transform: adjust to handle new container registry paths ([8aa4d53](https://github.com/IQGeo/utils-project-update/commit/8aa4d53922501bc877756889cf167a69fc9ad0bf))
+- docs(changelog): v0.6.2 ([45d995b](https://github.com/IQGeo/utils-project-update/commit/45d995b740312f6ffe7912180091d9f811b099e4))
+
 ## [0.6.2](https://github.com/IQGeo/utils-project-update/compare/v0.6.1...v0.6.2) (12/4/24)
 
 - PLAT-11001: transform: module injection: remove --link when using COPY --from (#15) ([5e607e9](https://github.com/IQGeo/utils-project-update/commit/5e607e9fa6f1e04fc2b3de8233015c760bdfda7b))
