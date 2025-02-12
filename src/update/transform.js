@@ -1,3 +1,5 @@
+import semver from 'semver';
+
 const aptGetMappings = {
     build: {
         memcached: ['libmemcached-dev'],
@@ -216,7 +218,8 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
         : ({ version, devOnly }) => !!version && !devOnly;
 
     // use new registry paths only if version in jsonc file is higher than 0.6.0
-    const isNewRegistry = parseFloat(version.split('.').slice(0, 2).join('.')) >= 0.6;
+    const isNewRegistry = version !== undefined && semver.gte(version, '0.6.0');
+
     /** @type {(module: Module) => string} */
     const fromStatement = ({ name, version, registryProject }) => {
         const registryPath = isNewRegistry
