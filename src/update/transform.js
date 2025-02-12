@@ -218,14 +218,14 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
         : ({ version, devOnly }) => !!version && !devOnly;
 
     // use new registry paths only if version in jsonc file is higher than 0.6.0
-    const isNewRegistry = version !== undefined && semver.gte(version, '0.6.0');
+    const isNewRegistry = version !== undefined && semver.gt(version, '0.6.0');
 
     /** @type {(module: Module) => string} */
     const fromStatement = ({ name, version, registryProject }) => {
         const registryPath = isNewRegistry
-            ? `\${PRODUCT_REGISTRY}${registryProject}`
+            ? `\${PRODUCT_REGISTRY}${registryProject}/`
             : `\${CONTAINER_REGISTRY}`;
-        return `FROM ${registryPath}/${name}:${version} AS ${name}`;
+        return `FROM ${registryPath}${name}:${version} AS ${name}`;
     };
 
     const section1 = modules.filter(fromAsFilter).map(fromStatement).join('\n');
