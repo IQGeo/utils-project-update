@@ -24,11 +24,11 @@ services:
                 aliases:
                     - keycloak.local
 
-    memcached:
+    redis:
         extends:
             file: ../docker-compose.yml
-            service: memcached
-        container_name: memcached
+            service: redis
+        container_name: redis
         networks:
             - iqgeo-network
 
@@ -39,6 +39,15 @@ services:
         container_name: pgadmin
         networks:
             - iqgeo-network
+
+    rq-dashboard:
+        extends:
+            file: ../docker-compose.yml
+            service: rq-dashboard
+        container_name: rq-dashboard
+        networks:
+            - iqgeo-network
+
     # START CUSTOM SECTION
     # END CUSTOM SECTION
 
