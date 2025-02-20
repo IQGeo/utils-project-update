@@ -35,6 +35,7 @@
 /**
   @typedef {
     '.gitignore' |
+    'tsconfig.json' |
     '.devcontainer/dockerfile' |
     '.devcontainer/docker-compose.yml' |
     '.devcontainer/.env.example' |

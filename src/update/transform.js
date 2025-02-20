@@ -1,3 +1,4 @@
+import * as jsonc from 'jsonc-parser';
 import semver from 'semver';
 
 const aptGetMappings = {
@@ -64,6 +65,23 @@ export const fileTransformers = {
             `$1\n${newContent}\n$2`
         );
         return content;
+    },
+
+    'tsconfig.json': (config, content) => {
+        const { modules } = config;
+        const existingPaths = content ? jsonc.parse(content).compilerOptions?.paths ?? {} : {};
+        const paths = modules.map(({ name }) => [`modules/${name}/*`, [`./${name}/public/*`]]);
+        const mergedPaths = { ...existingPaths, ...Object.fromEntries(paths) };
+
+        const edit = jsonc.modify(content, ['compilerOptions', 'paths'], mergedPaths, {
+            formattingOptions: { insertSpaces: true }
+        });
+
+        // Normalise paths whitespace formatting
+        // ENH: handle path arrays that span multiple lines
+        edit[0].content = edit[0].content.replaceAll(/\[\s*/g, '[').replaceAll(/\s*\]/g, ']');
+
+        return jsonc.applyEdits(content, edit);
     },
 
     '.devcontainer/dockerfile': (config, content) => {
