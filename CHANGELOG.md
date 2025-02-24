@@ -1,4 +1,4 @@
-## [0.8.0](https://github.com/IQGeo/utils-project-update/compare/v0.7.0...v0.8.0) (2/24/25)
+## [0.7.1](https://github.com/IQGeo/utils-project-update/compare/v0.7.0...v0.8.0) (2/24/25)
 
 - feat: handle tsconfig.json (#18) ([3366a4b](https://github.com/IQGeo/utils-project-update/commit/3366a4b2c49f11ba2f9c23af816066b67fd5da5f))
 - docs(changelog): v0.7.0 ([16112b4](https://github.com/IQGeo/utils-project-update/commit/16112b40d18c719d89b0569a05884962bb52c32c))
