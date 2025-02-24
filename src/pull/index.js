@@ -34,6 +34,7 @@ import { compareIqgeorc, mergeCustomSections } from './diff.js';
  */
 const INCLUDE_FILES = [
     '.gitignore',
+    'tsconfig.json',
     '.devcontainer/dockerfile',
     '.devcontainer/docker-compose.yml',
     '.devcontainer/.env.example',
