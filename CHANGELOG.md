@@ -1,3 +1,9 @@
+## [0.7.2](https://github.com/IQGeo/utils-project-update/compare/v0.7.1...v0.7.2) (2/26/25)
+
+- chore: change package-lock version back to 0.7.1 ([95b6254](https://github.com/IQGeo/utils-project-update/commit/95b625492062ccb680e29a47ec7b8ff435072c40))
+- transform: add missing container registry paths for comsof (#19) ([ef336e6](https://github.com/IQGeo/utils-project-update/commit/ef336e64286d2b8862e6d0962f7426fc76a4a8dd))
+- docs(changelog): change to v0.7.1 ([841b95d](https://github.com/IQGeo/utils-project-update/commit/841b95d5d8bb519958fbd2430dfec6f938806d8b))
+
 ## [0.7.1](https://github.com/IQGeo/utils-project-update/compare/v0.7.0...v0.8.0) (2/24/25)
 
 - feat: handle tsconfig.json (#18) ([3366a4b](https://github.com/IQGeo/utils-project-update/commit/3366a4b2c49f11ba2f9c23af816066b67fd5da5f))
