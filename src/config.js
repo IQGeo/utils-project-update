@@ -28,6 +28,7 @@ const moduleSchemaVersionNames = {
 const projectTomoduleMapping = {
     capture: ['capture'],
     comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db'],
+    comsof: ['comsof', 'comsof_dev_db'],
     electric: ['electric', 'electric_dev_db'],
     gas: ['gas', 'gas_dev_db'],
     network_revenue_optimizer: ['network_revenue_optimizer', 'network_revenue_optimizer_dev_db'],
@@ -90,7 +91,8 @@ export function readConfig(root) {
         module.schemaVersionName =
             module.schemaVersionName ?? moduleSchemaVersionNames[module.name];
 
-        module.registryProject = module.registryProject ?? moduleToProjectMapping[module.name];
+        module.registryProject =
+            module.registryProject ?? moduleToProjectMapping[module.name] ?? module.name;
 
         if (module.dbInit === true && !module.schemaVersionName)
             module.schemaVersionName = `${module.name}_schema`;
