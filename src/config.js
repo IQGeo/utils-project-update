@@ -33,7 +33,7 @@ const projectTomoduleMapping = {
     gas: ['gas', 'gas_dev_db'],
     network_revenue_optimizer: ['network_revenue_optimizer', 'network_revenue_optimizer_dev_db'],
     survey: ['survey', 'survey_dev_db'],
-    workflow_manager: ['workflow_manager'],
+    workflow_manager: ['workflow_manager', 'workflow_manager_dev_db', 'wfm_nmt', 'wfm_nmt_dev_db'],
     platform: [
         'dev_db',
         'dev_tools',
