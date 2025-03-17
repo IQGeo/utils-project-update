@@ -165,7 +165,13 @@ export async function pull({
             const projectFileStr = await fs.promises.readFile(`${out}/${filepath}`, 'utf8');
             if (templateFileStr === projectFileStr) return;
 
-            const mergedText = mergeCustomSections(templateFileStr, projectFileStr);
+            const isJsonc = filepath.endsWith('.jsonc') || filepath === 'tsconfig.json';
+
+            const mergedText = mergeCustomSections(
+                templateFileStr,
+                projectFileStr,
+                isJsonc ? '//' : '#'
+            );
 
             writeOps.push({
                 dest: `${out}/${filepath}`,
