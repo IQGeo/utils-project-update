@@ -71,7 +71,7 @@ export function compareIqgeorc(projectIqgeorc, templateIqgeorc) {
  * @param {string} templateFileStr
  * @param {string} projectFileStr
  */
-export function mergeCustomSections(templateFileStr, projectFileStr) {
+export function mergeCustomSections(templateFileStr, projectFileStr, commentDelimiter = '#') {
     const diffs = diff.diffLines(templateFileStr, projectFileStr);
 
     let mergedText = '';
@@ -86,26 +86,30 @@ export function mergeCustomSections(templateFileStr, projectFileStr) {
             return;
         }
 
+        const startComment = `${commentDelimiter} START CUSTOM SECTION`;
+        const endComment = `${commentDelimiter} END CUSTOM SECTION`;
+        const startRegex = new RegExp(startComment);
+        const endRegex = new RegExp(endComment);
+
         const sections =
             // Parts can either have complete custom sections, or just the start/end tag
-            part.value.match(/\s*# START CUSTOM SECTION.*?# END CUSTOM SECTION\s*/gs) ||
-            part.value.match(/\s*# START CUSTOM SECTION.*|.*?# END CUSTOM SECTION\s*/gs);
+            part.value.match(new RegExp(`\\s*${startComment}.*?${endComment}\\s*`, 'gs')) ||
+            part.value.match(new RegExp(`\\s*${startComment}.*|.*?${endComment}\\s*`, 'gs'));
 
         const extraText =
-            !/^\s*# START CUSTOM SECTION.*/s.test(part.value) &&
-            part.value.split(/# END CUSTOM SECTION/)[0];
+            !new RegExp(`^\s*${startComment}.*`, 's').test(part.value) &&
+            part.value.split(endRegex)[0];
 
         if (!sections && !extraText) {
             return;
         }
 
-        const mergedTextSplitByStartTag = mergedText.split(/(?=# START CUSTOM SECTION)/g);
+        const mergedTextSplitByStartTag = mergedText.split(new RegExp(`(?=${startComment})`, 'g'));
 
         let mergedTextSectionPop = /** @type {string} */ (mergedTextSplitByStartTag.pop());
 
         const isContinuation =
-            /# START CUSTOM SECTION/.test(mergedTextSectionPop) &&
-            !/# END CUSTOM SECTION/.test(mergedTextSectionPop);
+            startRegex.test(mergedTextSectionPop) && !endRegex.test(mergedTextSectionPop);
 
         // Add any extra text from start of part.value as continuation of open section
         if (extraText && isContinuation) {
@@ -119,7 +123,7 @@ export function mergeCustomSections(templateFileStr, projectFileStr) {
             // Prevent leaving duplicate section from template
             if (
                 !extraText &&
-                (isContinuation || /# END CUSTOM SECTION\s*$/s.test(mergedTextSectionPop))
+                (isContinuation || new RegExp(`${endComment}\\s*$`, 's').test(mergedTextSectionPop))
             ) {
                 // Discard last section and normalise indentation
                 mergedText = mergedTextSplitByStartTag.join('').replace(/[ \t]*$/, '');
