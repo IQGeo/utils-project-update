@@ -1,3 +1,7 @@
+## [0.8.0](https://github.com/IQGeo/utils-project-update/compare/v0.7.3...v0.8.0) (18/03/2025)
+
+- feat(pull): support custom sections in jsonc files ([114e128](https://github.com/IQGeo/utils-project-update/commit/114e1283bc8237ccb4296bfc60cb21c0011976a5))
+
 ## [0.7.3](https://github.com/IQGeo/utils-project-update/compare/v0.7.2...v0.7.3) (07/03/2025)
 
 - transform: add missing project mapping for wmt modules (#20) ([3e3898f](https://github.com/IQGeo/utils-project-update/commit/3e3898f5e2b809f791974ca439ed921920e1f4ae))
