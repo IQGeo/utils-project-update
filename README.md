@@ -2,17 +2,17 @@
 
 Update an IQGeo project based on options in a `.iqgeorc.jsonc` configuration file.
 
--   [Installation](#installation)
--   [Usage](#usage)
-    -   [CLI](#cli)
-    -   [JS](#js)
--   [Commands](#commands)
-    -   [Default (update)](#default-update)
-    -   [`pull`](#pull)
-        -   [Custom sections](#custom-sections)
--   [Contributing](#contributing)
-    -   [Playground](#playground)
-    -   [Debugging](#debugging)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [CLI](#cli)
+  - [JS](#js)
+- [Commands](#commands)
+  - [Default (update)](#default-update)
+  - [`pull`](#pull)
+    - [Custom sections](#custom-sections)
+- [Contributing](#contributing)
+  - [Playground](#playground)
+  - [Debugging](#debugging)
 
 ## Installation
 
@@ -83,6 +83,16 @@ To preserve content that isn't part of the project-template, you must wrap it in
 # CUSTOM SECTION START
 ...
 # CUSTOM SECTION END
+```
+
+JSONC:
+
+```jsonc
+{
+  // CUSTOM SECTION START
+  ...
+  // CUSTOM SECTION END
+}
 ```
 
 These sections will be sliced out and reinserted into the template files. Their positions will be preserved as best as possible, but please double-check to ensure nothing added or removed will affect it.
