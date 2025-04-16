@@ -25,7 +25,7 @@ const moduleSchemaVersionNames = {
     pia_interface: 'myw_pia_schema'
 };
 
-const projectTomoduleMapping = {
+const projectToModuleMapping = {
     capture: ['capture'],
     comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db'],
     comsof: ['comsof', 'comsof_dev_db'],
@@ -45,7 +45,7 @@ const projectTomoduleMapping = {
     ],
     pia_interface: ['pia_interface']
 };
-const moduleToProjectMapping = Object.entries(projectTomoduleMapping).reduce(
+const moduleToProjectMapping = Object.entries(projectToModuleMapping).reduce(
     (acc, [project, modules]) =>
         modules.reduce((acc, module) => {
             acc[module] = project;
