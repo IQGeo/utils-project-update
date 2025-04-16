@@ -40,7 +40,8 @@ const projectTomoduleMapping = {
         'embedded_examples',
         'vector_tile_styles',
         'groups',
-        'mywapp_common'
+        'mywapp_common',
+        'reporting_example'
     ],
     pia_interface: ['pia_interface']
 };
