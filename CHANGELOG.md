@@ -1,3 +1,10 @@
+## 0.8.1 (17/04/2025)
+
+- Pulling most recent playground updates and updating to platform version 7.3 (78b5c64)
+- PLAT-11474: js: added "reporting_example" to projectTomoduleMapping. (8d9bda2)
+- docs(readme): jsonc custom sections (971a4c7)
+- docs(changelog): v0.8.0 (7b094b6)
+
 ## [0.8.0](https://github.com/IQGeo/utils-project-update/compare/v0.7.3...v0.8.0) (18/03/2025)
 
 - feat(pull): support custom sections in jsonc files ([114e128](https://github.com/IQGeo/utils-project-update/commit/114e1283bc8237ccb4296bfc60cb21c0011976a5))
