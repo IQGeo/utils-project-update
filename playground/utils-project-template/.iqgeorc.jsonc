@@ -6,7 +6,7 @@
     "prefix": "myproj",
     "db_name": "iqgeo",
     "platform": {
-        "version": "7.1",
+        "version": "7.3",
         // Dev environment optional dependencies
         "devenv": ["memcached", "oidc"],
         // Optional dependencies for deployment environment application server
@@ -35,5 +35,5 @@
         //     "version": "1.2"
         // }
     ],
-    "version": "0.6.0"
+    "version": "0.7.2"
 }
