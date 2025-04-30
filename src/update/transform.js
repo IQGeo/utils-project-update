@@ -214,6 +214,32 @@ export const fileTransformers = {
             .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
     },
 
+    '.devcontainer/entrypoint.d/500_anywhere_setup.sh': (config, content) => {
+        const { modules } = config;
+
+        const section1 = modules
+            .map(({ name }) => `mkdir -p /opt/iqgeo/anywhere/modules/${name}`)
+            .join('\n');
+        const section2 = modules
+            .map(
+                ({ name }) =>
+                    `cp -r /opt/iqgeo/platform/WebApps/myworldapp/modules/${name}/public/* /opt/iqgeo/anywhere/modules/${name}/`
+            )
+            .join('\n');
+
+        console.log(section1);
+
+        return content
+            .replace(
+                /(# Start Section - make direcetory for bundles.*)[\s\S]*?(# End Section)/,
+                `${section1}`
+            )
+            .replace(
+                /(# Start Section - copy bundles to docker volumes.*)[\s\S]*?(# END Section)/,
+                `${section2}`
+            );
+    },
+
     'deployment/entrypoint.d/600_init_db.sh': initDbModifier,
     '.devcontainer/entrypoint.d/600_init_db.sh': initDbModifier
 };
