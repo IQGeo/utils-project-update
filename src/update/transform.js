@@ -227,8 +227,6 @@ export const fileTransformers = {
             )
             .join('\n');
 
-        console.log(section1);
-
         return content
             .replace(
                 /(# Start Section - make direcetory for bundles.*)[\s\S]*?(# End Section)/,
