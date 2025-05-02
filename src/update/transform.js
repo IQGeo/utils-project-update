@@ -229,12 +229,12 @@ export const fileTransformers = {
 
         return content
             .replace(
-                /(# Start Section - make direcetory for bundles.*)[\s\S]*?(# End Section)/,
-                `${section1}`
+                /(# START SECTION - make direcetory for bundles.*)[\s\S]*?(# END SECTION)/,
+                `$1\n${section1}\n$2`
             )
             .replace(
-                /(# Start Section - copy bundles to docker volumes.*)[\s\S]*?(# END Section)/,
-                `${section2}`
+                /(# START SECTION - copy bundles to docker volumes.*)[\s\S]*?(# END SECTION)/,
+                `$1\n${section2}\n$2`
             );
     },
 
