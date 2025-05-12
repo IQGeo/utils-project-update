@@ -1,3 +1,11 @@
+## [0.9.0](https://github.com/IQGeo/utils-project-update/compare/v0.8.0...v0.9.0) (5/12/25)
+
+- task/PLAT-11629: js: update transform functionality to include modules in 500_anywhere_setup.sh script (#24) ([37bb2bb](https://github.com/IQGeo/utils-project-update/commit/37bb2bbe48a42884cb3bbf310ad7e40e37bdf730))
+- Task/utils project update cleanup (#23) ([1ef9e60](https://github.com/IQGeo/utils-project-update/commit/1ef9e60f3bd6381d25c617e0d654e8f350ed0535))
+- PLAT-11474: js: added "reporting_example" to projectTomoduleMapping. (#22) ([0abe0e6](https://github.com/IQGeo/utils-project-update/commit/0abe0e665ff39d40e87044d6b07927bc8bd4cdea))
+- docs(readme): jsonc custom sections ([971a4c7](https://github.com/IQGeo/utils-project-update/commit/971a4c726832a2d60943058089222a6dbbbcbefd))
+- docs(changelog): v0.8.0 ([7b094b6](https://github.com/IQGeo/utils-project-update/commit/7b094b675c80043e368030d172751100f488d9b9))
+
 ## [0.8.0](https://github.com/IQGeo/utils-project-update/compare/v0.7.3...v0.8.0) (18/03/2025)
 
 - feat(pull): support custom sections in jsonc files ([114e128](https://github.com/IQGeo/utils-project-update/commit/114e1283bc8237ccb4296bfc60cb21c0011976a5))
