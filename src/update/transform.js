@@ -233,7 +233,7 @@ export const fileTransformers = {
                 `$1\n${section1}\n$2`
             )
             .replace(
-                /(# START SECTION - copy bundles to docker.*)[\s\S]*?(# END SECTION)/,
+                /(# START SECTION - copy bundles to docker volumes.*)[\s\S]*?(# END SECTION)/,
                 `$1\n${section2}\n$2`
             );
     },
