@@ -229,7 +229,7 @@ export const fileTransformers = {
 
         return content
             .replace(
-                /(# START SECTION - make direcetory for bundles.*)[\s\S]*?(# END SECTION)/,
+                /(# START SECTION - make directory for bundles.*)[\s\S]*?(# END SECTION)/,
                 `$1\n${section1}\n$2`
             )
             .replace(
