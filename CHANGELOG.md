@@ -1,3 +1,8 @@
+## 0.9.1 (20/05/2025)
+
+- Bug/fix spelling error in transform (#25) (766356a)
+- docs(changelog): v0.9.0 (3b355c1)
+
 ## [0.9.0](https://github.com/IQGeo/utils-project-update/compare/v0.8.0...v0.9.0) (5/12/25)
 
 - task/PLAT-11629: js: update transform functionality to include modules in 500_anywhere_setup.sh script (#24) ([37bb2bb](https://github.com/IQGeo/utils-project-update/commit/37bb2bbe48a42884cb3bbf310ad7e40e37bdf730))
