@@ -37,7 +37,7 @@ const projectToModuleMapping = {
     platform: [
         'dev_db',
         'dev_tools',
-        'embedded_examples',
+        'embeddedexamples',
         'vector_tile_styles',
         'groups',
         'mywapp_common',
