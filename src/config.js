@@ -37,6 +37,7 @@ const projectToModuleMapping = {
     platform: [
         'dev_db',
         'dev_tools',
+        'embeddedexamples',
         'embedded_examples',
         'vector_tile_styles',
         'groups',
