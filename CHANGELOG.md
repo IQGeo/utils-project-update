@@ -1,3 +1,9 @@
+## [0.9.2](https://github.com/IQGeo/utils-project-update/compare/v0.9.1...v0.9.2) (6/26/25)
+
+- Task/plat 11697 update embeddedexamples (#27) ([2c84281](https://github.com/IQGeo/utils-project-update/commit/2c842814f9c5b1d2eb8ad6ec6ef383f10f52edde))
+- enhance: playgroud: pull most recent version of utils-project-template version 0.8.0. (#26) ([ebb6a52](https://github.com/IQGeo/utils-project-update/commit/ebb6a52e43ac21825bd2d174a5e514ad4459a96e))
+- docs(changelog): v0.9.1 ([25c4535](https://github.com/IQGeo/utils-project-update/commit/25c4535022472fff2a0b6fa4af87a0d98fbe7afd))
+
 ## 0.9.1 (20/05/2025)
 
 - Bug/fix spelling error in transform (#25) (766356a)
