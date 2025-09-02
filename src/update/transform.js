@@ -51,14 +51,7 @@ const initDbModifier = (config, content) => {
 const upgradeDbModifier = (config, content) => {
     const { modules } = config;
 
-    const section1 = modules
-        .filter(({ version, dbInit = !!version, schemaVersionName }) => dbInit && schemaVersionName)
-        .map(
-            ({ name, schemaVersionName }) =>
-                // `if ! myw_db $MYW_DB_NAME list versions --layout keys | grep ${schemaVersionName} | grep version=; then myw_db $MYW_DB_NAME install ${name}; fi`
-                `myw_db $MYW_DB_NAME upgrade ${name}`
-        )
-        .join('\n');
+    const section1 = modules.map(({ name }) => `myw_db $MYW_DB_NAME upgrade ${name}`).join('\n');
 
     return content.replace(
         /(# START SECTION db upgrade.*)[\s\S]*?(# END SECTION)/,
