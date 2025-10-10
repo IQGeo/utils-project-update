@@ -55,7 +55,7 @@ const upgradeDbModifier = (config, content) => {
         .filter(({ version, dbInit = !!version, schemaVersionName }) => dbInit && schemaVersionName)
         .map(
             ({ name, schemaVersionName }) =>
-                `if ! myw_db $MYW_DB_NAME list versions --layout keys | grep ${schemaVersionName} | grep version=; then myw_db $MYW_DB_NAME upgrade ${name}; fi`
+                `if myw_db $MYW_DB_NAME list versions --layout keys | grep ${schemaVersionName} | grep version=; then myw_db $MYW_DB_NAME upgrade ${name}; fi`
         )
         .join('\n');
 
