@@ -1,3 +1,8 @@
+## [0.10.0](https://github.com/IQGeo/utils-project-update/compare/v0.9.2...v0.10.0) (13/10/2025)
+
+- PLAT-12007: js: update the transform to upgrade db only if installed ([e752e3d](https://github.com/IQGeo/utils-project-update/commit/e752e3d3705504b587f02ecf34da52296fcc9cf5))
+- docs(changelog): v0.9.2 ([96ab506](https://github.com/IQGeo/utils-project-update/commit/96ab5066af90638ba114193b77cc3b0e9d8dddcd))
+
 ## [0.9.2](https://github.com/IQGeo/utils-project-update/compare/v0.9.1...v0.9.2) (6/26/25)
 
 - Task/plat 11697 update embeddedexamples (#27) ([2c84281](https://github.com/IQGeo/utils-project-update/commit/2c842814f9c5b1d2eb8ad6ec6ef383f10f52edde))
