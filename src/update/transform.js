@@ -59,9 +59,12 @@ const upgradeDbModifier = (config, content) => {
         )
         .join('\n');
 
+    const hasContent = section1.trim().length > 0;
+    const finalSection = hasContent ? section1 : `:${section1}`;
+
     return content.replace(
         /(# START SECTION db upgrade.*)[\s\S]*?(# END SECTION)/,
-        `$1\n${section1}\n$2`
+        `$1\n${finalSection}\n$2`
     );
 };
 
