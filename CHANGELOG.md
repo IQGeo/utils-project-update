@@ -1,3 +1,8 @@
+## [0.10.1](https://github.com/IQGeo/utils-project-update/compare/v0.10.0...v0.10.1) (03/11/2025)
+
+- Bug/plat 12762 fix 610 syntax error (#29) ([354d5bc](https://github.com/IQGeo/utils-project-update/commit/354d5bc2c0fd6c70e172584962c00e17e51b6d7b))
+- docs(changelog): v0.10.0 ([0023d07](https://github.com/IQGeo/utils-project-update/commit/0023d07329c9bc3e6d9606b7bc793c0c74ccd144))
+
 ## [0.10.0](https://github.com/IQGeo/utils-project-update/compare/v0.9.2...v0.10.0) (13/10/2025)
 
 - PLAT-12007: js: update the transform to upgrade db only if installed ([e752e3d](https://github.com/IQGeo/utils-project-update/commit/e752e3d3705504b587f02ecf34da52296fcc9cf5))
