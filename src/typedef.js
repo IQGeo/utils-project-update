@@ -16,12 +16,18 @@
  */
 
 /**
+ * @typedef Deployment
+ * @property {string} [project_registry]
+ */
+
+/**
  * @typedef Config
  * @property {string} [name]
  * @property {string} [display_name]
  * @property {string} prefix
  * @property {string} [db_name]
  * @property {string} [registry]
+ * @property {Deployment} [deployment]
  * @property {Platform} platform
  * @property {Module[]} modules
  * @property {string[]} [exclude_file_paths]
@@ -57,6 +63,10 @@
     'deployment/README.md' |
     'deployment/docker-compose.yml' |
     'deployment/.env.example' |
+    'deployment/build_images.sh' |
+    'deployment/helm/values.yaml' |
+    'deployment/helm/minikube/minikube_image_load.sh' |
+    'deployment/helm/minikube/values-minikube.yaml' |
     'deployment/entrypoint.d/270_adjust_oidc_conf.sh' |
     'deployment/entrypoint.d/600_init_db.sh' |
     'deployment/entrypoint.d/610_upgrade_db.sh' |

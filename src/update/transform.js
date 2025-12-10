@@ -218,7 +218,10 @@ export const fileTransformers = {
     'deployment/README.md': (config, content) => {
         const { prefix } = config;
 
-        return content.replace(/ -t iqgeo-.*-(build|tools)\n/g, ` -t iqgeo-${prefix}-$1\n`);
+        return content.replace(
+            / -t iqgeo-.*-(build|tools|appserver)\n/g,
+            ` -t iqgeo-${prefix}-$1\n`
+        );
     },
 
     'deployment/docker-compose.yml': (config, content) => {
@@ -235,6 +238,40 @@ export const fileTransformers = {
         return content
             .replace(/PROJ_PREFIX=.*\n/, `PROJ_PREFIX=${prefix}\n`)
             .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
+    },
+
+    'deployment/build_images.sh': (config, content) => {
+        const { prefix, deployment } = config;
+        const { project_registry } = deployment || {};
+        return content
+            .replace(/PROJ_PREFIX=".*"/, `PROJ_PREFIX="${prefix}"`)
+            .replace(/PROJECT_REGISTRY=".*"/, `PROJECT_REGISTRY="${project_registry}"`);
+    },
+
+    'deployment/helm/minikube/minikube_image_load.sh': (config, content) => {
+        const { prefix } = config;
+
+        // replace line PROJ_PREFIX=".*"
+        return content.replace(/PROJ_PREFIX=".*"/, `PROJ_PREFIX="${prefix}"`);
+    },
+
+    'deployment/helm/values.yaml': (config, content) => {
+        const { prefix, deployment } = config;
+        const { project_registry } = deployment || {};
+
+        // replace "prefix: .*"
+        return content
+            .replace(/prefix: .*\n/, `prefix: ${prefix}\n`)
+            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
+    },
+
+    'deployment/helm/minikube/values-minikube.yaml': (config, content) => {
+        const { prefix, deployment } = config;
+        const { project_registry } = deployment || {};
+
+        return content
+            .replace(/prefix: .*\n/, `prefix: ${prefix}\n`)
+            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
     },
 
     '.devcontainer/entrypoint.d/500_anywhere_setup.sh': (config, content) => {
