@@ -259,9 +259,9 @@ export const fileTransformers = {
         const { prefix, deployment } = config;
         const { project_registry } = deployment || {};
 
-        // replace "prefix: .*"
+        // replace "imagePrefix: .*"
         return content
-            .replace(/prefix: .*\n/, `prefix: ${prefix}\n`)
+            .replace(/imagePrefix: .*\n/, `imagePrefix: ${prefix}\n`)
             .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
     },
 
@@ -270,7 +270,7 @@ export const fileTransformers = {
         const { project_registry } = deployment || {};
 
         return content
-            .replace(/prefix: .*\n/, `prefix: ${prefix}\n`)
+            .replace(/imagePrefix: .*\n/, `imagePrefix: ${prefix}\n`)
             .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
     },
 
