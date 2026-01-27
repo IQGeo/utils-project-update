@@ -1,3 +1,7 @@
+## [0.12.0](https://github.com/IQGeo/utils-project-update/compare/v0.11.0...v0.12.0) (27/01/2026)
+
+- docs(changelog): v0.11.0 ([c412a2f](https://github.com/IQGeo/utils-project-update/commit/c412a2f2b33feadcdab2bc59c21fb2fcd7eb3fdb))
+
 ## [0.11.0](https://github.com/IQGeo/utils-project-update/compare/v0.10.1...v0.11.0) (09/01/2026)
 
 - transform: update new deployment files - values.yaml and image scripts (#30) ([4389e04](https://github.com/IQGeo/utils-project-update/commit/4389e042605cbb80468a55c02dec4fb2fc0cdfaa))
