@@ -1,6 +1,6 @@
 {
     "name": "project-update",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "description": "Update an IQGeo project based on options in a .iqgeorc.jsonc configuration file.",
     "author": "IQGeo",
     "license": "ISC",
