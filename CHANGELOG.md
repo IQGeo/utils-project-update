@@ -1,3 +1,8 @@
+## [0.13.0](https://github.com/IQGeo/utils-project-update/compare/v0.12.0...v0.13.0) (27/01/2026)
+
+- transform: update values.yaml files for change in helm chart (#31) ([42d04ad](https://github.com/IQGeo/utils-project-update/commit/42d04ad92e581c06769695d2e2e77015501a24b8))
+- docs(changelog): v0.12.0 ([2312ec7](https://github.com/IQGeo/utils-project-update/commit/2312ec79da8e4c7557d58b10fabe4bcb656cb24f))
+
 ## [0.12.0](https://github.com/IQGeo/utils-project-update/compare/v0.11.0...v0.12.0) (27/01/2026)
 
 - docs(changelog): v0.11.0 ([c412a2f](https://github.com/IQGeo/utils-project-update/commit/c412a2f2b33feadcdab2bc59c21fb2fcd7eb3fdb))
