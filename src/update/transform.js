@@ -92,7 +92,7 @@ export const fileTransformers = {
 
     'tsconfig.json': (config, content) => {
         const { modules } = config;
-        const existingPaths = content ? jsonc.parse(content).compilerOptions?.paths ?? {} : {};
+        const existingPaths = content ? (jsonc.parse(content).compilerOptions?.paths ?? {}) : {};
         const paths = modules.map(({ name }) => [`modules/${name}/*`, [`./${name}/public/*`]]);
         const mergedPaths = { ...existingPaths, ...Object.fromEntries(paths) };
 
@@ -248,14 +248,14 @@ export const fileTransformers = {
             .replace(/PROJECT_REGISTRY=".*"/, `PROJECT_REGISTRY="${project_registry}"`);
     },
 
-    'deployment/helm/minikube/minikube_image_load.sh': (config, content) => {
+    'deployment/minikube/minikube_image_load.sh': (config, content) => {
         const { prefix } = config;
 
         // replace line PROJ_PREFIX=".*"
         return content.replace(/PROJ_PREFIX=".*"/, `PROJ_PREFIX="${prefix}"`);
     },
 
-    'deployment/helm/values.yaml': (config, content) => {
+    'deployment/values.yaml': (config, content) => {
         const { prefix, deployment } = config;
         const { project_registry } = deployment || {};
 
@@ -265,7 +265,7 @@ export const fileTransformers = {
             .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
     },
 
-    'deployment/helm/minikube/values-minikube.yaml': (config, content) => {
+    'deployment/minikube/values-minikube.yaml': (config, content) => {
         const { prefix, deployment } = config;
         const { project_registry } = deployment || {};
 
