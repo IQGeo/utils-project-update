@@ -64,9 +64,9 @@
     'deployment/docker-compose.yml' |
     'deployment/.env.example' |
     'deployment/build_images.sh' |
-    'deployment/helm/values.yaml' |
-    'deployment/helm/minikube/minikube_image_load.sh' |
-    'deployment/helm/minikube/values-minikube.yaml' |
+    'deployment/values.yaml' |
+    'deployment/minikube/minikube_image_load.sh' |
+    'deployment/minikube/values-minikube.yaml' |
     'deployment/entrypoint.d/270_adjust_oidc_conf.sh' |
     'deployment/entrypoint.d/600_init_db.sh' |
     'deployment/entrypoint.d/610_upgrade_db.sh' |
