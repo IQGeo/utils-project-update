@@ -289,16 +289,8 @@ export const fileTransformers = {
 
         // Update image names (iqgeo-<prefix>-build, iqgeo-<prefix>-appserver, iqgeo-<prefix>-tools)
         content = content.replace(
-            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-build/,
-            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-build`
-        );
-        content = content.replace(
-            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-appserver/,
-            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-appserver`
-        );
-        content = content.replace(
-            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-tools/,
-            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-tools`
+            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-(build|appserver|tools)/g,
+            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-$1`
         );
 
         return content;
