@@ -274,6 +274,28 @@ export const fileTransformers = {
             .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
     },
 
+    '.github/workflows/build-deployment-images.yml': (config, content) => {
+        const { prefix, deployment, platform } = config;
+        const { project_registry } = deployment || {};
+
+        // Update default platform version in workflow_dispatch inputs
+        content = content.replace(
+            /(platform_version:[\s\S]*?default: )'[^']*'/,
+            `$1'${platform.version}'`
+        );
+
+        // Update PROJECT_REGISTRY in env section
+        content = content.replace(/PROJECT_REGISTRY: .*/, `PROJECT_REGISTRY: ${project_registry}`);
+
+        // Update image names (iqgeo-<prefix>-build, iqgeo-<prefix>-appserver, iqgeo-<prefix>-tools)
+        content = content.replace(
+            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-(build|appserver|tools)/g,
+            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-$1`
+        );
+
+        return content;
+    },
+
     '.devcontainer/entrypoint.d/500_anywhere_setup.sh': (config, content) => {
         const { modules } = config;
 
