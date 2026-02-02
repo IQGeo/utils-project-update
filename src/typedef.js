@@ -56,6 +56,7 @@
     '.devcontainer/remote_host/dockerfile' |
     '.devcontainer/remote_host/docker-compose.yml' |
     '.devcontainer/remote_host/docker-compose-shared.yml' |
+    '.github/workflows/build-deployment-images.yml' |
     '.vscode/tasks.json' |
     'deployment/dockerfile.build' |
     'deployment/dockerfile.appserver' |
