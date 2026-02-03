@@ -1,3 +1,9 @@
+## [0.13.1](https://github.com/IQGeo/utils-project-update/compare/v0.13.0...v0.13.1) (02/02/2026)
+
+- transform: handles new GHA workflow file (#33) ([61c40af](https://github.com/IQGeo/utils-project-update/commit/61c40af4c1164c221985775a59dff5b6d25e4b60))
+- transform: update deployment file paths (#32) ([3b00b8d](https://github.com/IQGeo/utils-project-update/commit/3b00b8d723ebe3a087477f19dec4a6d4252aa404))
+- docs(changelog): v0.13.0 ([ea89f4c](https://github.com/IQGeo/utils-project-update/commit/ea89f4cacc7816b6375ef4ca047805cc9d9f2aac))
+
 ## [0.13.0](https://github.com/IQGeo/utils-project-update/compare/v0.12.0...v0.13.0) (27/01/2026)
 
 - transform: update values.yaml files for change in helm chart (#31) ([42d04ad](https://github.com/IQGeo/utils-project-update/commit/42d04ad92e581c06769695d2e2e77015501a24b8))
