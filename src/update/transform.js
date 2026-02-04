@@ -178,6 +178,8 @@ export const fileTransformers = {
 
     'deployment/dockerfile.appserver': (config, content) => {
         const { modules, platform, prefix } = config;
+        const { deployment } = config;
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         content = replaceOptionalDeps(content, platform.appserver, 'build');
         content = replaceOptionalDeps(content, platform.appserver, 'runtime');
@@ -201,18 +203,24 @@ export const fileTransformers = {
                 /(# START SECTION Copy modules.*)[\s\S]*?(# END SECTION)/,
                 `$1\n${section2}\n$2`
             )
-            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`);
+            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
+            .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
 
     'deployment/dockerfile.tools': (config, content) => {
         const { platform, prefix } = config;
+        const { deployment } = config;
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         content = replaceOptionalDeps(content, platform.tools, 'build');
         content = replaceOptionalDeps(content, platform.tools, 'runtime');
 
         return content
             .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
-            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`);
+            .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
+            .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
 
     'deployment/README.md': (config, content) => {
@@ -242,10 +250,11 @@ export const fileTransformers = {
 
     'deployment/build_images.sh': (config, content) => {
         const { prefix, deployment } = config;
-        const { project_registry } = deployment || {};
+        const { project_registry = '', project_repository = '' } = deployment || {};
         return content
             .replace(/PROJ_PREFIX=".*"/, `PROJ_PREFIX="${prefix}"`)
-            .replace(/PROJECT_REGISTRY=".*"/, `PROJECT_REGISTRY="${project_registry}"`);
+            .replace(/PROJECT_REGISTRY=".*"/, `PROJECT_REGISTRY="${project_registry}"`)
+            .replace(/PROJECT_REPOSITORY=".*"/, `PROJECT_REPOSITORY="${project_repository}"`);
     },
 
     'deployment/minikube/minikube_image_load.sh': (config, content) => {
@@ -257,26 +266,28 @@ export const fileTransformers = {
 
     'deployment/values.yaml': (config, content) => {
         const { prefix, deployment } = config;
-        const { project_registry } = deployment || {};
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         // replace "imagePrefix: .*"
         return content
             .replace(/imagePrefix: .*\n/, `imagePrefix: ${prefix}\n`)
-            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
+            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`)
+            .replace(/projectRepository: .*\n/, `projectRepository: ${project_repository}\n`);
     },
 
     'deployment/minikube/values-minikube.yaml': (config, content) => {
         const { prefix, deployment } = config;
-        const { project_registry } = deployment || {};
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         return content
             .replace(/imagePrefix: .*\n/, `imagePrefix: ${prefix}\n`)
-            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`);
+            .replace(/projectRegistry: .*\n/, `projectRegistry: ${project_registry}\n`)
+            .replace(/projectRepository: .*\n/, `projectRepository: ${project_repository}\n`);
     },
 
     '.github/workflows/build-deployment-images.yml': (config, content) => {
         const { prefix, deployment, platform } = config;
-        const { project_registry } = deployment || {};
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         // Update default platform version in workflow_dispatch inputs
         content = content.replace(
@@ -284,13 +295,15 @@ export const fileTransformers = {
             `$1'${platform.version}'`
         );
 
-        // Update PROJECT_REGISTRY in env section
-        content = content.replace(/PROJECT_REGISTRY: .*/, `PROJECT_REGISTRY: ${project_registry}`);
+        // Update PROJECT_REGISTRY and PROJECT_REPOSITORY in env section
+        content = content
+            .replace(/PROJECT_REGISTRY: .*/, `PROJECT_REGISTRY: ${project_registry}`)
+            .replace(/PROJECT_REPOSITORY: .*/, `PROJECT_REPOSITORY: ${project_repository}`);
 
         // Update image names (iqgeo-<prefix>-build, iqgeo-<prefix>-appserver, iqgeo-<prefix>-tools)
         content = content.replace(
-            /image_name: \$\{\{ env\.PROJECT_REGISTRY \}\}iqgeo-.*-(build|appserver|tools)/g,
-            `image_name: \$\{\{ env.PROJECT_REGISTRY \}\}iqgeo-${prefix}-$1`
+            /image_name: .*iqgeo-.*-(build|appserver|tools)/g,
+            `image_name: ${project_registry}/${project_repository}/iqgeo-${prefix}-$1`
         );
 
         return content;
@@ -345,12 +358,15 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
 
     // use new registry paths only if version in jsonc file is higher than 0.6.0
     const isNewRegistry = version !== undefined && semver.gt(version, '0.6.0');
+    const hasRepositoryPrefix = content.includes('PRODUCT_REPOSITORY_PREFIX');
 
     /** @type {(module: Module) => string} */
     const fromStatement = ({ name, version, registryProject }) => {
-        const registryPath = isNewRegistry
-            ? `\${PRODUCT_REGISTRY}${registryProject}/`
-            : `\${CONTAINER_REGISTRY}`;
+        const registryPath = hasRepositoryPrefix
+            ? `\${PRODUCT_REGISTRY}/\${PRODUCT_REPOSITORY_PREFIX}${registryProject}/`
+            : isNewRegistry
+              ? `\${PRODUCT_REGISTRY}${registryProject}/`
+              : `\${CONTAINER_REGISTRY}`;
         return `FROM ${registryPath}${name}:${version} AS ${name}`;
     };
 

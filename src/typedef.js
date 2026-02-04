@@ -18,6 +18,7 @@
 /**
  * @typedef Deployment
  * @property {string} [project_registry]
+ * @property {string} [project_repository]
  */
 
 /**
