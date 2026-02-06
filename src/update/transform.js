@@ -306,6 +306,12 @@ export const fileTransformers = {
             `image_name: ${project_registry}/${project_repository}/iqgeo-${prefix}-$1`
         );
 
+        //replace `registry: ` in login step
+        content = content.replace(
+            /registry: .*(?=\n\s*username:)/g,
+            `registry: ${project_registry}`
+        );
+
         return content;
     },
 
