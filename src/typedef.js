@@ -18,6 +18,7 @@
 /**
  * @typedef Deployment
  * @property {string} [project_registry]
+ * @property {string} [project_repository]
  */
 
 /**
@@ -65,6 +66,7 @@
     'deployment/docker-compose.yml' |
     'deployment/.env.example' |
     'deployment/build_images.sh' |
+    'deployment/fleet.yaml' |
     'deployment/values.yaml' |
     'deployment/minikube/minikube_image_load.sh' |
     'deployment/minikube/values-minikube.yaml' |

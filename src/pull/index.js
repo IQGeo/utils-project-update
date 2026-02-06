@@ -48,6 +48,7 @@ const INCLUDE_FILES = [
     '.devcontainer/remote_host/dockerfile',
     '.devcontainer/remote_host/docker-compose.yml',
     '.devcontainer/remote_host/docker-compose-shared.yml',
+    '.github/workflows/build-deployment-images.yml',
     '.vscode/tasks.json',
     'deployment/dockerfile.build',
     'deployment/dockerfile.appserver',
@@ -55,6 +56,7 @@ const INCLUDE_FILES = [
     'deployment/docker-compose.yml',
     'deployment/.env.example',
     'deployment/build_images.sh',
+    'deployment/fleet.yaml',
     'deployment/values.yaml',
     'deployment/minikube/values-minikube.yaml',
     'deployment/minikube/minikube_image_load.sh',
@@ -124,7 +126,7 @@ export async function pull({
         }
 
         excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
-            ? projectIqgeorc.exclude_file_paths ?? []
+            ? (projectIqgeorc.exclude_file_paths ?? [])
             : [];
 
         // Update template version
