@@ -67,6 +67,9 @@ const INCLUDE_FILES = [
     // Custom content of shell files should be in separate files
 ];
 
+// const TEMPLATE_BRANCH = 'main';
+const TEMPLATE_BRANCH = 'dev';
+
 const SUCCESS_MSG = 'IQGeo project template pulled successfully! Please ensure changes are correct';
 
 /**
@@ -129,17 +132,38 @@ export async function pull({
             ? (projectIqgeorc.exclude_file_paths ?? [])
             : [];
 
+        const formattingOptions = { insertSpaces: true };
+        let projectIqgeorcStrUpdated = projectIqgeorcStr;
+        let hasIqgeorcChanges = false;
+
         // Update template version
         if (projectIqgeorc.version !== templateIqgeorc.version) {
-            const edit = jsonc.modify(projectIqgeorcStr, ['version'], templateIqgeorc.version, {
-                formattingOptions: {
-                    insertSpaces: true
-                }
-            });
+            const edit = jsonc.modify(
+                projectIqgeorcStrUpdated,
+                ['version'],
+                templateIqgeorc.version,
+                { formattingOptions }
+            );
+            projectIqgeorcStrUpdated = jsonc.applyEdits(projectIqgeorcStrUpdated, edit);
+            hasIqgeorcChanges = true;
+        }
 
+        // Add deployment section if missing
+        if (!projectIqgeorc.deployment) {
+            const edit = jsonc.modify(
+                projectIqgeorcStrUpdated,
+                ['deployment'],
+                templateIqgeorc.deployment ?? {},
+                { formattingOptions }
+            );
+            projectIqgeorcStrUpdated = jsonc.applyEdits(projectIqgeorcStrUpdated, edit);
+            hasIqgeorcChanges = true;
+        }
+
+        if (hasIqgeorcChanges) {
             writeOps.push({
                 dest: `${out}/.iqgeorc.jsonc`,
-                content: jsonc.applyEdits(projectIqgeorcStr, edit)
+                content: projectIqgeorcStrUpdated
             });
         }
     } else {
