@@ -67,6 +67,9 @@ const INCLUDE_FILES = [
     // Custom content of shell files should be in separate files
 ];
 
+// const TEMPLATE_BRANCH = 'main';
+const TEMPLATE_BRANCH = 'dev';
+
 const SUCCESS_MSG = 'IQGeo project template pulled successfully! Please ensure changes are correct';
 
 /**
@@ -101,53 +104,23 @@ export async function pull({
         return;
     }
 
-    /** @type {string[]} */
-    let excludes = [];
-
     /** @type {WriteOp[]} */
     const writeOps = [];
 
     const templateIqgeorcStr = await fs.promises.readFile(`${tmp}/.iqgeorc.jsonc`, 'utf8');
     /** @type {Config} */
     const templateIqgeorc = jsonc.parse(templateIqgeorcStr);
-    if (fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
-        const projectIqgeorcStr = await fs.promises.readFile(`${out}/.iqgeorc.jsonc`, 'utf8');
-        /** @type {Record<string, unknown>} */
-        const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
+    const { excludes, updatedIqgeorcContent } = await handleIqgeorc(
+        out,
+        templateIqgeorcStr,
+        templateIqgeorc,
+        progress
+    );
 
-        // Compare `.iqgeorc.jsonc` keys and value types
-        const iqgeorcDiffs = compareIqgeorc(projectIqgeorc, templateIqgeorc);
-        if (
-            iqgeorcDiffs.missingKeys.length ||
-            iqgeorcDiffs.unexpectedKeys.length ||
-            iqgeorcDiffs.typeMismatches.length
-        ) {
-            progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', iqgeorcDiffs);
-        }
-
-        excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
-            ? (projectIqgeorc.exclude_file_paths ?? [])
-            : [];
-
-        // Update template version
-        if (projectIqgeorc.version !== templateIqgeorc.version) {
-            const edit = jsonc.modify(projectIqgeorcStr, ['version'], templateIqgeorc.version, {
-                formattingOptions: {
-                    insertSpaces: true
-                }
-            });
-
-            writeOps.push({
-                dest: `${out}/.iqgeorc.jsonc`,
-                content: jsonc.applyEdits(projectIqgeorcStr, edit)
-            });
-        }
-    } else {
-        progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
-
+    if (updatedIqgeorcContent) {
         writeOps.push({
             dest: `${out}/.iqgeorc.jsonc`,
-            content: templateIqgeorcStr
+            content: updatedIqgeorcContent
         });
     }
 
@@ -197,6 +170,78 @@ export async function pull({
     progress.log(1, SUCCESS_MSG);
 }
 
+/**
+ * @param {string} out
+ * @param {string} templateIqgeorcStr
+ * @param {Config} templateIqgeorc
+ * @param {ProgressHandler} progress
+ * @returns {Promise<{ excludes: string[]; updatedIqgeorcContent?: string }>}
+ */
+async function handleIqgeorc(out, templateIqgeorcStr, templateIqgeorc, progress) {
+    /** @type {string[]} */
+    let excludes = [];
+
+    if (!fs.existsSync(`${out}/.iqgeorc.jsonc`)) {
+        progress.log(2, '`.iqgeorc.jsonc` not found in project, copying from template');
+
+        return { excludes, updatedIqgeorcContent: templateIqgeorcStr };
+    }
+
+    const projectIqgeorcStr = await fs.promises.readFile(`${out}/.iqgeorc.jsonc`, 'utf8');
+    /** @type {Record<string, unknown>} */
+    const projectIqgeorc = jsonc.parse(projectIqgeorcStr);
+
+    excludes = Array.isArray(projectIqgeorc.exclude_file_paths)
+        ? (projectIqgeorc.exclude_file_paths ?? [])
+        : [];
+
+    const formattingOptions = { insertSpaces: true };
+    let projectIqgeorcStrUpdated = projectIqgeorcStr;
+    let hasIqgeorcChanges = false;
+    /** @type {Record<string, unknown>} */
+    const updatedProjectIqgeorc = { ...projectIqgeorc };
+
+    // Update template version
+    if (projectIqgeorc.version !== templateIqgeorc.version) {
+        const edit = jsonc.modify(projectIqgeorcStrUpdated, ['version'], templateIqgeorc.version, {
+            formattingOptions
+        });
+        projectIqgeorcStrUpdated = jsonc.applyEdits(projectIqgeorcStrUpdated, edit);
+        updatedProjectIqgeorc.version = templateIqgeorc.version;
+        hasIqgeorcChanges = true;
+    }
+
+    // Add deployment section if missing
+    if (!projectIqgeorc.deployment) {
+        const deploymentValue = templateIqgeorc.deployment ?? {};
+        const edit = jsonc.modify(projectIqgeorcStrUpdated, ['deployment'], deploymentValue, {
+            formattingOptions
+        });
+        projectIqgeorcStrUpdated = jsonc.applyEdits(projectIqgeorcStrUpdated, edit);
+        updatedProjectIqgeorc.deployment = deploymentValue;
+        hasIqgeorcChanges = true;
+    }
+
+    // Compare `.iqgeorc.jsonc` keys and value types
+    const iqgeorcDiffs = compareIqgeorc(updatedProjectIqgeorc, templateIqgeorc);
+    const missingKeys = iqgeorcDiffs.missingKeys.filter(key => key !== 'deployment');
+    if (
+        missingKeys.length ||
+        iqgeorcDiffs.unexpectedKeys.length ||
+        iqgeorcDiffs.typeMismatches.length
+    ) {
+        progress.warn(1, '`.iqgeorc.jsonc` schema mismatch detected', {
+            ...iqgeorcDiffs,
+            missingKeys
+        });
+    }
+
+    return {
+        excludes,
+        updatedIqgeorcContent: hasIqgeorcChanges ? projectIqgeorcStrUpdated : undefined
+    };
+}
+
 // Functions
 
 /**
@@ -232,7 +277,15 @@ function cloneTemplate(progress) {
 
     const cloneErr = run(
         'git',
-        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
+        [
+            'clone',
+            '--quiet',
+            '--depth=1',
+            '--branch',
+            TEMPLATE_BRANCH,
+            'https://github.com/IQGeo/utils-project-template',
+            tmp
+        ],
         { stdio: 'pipe' }
     )
         .stderr.toString()
