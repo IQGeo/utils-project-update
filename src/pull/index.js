@@ -232,7 +232,15 @@ function cloneTemplate(progress) {
 
     const cloneErr = run(
         'git',
-        ['clone', '--quiet', '--depth=1', 'https://github.com/IQGeo/utils-project-template', tmp],
+        [
+            'clone',
+            '--quiet',
+            '--depth=1',
+            '--branch',
+            TEMPLATE_BRANCH,
+            'https://github.com/IQGeo/utils-project-template',
+            tmp
+        ],
         { stdio: 'pipe' }
     )
         .stderr.toString()
