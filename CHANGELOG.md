@@ -1,3 +1,8 @@
+## [0.13.2](https://github.com/IQGeo/utils-project-update/compare/v0.13.1...v0.13.2) (06/02/2026)
+
+- Enables project-specific container registries (#34) ([55ed5b7](https://github.com/IQGeo/utils-project-update/commit/55ed5b7028d04078295010e8a8fea80bc370a0fb))
+- docs(changelog): v0.13.1 ([1d2c9ba](https://github.com/IQGeo/utils-project-update/commit/1d2c9ba241e43d62da3effde7c3b38579102d44e))
+
 ## [0.13.1](https://github.com/IQGeo/utils-project-update/compare/v0.13.0...v0.13.1) (02/02/2026)
 
 - transform: handles new GHA workflow file (#33) ([61c40af](https://github.com/IQGeo/utils-project-update/commit/61c40af4c1164c221985775a59dff5b6d25e4b60))
