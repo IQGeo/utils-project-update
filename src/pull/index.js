@@ -136,9 +136,12 @@ export async function pull({
                 progress.log(2, `\`${filepath}\` not found in project, copying from template`);
 
                 // Copy as-is if not present in project
+                const templateStat = await fs.promises.stat(`${tmp}/${filepath}`);
+
                 writeOps.push({
                     dest: `${out}/${filepath}`,
-                    content: templateFileStr
+                    content: templateFileStr,
+                    mode: templateStat.mode
                 });
 
                 return;
@@ -316,7 +319,12 @@ async function writeFiles(writeOps, progress, out) {
         writeOps.map(({ dest, content }) => fs.mkdirSync(path.dirname(dest), { recursive: true }))
     );
     const writeResults = await Promise.allSettled(
-        writeOps.map(({ dest, content }) => fs.promises.writeFile(dest, content))
+        writeOps.map(async ({ dest, content, mode }) => {
+            await fs.promises.writeFile(dest, content);
+            if (mode !== undefined) {
+                await fs.promises.chmod(dest, mode);
+            }
+        })
     );
 
     let hasRejections = false;
@@ -351,5 +359,5 @@ async function writeFiles(writeOps, progress, out) {
  * @typedef {import('../typedef.js').TemplateFilePath} TemplateFilePath
  * @typedef {import('../typedef.js').ProgressHandler} ProgressHandler
  *
- * @typedef {{ dest: string; content: string; }} WriteOp
+ * @typedef {{ dest: string; content: string; mode?: number; }} WriteOp
  */
