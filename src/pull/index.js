@@ -50,6 +50,7 @@ const INCLUDE_FILES = [
     '.devcontainer/remote_host/docker-compose-shared.yml',
     '.github/workflows/build-deployment-images.yml',
     '.vscode/tasks.json',
+    'deployment/README.md',
     'deployment/dockerfile.build',
     'deployment/dockerfile.appserver',
     'deployment/dockerfile.tools',
