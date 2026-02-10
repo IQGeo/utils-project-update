@@ -68,8 +68,8 @@ const INCLUDE_FILES = [
     // Custom content of shell files should be in separate files
 ];
 
-// const TEMPLATE_BRANCH = 'main';
-const TEMPLATE_BRANCH = 'dev';
+const TEMPLATE_BRANCH = 'main';
+// const TEMPLATE_BRANCH = 'dev';
 
 const SUCCESS_MSG = 'IQGeo project template pulled successfully! Please ensure changes are correct';
 
