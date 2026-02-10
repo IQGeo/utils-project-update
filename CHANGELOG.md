@@ -1,3 +1,8 @@
+## [0.13.3](https://github.com/IQGeo/utils-project-update/compare/v0.13.2...v0.13.3) (10/02/2026)
+
+- Updates project template pull process (#35) ([0f4df1d](https://github.com/IQGeo/utils-project-update/commit/0f4df1d6ceb5ca7ab246ee203e9e04acee609e9a))
+- docs(changelog): v0.13.2 ([adc166e](https://github.com/IQGeo/utils-project-update/commit/adc166e627190126b1e52ff274cfdf49a22e6101))
+
 ## [0.13.2](https://github.com/IQGeo/utils-project-update/compare/v0.13.1...v0.13.2) (06/02/2026)
 
 - Enables project-specific container registries (#34) ([55ed5b7](https://github.com/IQGeo/utils-project-update/commit/55ed5b7028d04078295010e8a8fea80bc370a0fb))
