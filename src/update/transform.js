@@ -240,10 +240,13 @@ export const fileTransformers = {
         return content
             .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
             .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
-            .replace(/\${PROJECT_REGISTRY(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${project_registry}}`)
+            .replace(
+                /\${PROJECT_REGISTRY(?::-[^}]*)?}/g,
+                `\${PROJECT_REGISTRY:-${project_registry}}`
+            )
             .replace(
                 /\${PROJECT_REPOSITORY(?::-[^}]*)?}/g,
-                `\${PROJ_PREFIX:-${project_repository}}`
+                `\${PROJECT_REPOSITORY:-${project_repository}}`
             );
     },
 
