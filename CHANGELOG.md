@@ -1,3 +1,8 @@
+## [0.13.4](https://github.com/IQGeo/utils-project-update/compare/v0.13.3...v0.13.4) (13/02/2026)
+
+- transform: deployment values applied to deployment/docker-compose.yml (#36) ([a1bee1f](https://github.com/IQGeo/utils-project-update/commit/a1bee1faa9b768a594d3fcb4be3fbf9c5cfc27d9))
+- docs(changelog): v0.13.3 ([b6270d8](https://github.com/IQGeo/utils-project-update/commit/b6270d8196a085f17a7de7aa3ddce7cbbd5dc800))
+
 ## [0.13.3](https://github.com/IQGeo/utils-project-update/compare/v0.13.2...v0.13.3) (10/02/2026)
 
 - Updates project template pull process (#35) ([0f4df1d](https://github.com/IQGeo/utils-project-update/commit/0f4df1d6ceb5ca7ab246ee203e9e04acee609e9a))
