@@ -234,10 +234,20 @@ export const fileTransformers = {
 
     'deployment/docker-compose.yml': (config, content) => {
         const { prefix, db_name } = config;
+        const { deployment } = config;
+        const { project_registry = '', project_repository = '' } = deployment || {};
 
         return content
             .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
-            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`);
+            .replace(/\${MYW_DB_NAME(?::-[^}]*)?}/g, `\${MYW_DB_NAME:-${db_name}}`)
+            .replace(
+                /\${PROJECT_REGISTRY(?::-[^}]*)?}/g,
+                `\${PROJECT_REGISTRY:-${project_registry}}`
+            )
+            .replace(
+                /\${PROJECT_REPOSITORY(?::-[^}]*)?}/g,
+                `\${PROJECT_REPOSITORY:-${project_repository}}`
+            );
     },
 
     'deployment/.env.example': (config, content) => {
