@@ -251,11 +251,19 @@ export const fileTransformers = {
     },
 
     'deployment/.env.example': (config, content) => {
-        const { prefix, db_name } = config;
+        const { prefix, db_name, deployment } = config;
 
         return content
             .replace(/PROJ_PREFIX=.*\n/, `PROJ_PREFIX=${prefix}\n`)
-            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`);
+            .replace(/MYW_DB_NAME=.*\n/, `MYW_DB_NAME=${db_name}\n`)
+            .replace(
+                /PROJECT_REGISTRY=.*/,
+                `PROJECT_REGISTRY=${deployment?.project_registry ?? ''}`
+            )
+            .replace(
+                /PROJECT_REPOSITORY=.*/,
+                `PROJECT_REPOSITORY=${deployment?.project_repository ?? ''}`
+            );
     },
 
     'deployment/build_images.sh': (config, content) => {
