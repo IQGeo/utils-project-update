@@ -27,7 +27,7 @@ const moduleSchemaVersionNames = {
 
 const projectToModuleMapping = {
     capture: ['capture'],
-    comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db'],
+    comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db', 'comms_inside_plant'],
     comsof: ['comsof', 'comsof_dev_db'],
     electric: ['electric', 'electric_dev_db'],
     gas: ['gas', 'gas_dev_db'],
@@ -42,7 +42,8 @@ const projectToModuleMapping = {
         'vector_tile_styles',
         'groups',
         'mywapp_common',
-        'reporting_example'
+        'reporting_example',
+        'construction_print'
     ],
     pia_interface: ['pia_interface']
 };
