@@ -204,6 +204,7 @@ export const fileTransformers = {
                 `$1\n${section2}\n$2`
             )
             .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/iqgeo-.*-build(?=\s*$)/m, `iqgeo-${prefix}-build`)
             .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
             .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
@@ -219,6 +220,7 @@ export const fileTransformers = {
         return content
             .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
             .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/iqgeo-.*-build(?=\s*$)/m, `iqgeo-${prefix}-build`)
             .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
             .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
@@ -386,12 +388,13 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
 
     /** @type {(module: Module) => string} */
     const fromStatement = ({ name, version, registryProject }) => {
+        const lname = name.toLowerCase();
         const registryPath = hasRepositoryPrefix
             ? `\${PRODUCT_REGISTRY}/\${PRODUCT_REPOSITORY_PREFIX}${registryProject}/`
             : isNewRegistry
               ? `\${PRODUCT_REGISTRY}${registryProject}/`
               : `\${CONTAINER_REGISTRY}`;
-        return `FROM ${registryPath}${name}:${version} AS ${name}`;
+        return `FROM ${registryPath}${lname}:${version} AS ${lname}`;
     };
 
     const section1 = modules.filter(fromAsFilter).map(fromStatement).join('\n');
@@ -408,7 +411,7 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
         .filter(copyFilter)
         .map(({ name, version }) =>
             version
-                ? `COPY --from=${name} / \${MODULES}/`
+                ? `COPY --from=${name.toLowerCase()} / \${MODULES}/`
                 : `COPY --link ${name} \${MODULES}/${name}`
         )
         .join('\n');
