@@ -68,6 +68,17 @@ const INCLUDE_FILES = [
     // Custom content of shell files should be in separate files
 ];
 
+/**
+ * Files that should only be copied from template if they don't already exist in the project.
+ * These are not merged or overwritten.
+ * @satisfies {ReadonlyArray<TemplateFilePath>}
+ */
+const COPY_ONLY_IF_MISSING = [
+    'deployment/fleet.yaml',
+    'deployment/values.yaml',
+    'deployment/minikube/values-minikube.yaml'
+];
+
 const TEMPLATE_BRANCH = 'main';
 // const TEMPLATE_BRANCH = 'dev';
 
@@ -132,7 +143,15 @@ export async function pull({
             // check if path matches any of the excludes patterns
             if (excludes.some(exclude => new RegExp(exclude).test(filepath))) return;
 
-            if (!fs.existsSync(`${out}/${filepath}`)) {
+            const existsInProject = fs.existsSync(`${out}/${filepath}`);
+
+            // Skip files that should only be copied if missing
+            if (existsInProject && COPY_ONLY_IF_MISSING.includes(filepath)) {
+                progress.log(2, `\`${filepath}\` already exists, skipping`);
+                return;
+            }
+
+            if (!existsInProject) {
                 progress.log(2, `\`${filepath}\` not found in project, copying from template`);
 
                 // Copy as-is if not present in project
