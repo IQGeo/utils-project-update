@@ -1,3 +1,9 @@
+## [0.14.0](https://github.com/IQGeo/utils-project-update/compare/v0.13.5...v0.14.0) (03/03/2026)
+
+- Enhances deployment, module, and image transforms (#39) ([43fdcde](https://github.com/IQGeo/utils-project-update/commit/43fdcdedbf4677c4ce03ea4348d6a6fd04d99d55))
+- PLAT-13547: config: add construction_print and inside_plant modules (#38) ([fb93129](https://github.com/IQGeo/utils-project-update/commit/fb93129f534dfd9d53a18eaf5735cbf9322d204e))
+- docs(changelog): v0.13.5 ([3751aa6](https://github.com/IQGeo/utils-project-update/commit/3751aa67c5fff5d8c26cc262e68c3092b0494850))
+
 ## [0.13.5](https://github.com/IQGeo/utils-project-update/compare/v0.13.4...v0.13.5) (17/02/2026)
 
 - transform: update registry/repository to .env.example (#37) ([6e97796](https://github.com/IQGeo/utils-project-update/commit/6e977962fa9e4388d82dec0c707693b3bce375a8))
