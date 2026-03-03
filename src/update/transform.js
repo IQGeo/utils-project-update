@@ -204,6 +204,7 @@ export const fileTransformers = {
                 `$1\n${section2}\n$2`
             )
             .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/iqgeo-.*-build(?=\s*$)/m, `iqgeo-${prefix}-build`)
             .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
             .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
@@ -219,6 +220,7 @@ export const fileTransformers = {
         return content
             .replace(/platform-tools:\S+/g, `platform-tools:${platform.version}`)
             .replace(/(?<=FROM )iqgeo-.*-build(?= AS)/i, `iqgeo-${prefix}-build`)
+            .replace(/iqgeo-.*-build(?=\s*$)/m, `iqgeo-${prefix}-build`)
             .replace(/PROJECT_REGISTRY=.*/, `PROJECT_REGISTRY=${project_registry}`)
             .replace(/PROJECT_REPOSITORY=.*/, `PROJECT_REPOSITORY=${project_repository}`);
     },
