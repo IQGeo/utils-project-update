@@ -31,11 +31,9 @@ if [ -z "$PROJECT_REGISTRY" ]; then
         echo "PROJECT_REGISTRY not set (built images will not be pushed to registry)"
     fi
 fi
-
 if [ -z "$PROJECT_REPOSITORY" ]; then
     PROJECT_REPOSITORY=""
 fi
-
 
 # Build arguments
 BUILD_ARGS=""
@@ -71,10 +69,10 @@ build_image() {
     fi
     
     echo ""
-    echo "Building ${full_image_name} for linux/amd64..."
-    echo "  docker build --platform linux/amd64 \"$build_context\" -f \"$dockerfile\" -t \"$full_image_name\" $BUILD_ARGS"
+    echo "Building ${full_image_name}"
+    echo "  docker build \"$build_context\" -f \"$dockerfile\" -t \"$full_image_name\" $BUILD_ARGS"
     echo ""
-    docker build --platform linux/amd64 "$build_context" -f "$dockerfile" -t "$full_image_name" $BUILD_ARGS
+    docker build "$build_context" -f "$dockerfile" -t "$full_image_name" $BUILD_ARGS
 }
 
 # Build all images
@@ -91,9 +89,9 @@ docker images | grep "iqgeo-${PROJ_PREFIX}-"
 # Push final images if PROJECT_REGISTRY is set and PUSH=true
 if [ -n "$PROJECT_REGISTRY" ] && [ "$PUSH" = "true" ]; then
     echo ""
-    echo "Pushing images to: ${PROJECT_REGISTRY}"
-    docker push "${PROJECT_REGISTRY}iqgeo-${PROJ_PREFIX}-appserver"
-    docker push "${PROJECT_REGISTRY}iqgeo-${PROJ_PREFIX}-tools"
+    echo "Pushing images to: ${PROJECT_REGISTRY}/${PROJECT_REPOSITORY}"
+    docker push "${PROJECT_REGISTRY}/${PROJECT_REPOSITORY}/iqgeo-${PROJ_PREFIX}-appserver"
+    docker push "${PROJECT_REGISTRY}/${PROJECT_REPOSITORY}/iqgeo-${PROJ_PREFIX}-tools"
     echo "✓ Images pushed successfully!"
 elif [ -n "$PROJECT_REGISTRY" ]; then
     echo ""
