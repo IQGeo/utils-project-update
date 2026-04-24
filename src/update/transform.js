@@ -69,6 +69,36 @@ const upgradeDbModifier = (config, content) => {
 };
 
 /**
+ * Enables named services in a Docker Compose file by removing their `profiles: ['disabled']` line
+ * and adding them to the `depends_on` section of the `iqgeo` service.
+ * If a service is not present in the file, the operation is a no-op for that service.
+ * @param {string} content
+ * @param {string[]} services
+ * @returns {string}
+ */
+function enableServices(content, services) {
+    for (const service of services) {
+        content = content.replace(
+            new RegExp(`(\n    ${service}:\n)        profiles: \\['disabled'\\]\n`),
+            '$1'
+        );
+    }
+    if (!services.length) return content;
+    return content.replace(/ {4}iqgeo:\n[\s\S]*?(?=\n {4}\w)/, serviceBlock =>
+        serviceBlock.replace(
+            /( {8}depends_on:\n)((?:( {12})- [^\n]+\n)*)/,
+            (_, header, entries) => {
+                const toAdd = services
+                    .filter(s => !entries.includes(`            - ${s}\n`))
+                    .map(s => `            - ${s}\n`)
+                    .join('');
+                return header + entries + toAdd;
+            }
+        )
+    );
+}
+
+/**
  * @satisfies {Partial<Record<TemplateFilePath, Transformer>>}
  */
 export const fileTransformers = {
@@ -126,6 +156,8 @@ export const fileTransformers = {
                     `            - ../${devSrc}:/opt/iqgeo/platform/WebApps/myworldapp/modules/${name}:delegated`
             )
             .join('\n');
+
+        content = enableServices(content, config.requiredServices ?? []);
 
         return content
             .replace(/(# START SECTION.*)[\s\S]*?(.*# END SECTION)/, `$1\n${newContent}\n$2`)
@@ -238,6 +270,8 @@ export const fileTransformers = {
         const { prefix, db_name } = config;
         const { deployment } = config;
         const { project_registry = '', project_repository = '' } = deployment || {};
+
+        content = enableServices(content, config.requiredServices ?? []);
 
         return content
             .replace(/\${PROJ_PREFIX(?::-[^}]*)?}/g, `\${PROJ_PREFIX:-${prefix}}`)
