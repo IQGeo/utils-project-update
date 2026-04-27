@@ -66,6 +66,12 @@ const moduleToProjectMapping = Object.entries(projectToModuleMapping).reduce(
     /** @type {Record<string, string>} */ ({})
 );
 
+/** @type {Record<string, string[]>} */
+const moduleToServiceMapping = {
+    orchestration_manager: ['openbao'],
+    notification_manager: ['centrifugo']
+};
+
 /**
  * @param {string} root
  * @returns {Config}
@@ -110,6 +116,13 @@ export function readConfig(root) {
         if (module.dbInit === true && !module.schemaVersionName)
             module.schemaVersionName = `${module.name}_schema`;
     }
+
+    const requiredServices = new Set();
+    for (const { name } of config.modules) {
+        const services = moduleToServiceMapping[name];
+        if (services) services.forEach(s => requiredServices.add(s));
+    }
+    config.requiredServices = [...requiredServices];
 
     return config;
 }

@@ -33,6 +33,7 @@
  * @property {Module[]} modules
  * @property {string[]} [exclude_file_paths]
  * @property {string} version
+ * @property {string[]} [requiredServices] Docker Compose service names that must be enabled for the configured modules
  */
 
 /**
