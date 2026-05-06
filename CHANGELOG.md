@@ -1,3 +1,13 @@
+## [0.15.0](https://github.com/IQGeo/utils-project-update/compare/v0.14.0...v0.15.0) (05/05/2026)
+
+- fix: patch security vulnerabilities in dev dependencies (#42) ([f88761c](https://github.com/IQGeo/utils-project-update/commit/f88761c61e5c251535e89ee72eb9a7c68e1e7726))
+- DX-6: transform: added ability to define required services by module (#41) ([a180caf](https://github.com/IQGeo/utils-project-update/commit/a180caf6aa13775821895c07435acf53d883d164))
+- DX-7: config: add missing wfm modules (#40) ([e083f7b](https://github.com/IQGeo/utils-project-update/commit/e083f7bf1e1237fb75740c02b88517959b0e6975))
+- playground: bring up to date with 1.0.1 ([761d79a](https://github.com/IQGeo/utils-project-update/commit/761d79a9f6a7eca6006432e8247dce84c302c8b1))
+- Revert "ai: added speckit workflow to project." ([a21619b](https://github.com/IQGeo/utils-project-update/commit/a21619b90a8a9022e3c8da5b90dab800e75ca255))
+- ai: added speckit workflow to project. ([ad5efd5](https://github.com/IQGeo/utils-project-update/commit/ad5efd5abdce213bc72df85c7154b8a078c4e7b7))
+- docs(changelog): v0.14.0 ([6448cfe](https://github.com/IQGeo/utils-project-update/commit/6448cfe35b79a5a6d611697b847dfae4e86a5b48))
+
 ## [0.14.0](https://github.com/IQGeo/utils-project-update/compare/v0.13.5...v0.14.0) (03/03/2026)
 
 - Enhances deployment, module, and image transforms (#39) ([43fdcde](https://github.com/IQGeo/utils-project-update/commit/43fdcdedbf4677c4ce03ea4348d6a6fd04d99d55))
