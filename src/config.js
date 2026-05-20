@@ -113,7 +113,7 @@ export function readConfig(root) {
         module.registryProject =
             module.registryProject ?? moduleToProjectMapping[module.name] ?? module.name;
 
-        if (module.dbInit === true && !module.schemaVersionName)
+        if ((module.dbInit ?? !!module.version) && !module.schemaVersionName)
             module.schemaVersionName = `${module.name}_schema`;
     }
 
