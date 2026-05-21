@@ -22,7 +22,9 @@ const moduleSchemaVersionNames = {
     comsof: 'iqg_comsof_schema',
     comms_cloud: 'iqg_comms_cloud_schema',
     network_revenue_optimizer: 'mywnro_schema',
-    pia_interface: 'myw_pia_schema'
+    pia_interface: 'myw_pia_schema',
+    notification_manager: 'mywnotif_schema',
+    orchestration_manager: 'iqgom_schema'
 };
 
 const projectToModuleMapping = {
