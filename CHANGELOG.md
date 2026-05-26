@@ -1,3 +1,8 @@
+## [0.15.1](https://github.com/IQGeo/utils-project-update/compare/v0.15.0...v0.15.1) (26/05/2026)
+
+- Add missing schema names for notification_manager and orchestration_manager (#44) ([174f510](https://github.com/IQGeo/utils-project-update/commit/174f51028090c71d4ace6b8a35c2a0711d52bb2c))
+- docs(changelog): v0.15.0 ([e7104dd](https://github.com/IQGeo/utils-project-update/commit/e7104dda12440e8fdf56ed81a0d7cb49858d4dcc))
+
 ## [0.15.0](https://github.com/IQGeo/utils-project-update/compare/v0.14.0...v0.15.0) (05/05/2026)
 
 - fix: patch security vulnerabilities in dev dependencies (#42) ([f88761c](https://github.com/IQGeo/utils-project-update/commit/f88761c61e5c251535e89ee72eb9a7c68e1e7726))
