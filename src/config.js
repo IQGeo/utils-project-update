@@ -29,7 +29,14 @@ const moduleSchemaVersionNames = {
 
 const projectToModuleMapping = {
     capture: ['capture'],
-    comms: ['comms', 'comms_dev_db', 'comms_cloud', 'comms_cloud_dev_db', 'comms_inside_plant'],
+    comms: [
+        'comms',
+        'comms_dev_db',
+        'comms_cloud',
+        'comms_cloud_dev_db',
+        'comms_inside_plant',
+        'comms_dev_tools'
+    ],
     comsof: ['comsof', 'comsof_dev_db'],
     electric: ['electric', 'electric_dev_db'],
     gas: ['gas', 'gas_dev_db'],
