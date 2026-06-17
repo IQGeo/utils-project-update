@@ -1,3 +1,248 @@
+## [v0.15.2](https://github.com/IQGeo/utils-project-update/compare/v0.15.1...v0.15.2) (17/06/2026)
+
+- 0.15.2 ([9227a12](https://github.com/IQGeo/utils-project-update/commit/9227a12e3598a19868e79b2c7e5e1c801fbb07da))
+- fix: map comms_dev_tools to comms project (#45) ([1d318d8](https://github.com/IQGeo/utils-project-update/commit/1d318d8d2909e85e43201a13421a2f0c21de2ef9))
+- docs(changelog): v0.15.1 ([65d7f47](https://github.com/IQGeo/utils-project-update/commit/65d7f47b9bf92cb4e945ccfd85eab24050e67d22))
+
+## [v0.15.1](https://github.com/IQGeo/utils-project-update/compare/v0.15.0...v0.15.1) (26/05/2026)
+
+- 0.15.1 ([e99e936](https://github.com/IQGeo/utils-project-update/commit/e99e93674e114fbda47dff69685d0a8d10f134d7))
+- Add missing schema names for notification_manager and orchestration_manager (#44) ([174f510](https://github.com/IQGeo/utils-project-update/commit/174f51028090c71d4ace6b8a35c2a0711d52bb2c))
+- docs(changelog): v0.15.0 ([e7104dd](https://github.com/IQGeo/utils-project-update/commit/e7104dda12440e8fdf56ed81a0d7cb49858d4dcc))
+
+## [v0.15.0](https://github.com/IQGeo/utils-project-update/compare/v0.14.0...v0.15.0) (05/05/2026)
+
+- 0.15.0 ([440f2c2](https://github.com/IQGeo/utils-project-update/commit/440f2c27efa3e5030bf0362d82a56a1fbbf8e0bf))
+- fix: patch security vulnerabilities in dev dependencies (#42) ([f88761c](https://github.com/IQGeo/utils-project-update/commit/f88761c61e5c251535e89ee72eb9a7c68e1e7726))
+- DX-6: transform: added ability to define required services by module (#41) ([a180caf](https://github.com/IQGeo/utils-project-update/commit/a180caf6aa13775821895c07435acf53d883d164))
+- DX-7: config: add missing wfm modules (#40) ([e083f7b](https://github.com/IQGeo/utils-project-update/commit/e083f7bf1e1237fb75740c02b88517959b0e6975))
+- playground: bring up to date with 1.0.1 ([761d79a](https://github.com/IQGeo/utils-project-update/commit/761d79a9f6a7eca6006432e8247dce84c302c8b1))
+- Revert "ai: added speckit workflow to project." ([a21619b](https://github.com/IQGeo/utils-project-update/commit/a21619b90a8a9022e3c8da5b90dab800e75ca255))
+- ai: added speckit workflow to project. ([ad5efd5](https://github.com/IQGeo/utils-project-update/commit/ad5efd5abdce213bc72df85c7154b8a078c4e7b7))
+- docs(changelog): v0.14.0 ([6448cfe](https://github.com/IQGeo/utils-project-update/commit/6448cfe35b79a5a6d611697b847dfae4e86a5b48))
+
+## [v0.14.0](https://github.com/IQGeo/utils-project-update/compare/v0.13.5...v0.14.0) (03/03/2026)
+
+- 0.14.0 ([634e4f6](https://github.com/IQGeo/utils-project-update/commit/634e4f62093252fb7e23f6076b84235fd0bbb3db))
+- Enhances deployment, module, and image transforms (#39) ([43fdcde](https://github.com/IQGeo/utils-project-update/commit/43fdcdedbf4677c4ce03ea4348d6a6fd04d99d55))
+- PLAT-13547: config: add construction_print and inside_plant modules (#38) ([fb93129](https://github.com/IQGeo/utils-project-update/commit/fb93129f534dfd9d53a18eaf5735cbf9322d204e))
+- docs(changelog): v0.13.5 ([3751aa6](https://github.com/IQGeo/utils-project-update/commit/3751aa67c5fff5d8c26cc262e68c3092b0494850))
+
+## [v0.13.5](https://github.com/IQGeo/utils-project-update/compare/v0.13.4...v0.13.5) (17/02/2026)
+
+- 0.13.5 ([4aa8665](https://github.com/IQGeo/utils-project-update/commit/4aa866579169fa754295f738a27872f45358b83d))
+- transform: update registry/repository to .env.example (#37) ([6e97796](https://github.com/IQGeo/utils-project-update/commit/6e977962fa9e4388d82dec0c707693b3bce375a8))
+- docs(changelog): v0.13.4 ([bbd8172](https://github.com/IQGeo/utils-project-update/commit/bbd817217345f834f972f32ea28923498e9ef7cf))
+
+## [v0.13.4](https://github.com/IQGeo/utils-project-update/compare/v0.13.3...v0.13.4) (13/02/2026)
+
+- 0.13.4 ([45e78ce](https://github.com/IQGeo/utils-project-update/commit/45e78ce6f87d5ab1046526aa348e3c49d5b387f5))
+- transform: deployment values applied to deployment/docker-compose.yml (#36) ([a1bee1f](https://github.com/IQGeo/utils-project-update/commit/a1bee1faa9b768a594d3fcb4be3fbf9c5cfc27d9))
+- docs(changelog): v0.13.3 ([b6270d8](https://github.com/IQGeo/utils-project-update/commit/b6270d8196a085f17a7de7aa3ddce7cbbd5dc800))
+
+## [v0.13.3](https://github.com/IQGeo/utils-project-update/compare/v0.13.2...v0.13.3) (10/02/2026)
+
+- 0.13.3 ([bc2d716](https://github.com/IQGeo/utils-project-update/commit/bc2d71607f2b162a8a237628f8a61fa9e3ab9686))
+- Updates project template pull process (#35) ([0f4df1d](https://github.com/IQGeo/utils-project-update/commit/0f4df1d6ceb5ca7ab246ee203e9e04acee609e9a))
+- docs(changelog): v0.13.2 ([adc166e](https://github.com/IQGeo/utils-project-update/commit/adc166e627190126b1e52ff274cfdf49a22e6101))
+
+## [v0.13.2](https://github.com/IQGeo/utils-project-update/compare/v0.13.1...v0.13.2) (06/02/2026)
+
+- 0.13.2 ([7702189](https://github.com/IQGeo/utils-project-update/commit/77021894003e3120b6accfd95e96acd64ea148f0))
+- Enables project-specific container registries (#34) ([55ed5b7](https://github.com/IQGeo/utils-project-update/commit/55ed5b7028d04078295010e8a8fea80bc370a0fb))
+- docs(changelog): v0.13.1 ([1d2c9ba](https://github.com/IQGeo/utils-project-update/commit/1d2c9ba241e43d62da3effde7c3b38579102d44e))
+
+## [v0.13.1](https://github.com/IQGeo/utils-project-update/compare/v0.13.0...v0.13.1) (02/02/2026)
+
+- 0.13.1 ([b0a073f](https://github.com/IQGeo/utils-project-update/commit/b0a073f0360a1b89e55ac5b4cbb048a2fc85a02c))
+- transform: handles new GHA workflow file (#33) ([61c40af](https://github.com/IQGeo/utils-project-update/commit/61c40af4c1164c221985775a59dff5b6d25e4b60))
+- transform: update deployment file paths (#32) ([3b00b8d](https://github.com/IQGeo/utils-project-update/commit/3b00b8d723ebe3a087477f19dec4a6d4252aa404))
+- docs(changelog): v0.13.0 ([ea89f4c](https://github.com/IQGeo/utils-project-update/commit/ea89f4cacc7816b6375ef4ca047805cc9d9f2aac))
+
+## [v0.13.0](https://github.com/IQGeo/utils-project-update/compare/v0.12.0...v0.13.0) (27/01/2026)
+
+- 0.13.0 ([75127c1](https://github.com/IQGeo/utils-project-update/commit/75127c176ee0a6ec017be32e85f73fec644d0ade))
+- transform: update values.yaml files for change in helm chart (#31) ([42d04ad](https://github.com/IQGeo/utils-project-update/commit/42d04ad92e581c06769695d2e2e77015501a24b8))
+- docs(changelog): v0.12.0 ([2312ec7](https://github.com/IQGeo/utils-project-update/commit/2312ec79da8e4c7557d58b10fabe4bcb656cb24f))
+
+## [v0.12.0](https://github.com/IQGeo/utils-project-update/compare/v0.11.0...v0.12.0) (27/01/2026)
+
+- 0.12.0 ([736a283](https://github.com/IQGeo/utils-project-update/commit/736a283463f10dd348842be541e489c5dad2420e))
+- docs(changelog): v0.11.0 ([c412a2f](https://github.com/IQGeo/utils-project-update/commit/c412a2f2b33feadcdab2bc59c21fb2fcd7eb3fdb))
+
+## [v0.11.0](https://github.com/IQGeo/utils-project-update/compare/v0.10.1...v0.11.0) (09/01/2026)
+
+- 0.11.0 ([e9da1e7](https://github.com/IQGeo/utils-project-update/commit/e9da1e76a8b969c3b1c1b43f730c2cee97164051))
+- transform: update new deployment files - values.yaml and image scripts (#30) ([4389e04](https://github.com/IQGeo/utils-project-update/commit/4389e042605cbb80468a55c02dec4fb2fc0cdfaa))
+- run `npm update` ([c98e870](https://github.com/IQGeo/utils-project-update/commit/c98e870acda4da9a996c11be2f58980c350a0041))
+- docs(changelog): v0.10.1 ([8e2fdc5](https://github.com/IQGeo/utils-project-update/commit/8e2fdc5fd2a783517c76eea835c2eed98631398a))
+
+## [v0.10.1](https://github.com/IQGeo/utils-project-update/compare/v0.10.0...v0.10.1) (03/11/2025)
+
+- 0.10.1 ([ab68761](https://github.com/IQGeo/utils-project-update/commit/ab68761abd96f637166fc21debcc5e175456d459))
+- Bug/plat 12762 fix 610 syntax error (#29) ([354d5bc](https://github.com/IQGeo/utils-project-update/commit/354d5bc2c0fd6c70e172584962c00e17e51b6d7b))
+- docs(changelog): v0.10.0 ([0023d07](https://github.com/IQGeo/utils-project-update/commit/0023d07329c9bc3e6d9606b7bc793c0c74ccd144))
+
+## [v0.10.0](https://github.com/IQGeo/utils-project-update/compare/v0.9.2...v0.10.0) (13/10/2025)
+
+- 0.10.0 ([1503a11](https://github.com/IQGeo/utils-project-update/commit/1503a11c7d1671c50b25ee62f1006ffc06b137fb))
+- PLAT-12007: js: update the transform to upgrade db only if installed ([e752e3d](https://github.com/IQGeo/utils-project-update/commit/e752e3d3705504b587f02ecf34da52296fcc9cf5))
+- docs(changelog): v0.9.2 ([96ab506](https://github.com/IQGeo/utils-project-update/commit/96ab5066af90638ba114193b77cc3b0e9d8dddcd))
+
+## [v0.9.2](https://github.com/IQGeo/utils-project-update/compare/v0.9.1...v0.9.2) (26/06/2025)
+
+- 0.9.2 ([8562efe](https://github.com/IQGeo/utils-project-update/commit/8562efee035040bb35eea5d54acc9d539a5dc13f))
+- Task/plat 11697 update embeddedexamples (#27) ([2c84281](https://github.com/IQGeo/utils-project-update/commit/2c842814f9c5b1d2eb8ad6ec6ef383f10f52edde))
+- enhance: playgroud: pull most recent version of utils-project-template version 0.8.0. (#26) ([ebb6a52](https://github.com/IQGeo/utils-project-update/commit/ebb6a52e43ac21825bd2d174a5e514ad4459a96e))
+- docs(changelog): v0.9.1 ([25c4535](https://github.com/IQGeo/utils-project-update/commit/25c4535022472fff2a0b6fa4af87a0d98fbe7afd))
+
+## [v0.9.1](https://github.com/IQGeo/utils-project-update/compare/v0.9.0...v0.9.1) (20/05/2025)
+
+- 0.9.1 ([b51ac4e](https://github.com/IQGeo/utils-project-update/commit/b51ac4e278b54f7edcb6bcd532fd7e3c8e332fd1))
+- Bug/fix spelling error in transform (#25) ([766356a](https://github.com/IQGeo/utils-project-update/commit/766356a04359ef2630ede36fe6e97c033e1d4c9c))
+- docs(changelog): v0.9.0 ([3b355c1](https://github.com/IQGeo/utils-project-update/commit/3b355c1e62cdd51658d762e8e98175944b0b9326))
+
+## [v0.9.0](https://github.com/IQGeo/utils-project-update/compare/v0.8.1...v0.9.0) (12/05/2025)
+
+- 0.9.0 ([19e2dfc](https://github.com/IQGeo/utils-project-update/commit/19e2dfcf03f8b7488a23cbeb29109689723567ce))
+- task/PLAT-11629: js: update transform functionality to include modules in 500_anywhere_setup.sh script (#24) ([37bb2bb](https://github.com/IQGeo/utils-project-update/commit/37bb2bbe48a42884cb3bbf310ad7e40e37bdf730))
+- Task/utils project update cleanup (#23) ([1ef9e60](https://github.com/IQGeo/utils-project-update/commit/1ef9e60f3bd6381d25c617e0d654e8f350ed0535))
+- PLAT-11474: js: added "reporting_example" to projectTomoduleMapping. (#22) ([0abe0e6](https://github.com/IQGeo/utils-project-update/commit/0abe0e665ff39d40e87044d6b07927bc8bd4cdea))
+
+## [v0.8.1](https://github.com/IQGeo/utils-project-update/compare/v0.8.0...v0.8.1) (17/04/2025)
+
+- 0.8.1 ([1daa190](https://github.com/IQGeo/utils-project-update/commit/1daa19075034716ff71a2c4d8dd9c8e0126c269c))
+- Pulling most recent playground updates and updating to platform version 7.3 ([78b5c64](https://github.com/IQGeo/utils-project-update/commit/78b5c64166e9b4e8c57189660c1bff90bae00239))
+- PLAT-11474: js: added "reporting_example" to projectTomoduleMapping. ([8d9bda2](https://github.com/IQGeo/utils-project-update/commit/8d9bda27968dcd4690337ed52bac9b3547471e55))
+- docs(readme): jsonc custom sections ([971a4c7](https://github.com/IQGeo/utils-project-update/commit/971a4c726832a2d60943058089222a6dbbbcbefd))
+- docs(changelog): v0.8.0 ([7b094b6](https://github.com/IQGeo/utils-project-update/commit/7b094b675c80043e368030d172751100f488d9b9))
+
+## [v0.8.0](https://github.com/IQGeo/utils-project-update/compare/v0.7.3...v0.8.0) (18/03/2025)
+
+- 0.8.0 ([22b74e3](https://github.com/IQGeo/utils-project-update/commit/22b74e37ba1a447165eeba11cbabc1b547b7eee4))
+- feat(pull): support custom sections in jsonc files ([114e128](https://github.com/IQGeo/utils-project-update/commit/114e1283bc8237ccb4296bfc60cb21c0011976a5))
+- docs(changelog): v0.7.3 ([258bd09](https://github.com/IQGeo/utils-project-update/commit/258bd0986331d2a1d823cb7e1d3d2a676691dcbf))
+
+## [v0.7.3](https://github.com/IQGeo/utils-project-update/compare/v0.7.2...v0.7.3) (07/03/2025)
+
+- 0.7.3 ([3a453e6](https://github.com/IQGeo/utils-project-update/commit/3a453e6b9a7e7474b4ddde23b3d241f5ff5d6728))
+- ci(release): add confirmation step before publishing ([1b5cdf9](https://github.com/IQGeo/utils-project-update/commit/1b5cdf971c855941896b2fe29d32079739e9886b))
+- transform: add missing project mapping for wmt modules (#20) ([3e3898f](https://github.com/IQGeo/utils-project-update/commit/3e3898f5e2b809f791974ca439ed921920e1f4ae))
+- docs(changelog): v0.7.2 ([e5f2546](https://github.com/IQGeo/utils-project-update/commit/e5f25469438e01b14740319c55639237eaf5f8a1))
+
+## [v0.7.2](https://github.com/IQGeo/utils-project-update/compare/v0.7.1...v0.7.2) (26/02/2025)
+
+- 0.7.2 ([94a7904](https://github.com/IQGeo/utils-project-update/commit/94a790441b6c2cc22f52c47cea39e4cbc4ab17cd))
+- chore: change package-lock version back to 0.7.1 ([95b6254](https://github.com/IQGeo/utils-project-update/commit/95b625492062ccb680e29a47ec7b8ff435072c40))
+- transform: add missing container registry paths for comsof (#19) ([ef336e6](https://github.com/IQGeo/utils-project-update/commit/ef336e64286d2b8862e6d0962f7426fc76a4a8dd))
+- docs(changelog): change to v0.7.1 ([841b95d](https://github.com/IQGeo/utils-project-update/commit/841b95d5d8bb519958fbd2430dfec6f938806d8b))
+
+## [v0.7.1](https://github.com/IQGeo/utils-project-update/compare/v0.7.0...v0.7.1) (24/02/2025)
+
+- change version back to 0.7.1 ([5e3755f](https://github.com/IQGeo/utils-project-update/commit/5e3755ffd84ef0a8e5711c4613eddf54998d2a57))
+- docs(changelog): v0.8.0 ([714bff5](https://github.com/IQGeo/utils-project-update/commit/714bff5018c76f36e99c063e9ccd7e469103dd6c))
+- 0.8.0 ([d16b3c2](https://github.com/IQGeo/utils-project-update/commit/d16b3c22545cf881d8f1779aef3db85fe4315e9e))
+- feat: handle tsconfig.json (#18) ([3366a4b](https://github.com/IQGeo/utils-project-update/commit/3366a4b2c49f11ba2f9c23af816066b67fd5da5f))
+- docs(changelog): v0.7.0 ([16112b4](https://github.com/IQGeo/utils-project-update/commit/16112b40d18c719d89b0569a05884962bb52c32c))
+
+## [v0.7.0](https://github.com/IQGeo/utils-project-update/compare/v0.6.2...v0.7.0) (12/02/2025)
+
+- 0.7.0 ([1df399b](https://github.com/IQGeo/utils-project-update/commit/1df399b87a7a4258617765a6a3ca41e7cf6a1f40))
+- chore: playground pull (#17) ([cd553ab](https://github.com/IQGeo/utils-project-update/commit/cd553ab2cf08f889c4045b062673af66c69985fc))
+- ET-274: transform: fix semver version check (gt instead of gte) and slash fix ([370df49](https://github.com/IQGeo/utils-project-update/commit/370df49f8d41c7654628d4bb1f7920ee16abbfb2))
+- ET-274: transform: fix semver version check, add semver package ([880bf63](https://github.com/IQGeo/utils-project-update/commit/880bf63a435f6b4c16faec76a6aba2294fc8fadb))
+- fix transform to handle new PRODUCT_REGISTRY variable in the template ([4bef769](https://github.com/IQGeo/utils-project-update/commit/4bef7698919a5a9d94a77e4a35e2184f6bb78a98))
+- ET-274: transform: adjust to handle new container registry paths ([8aa4d53](https://github.com/IQGeo/utils-project-update/commit/8aa4d53922501bc877756889cf167a69fc9ad0bf))
+- docs(changelog): v0.6.2 ([45d995b](https://github.com/IQGeo/utils-project-update/commit/45d995b740312f6ffe7912180091d9f811b099e4))
+
+## [v0.6.2](https://github.com/IQGeo/utils-project-update/compare/v0.6.1...v0.6.2) (04/12/2024)
+
+- 0.6.2 ([139a66b](https://github.com/IQGeo/utils-project-update/commit/139a66b8288453e936f039924a08f84394ba3f96))
+- PLAT-11001: transform: module injection: remove --link when using COPY --from (#15) ([5e607e9](https://github.com/IQGeo/utils-project-update/commit/5e607e9fa6f1e04fc2b3de8233015c760bdfda7b))
+- docs(changelog): v0.6.1 ([6b7bef0](https://github.com/IQGeo/utils-project-update/commit/6b7bef043538936c4ac15fc6390e2802a53d65b1))
+
+## [v0.6.1](https://github.com/IQGeo/utils-project-update/compare/v0.6.0...v0.6.1) (31/10/2024)
+
+- 0.6.1 ([517935e](https://github.com/IQGeo/utils-project-update/commit/517935e00159eef66a467d5cc603b5b9b31bb901))
+- update: some minor transform regex fixes ([25f9697](https://github.com/IQGeo/utils-project-update/commit/25f96973f09dc1db8f5325fa36b323d39b387ef0))
+- docs(changelog): v0.6.0 ([e4122bd](https://github.com/IQGeo/utils-project-update/commit/e4122bd4c11101bad23bae6f774ce81135647326))
+
+## [v0.6.0](https://github.com/IQGeo/utils-project-update/compare/v0.5.0...v0.6.0) (31/10/2024)
+
+- 0.6.0 ([68ec7de](https://github.com/IQGeo/utils-project-update/commit/68ec7de82b62e9c3baba2848f4dff0ee2bb9a1de))
+- PLAT-9955: pull: better handling of unexpected keys (#11) ([9f0ab57](https://github.com/IQGeo/utils-project-update/commit/9f0ab5777783d029a78fdc4b83bc4e9c227e4ef3))
+- PLAT-9953: update: update build image tag with prefix ([92a7164](https://github.com/IQGeo/utils-project-update/commit/92a71648ec2d3784a43dbe48ab7e7e119230f215))
+- chore(transform): format ([7b129cd](https://github.com/IQGeo/utils-project-update/commit/7b129cdafe812cf6e9f338ad643678d290b6708a))
+- PLAT-9954: pull: update template version in project iqgeorc ([0b6ee46](https://github.com/IQGeo/utils-project-update/commit/0b6ee462a266a5319f10619519c9c78d68822e06))
+- PLAT-9957: pull: include .vscode/tasks.json ([8e28d59](https://github.com/IQGeo/utils-project-update/commit/8e28d595e5a27226158376653c3c17e68972c72e))
+- transform.js: improve replacement pattern matching (#9) ([b839cbf](https://github.com/IQGeo/utils-project-update/commit/b839cbf869109ec57a42bb526a8dfa8538a5f394))
+
+## [v0.5.0](https://github.com/IQGeo/utils-project-update/compare/v0.4.0...v0.5.0) (29/07/2024)
+
+- 0.5.0 ([194f3c6](https://github.com/IQGeo/utils-project-update/commit/194f3c6e8168150ab939dcc02b54b36f36f6e78f))
+- PLAT-9863: several improvements (#7) ([a5ab0bc](https://github.com/IQGeo/utils-project-update/commit/a5ab0bc70c1accfd8a926d238ceef2fd5de95b5a))
+- docs(changelog): v0.4.0 ([55d267e](https://github.com/IQGeo/utils-project-update/commit/55d267ea2c862e4f6d0b05ac2eb24188ecdae42e))
+
+## [v0.4.0](https://github.com/IQGeo/utils-project-update/compare/v0.3.2...v0.4.0) (22/07/2024)
+
+- 0.4.0 ([bf2a60f](https://github.com/IQGeo/utils-project-update/commit/bf2a60f05fb3aecd24474ee1f561e789155c57f2))
+- transform: include new files ([321aa9a](https://github.com/IQGeo/utils-project-update/commit/321aa9a6eb7a8279ab447335be86dbd5ffab2720))
+- pull: rename variable and improve comments ([17e8122](https://github.com/IQGeo/utils-project-update/commit/17e81224ca719cde8ff4051d0318bb828094f23a))
+- update: update transform for new template ([f917bd1](https://github.com/IQGeo/utils-project-update/commit/f917bd1b1ad747d63deb815cd929dd3861ea216d))
+- playground: pull ([fd752c9](https://github.com/IQGeo/utils-project-update/commit/fd752c9315ae3f26ef7bd6863c005583b6347c15))
+- ensure new directories exist ([ed05409](https://github.com/IQGeo/utils-project-update/commit/ed054092d1aebd74d123e8b6f892b374122a57eb))
+- pull: add new files in template to list ([ca37aad](https://github.com/IQGeo/utils-project-update/commit/ca37aadaecff9a263a278322312c2c07523d33ce))
+- docs(changelog): v0.3.2 ([755af4b](https://github.com/IQGeo/utils-project-update/commit/755af4bb89f9e789cd7ce6016c9c3bf3c53be39f))
+
+## [v0.3.2](https://github.com/IQGeo/utils-project-update/compare/v0.3.1...v0.3.2) (22/07/2024)
+
+- 0.3.2 ([623a376](https://github.com/IQGeo/utils-project-update/commit/623a3767419fd21de0398ea6ce98b4802ed66c29))
+- modules: schema names: add missing schema names (#6) ([3d219f4](https://github.com/IQGeo/utils-project-update/commit/3d219f43108c63a9395bd4c78ca342e537a5e776))
+- transform: support newer platform-devenv (#5) ([5233b43](https://github.com/IQGeo/utils-project-update/commit/5233b43de3b76c8dc9ac0e03869cd64ec5e7c57f))
+- docs: update npm link notes in readme ([3a72252](https://github.com/IQGeo/utils-project-update/commit/3a7225286f44a7b0280bfefbf0f6138b267e7328))
+- docs(changelog): v0.3.1 ([e3378e5](https://github.com/IQGeo/utils-project-update/commit/e3378e5edff703596cdb616a40f1f32d6ed8a9c3))
+
+## [v0.3.1](https://github.com/IQGeo/utils-project-update/compare/v0.3.0...v0.3.1) (19/06/2024)
+
+- 0.3.1 ([54dd89c](https://github.com/IQGeo/utils-project-update/commit/54dd89c72afa4c322f7528552f1e4284868740c0))
+- update: fix .gitignore generation for modules ([0f274dc](https://github.com/IQGeo/utils-project-update/commit/0f274dccc41040c01c8e17c27c015fb22686aee2))
+- docs(changelog): v0.3.0 ([91a6300](https://github.com/IQGeo/utils-project-update/commit/91a63005de6acdc05acda07c66415324b0db53ee))
+
+## [v0.3.0](https://github.com/IQGeo/utils-project-update/compare/v0.2.0...v0.3.0) (17/06/2024)
+
+- 0.3.0 ([22c2392](https://github.com/IQGeo/utils-project-update/commit/22c239222fd70f3d3d174aedcdbbb29230a66d48))
+- pull: add pull command (#2) ([1d416c5](https://github.com/IQGeo/utils-project-update/commit/1d416c55adbb07d09bc505cb220f34e3104d2bb8))
+- update: improve init_db entrypoint (#3) ([f341eca](https://github.com/IQGeo/utils-project-update/commit/f341ecabad4074d6d10c611c1f0ce4a1ffd2456e))
+- docs(changelog): v0.2.0 ([90006b3](https://github.com/IQGeo/utils-project-update/commit/90006b3262351cdbcf8917c3639e5a0d80d8113f))
+
+## [v0.2.0](https://github.com/IQGeo/utils-project-update/compare/v0.1.0...v0.2.0) (05/06/2024)
+
+- 0.2.0 ([7a1c14b](https://github.com/IQGeo/utils-project-update/commit/7a1c14b4622e8bf9e65054ab25f105110c5b044b))
+- transform: handle NRO/OSM dependencies ([fc6c5d6](https://github.com/IQGeo/utils-project-update/commit/fc6c5d61a96647fcfc4bd4cf05992cd27ac47962))
+- fix to playground script ([5e505e9](https://github.com/IQGeo/utils-project-update/commit/5e505e91d6b470decc212cafa96500d31ba37bcd))
+- transform: fix issue where devenv dependencies were being applied to appserver ([e0b9ac7](https://github.com/IQGeo/utils-project-update/commit/e0b9ac720f2549a7d0bde3645deefa9a3dac8fdc))
+- transform: set .gitignore for product modules ([dbb7004](https://github.com/IQGeo/utils-project-update/commit/dbb70048f2d41d1dec7298d7bb3d7b87ea840681))
+- docs(changelog): v0.1.0 ([dbae705](https://github.com/IQGeo/utils-project-update/commit/dbae7050a83bb21e61ab5bdb1d4186c77728f425))
+
+## [v0.1.0](https://github.com/IQGeo/utils-project-update/tags) (28/05/2024)
+
+- 0.1.0 ([998a7ae](https://github.com/IQGeo/utils-project-update/commit/998a7aeca914bd50ff38f2f03ecea5e772f8caba))
+- release: use require instead of import for json ([8028b04](https://github.com/IQGeo/utils-project-update/commit/8028b04af9dc8c91d9dffde00b0a58c938715de5))
+- types: add empty export so vscode treats the file as a module and resolves types correctly when used as installed package ([2159348](https://github.com/IQGeo/utils-project-update/commit/21593487cb744bd790c55010fd50fccbad7690f0))
+- cli: parse args with yargs ([a578830](https://github.com/IQGeo/utils-project-update/commit/a5788303d5d365d095c5c58aa1bfb46c7a42b651))
+- options: progress handler ([4ba8b80](https://github.com/IQGeo/utils-project-update/commit/4ba8b806f613a2f6e580b955da07a19e149bb581))
+- docs: readme ([98bb80c](https://github.com/IQGeo/utils-project-update/commit/98bb80ce2d451fc967b1c4047a8444f0542c31ae))
+- playground: add scripts for cli and js usage ([a2f68c2](https://github.com/IQGeo/utils-project-update/commit/a2f68c29bd95b3586a04c116574b34eba1b8173c))
+- js: fix updateFiles error reporting ([0b54008](https://github.com/IQGeo/utils-project-update/commit/0b540080c0f4aeee33359fbd8bc9eea009318aec))
+- cli: fix root flag parsing ([0f76c4e](https://github.com/IQGeo/utils-project-update/commit/0f76c4e87ce056390b34035a6ec228eb02d3bb70))
+- eslint: align settings with platform core ([3474c65](https://github.com/IQGeo/utils-project-update/commit/3474c65429ceb119d328df561412e1b1022db468))
+- playground: add script to pull latest project-template from remote ([fce665a](https://github.com/IQGeo/utils-project-update/commit/fce665a8329ccc3e9d88886c12b0cfc7946bb611))
+- vscode: add cspell ignore words ([28b0e4a](https://github.com/IQGeo/utils-project-update/commit/28b0e4a2e50ea4a35ad387351c7b4959cd7aedeb))
+- release: add changenog ([bb4210f](https://github.com/IQGeo/utils-project-update/commit/bb4210ffec2f2a5f9a2db85e96549d3390b42a15))
+- js: cli: add bin entrypoint ([09d7ddd](https://github.com/IQGeo/utils-project-update/commit/09d7ddd64cde6f610659473e113d494092d9e2f2))
+- js: add jsdoc typing and refactor to fix eslint errors ([757ce3b](https://github.com/IQGeo/utils-project-update/commit/757ce3b269974a463c8c9d8e78f72374c30d7fcc))
+- Initial commit ([ca6eca2](https://github.com/IQGeo/utils-project-update/commit/ca6eca2b4780e6d17125340be6778efc9e62be97))
+
 ## [0.15.1](https://github.com/IQGeo/utils-project-update/compare/v0.15.0...v0.15.1) (26/05/2026)
 
 - Add missing schema names for notification_manager and orchestration_manager (#44) ([174f510](https://github.com/IQGeo/utils-project-update/commit/174f51028090c71d4ace6b8a35c2a0711d52bb2c))
