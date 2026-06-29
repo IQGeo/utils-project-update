@@ -10,7 +10,7 @@ const aptGetMappings = {
     runtime: {
         memcached: ['libmemcached11'],
         ldap: ['libsasl2-dev', 'libldap2-dev'], //ENH: identify the correct runtime packages
-        saml: ['libxml2-dev', 'libxmlsec1-dev'], //ENH: identify the correct runtime packages
+        saml: ['libxml2', 'libxmlsec1'], // runtime shared libraries (no -dev headers needed in final image)
         osm: ['osm2pgsql', 'osmctools']
     },
     dev: {
