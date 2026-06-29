@@ -1,3 +1,8 @@
+## [0.15.3](https://github.com/IQGeo/utils-project-update/compare/v0.15.2...v0.15.3) (29/06/2026)
+
+- DX-76: remove -dev suffix from SAML runtime apt deps (#46) ([2a69a0e](https://github.com/IQGeo/utils-project-update/commit/2a69a0eeda1df569475ebabfd630cf069eb28535))
+- docs(changelog): v0.15.2 ([8fe2ceb](https://github.com/IQGeo/utils-project-update/commit/8fe2cebc44e670dd267f85495ee03a99c7f6806a))
+
 ## [v0.15.2](https://github.com/IQGeo/utils-project-update/compare/v0.15.1...v0.15.2) (17/06/2026)
 
 - 0.15.2 ([9227a12](https://github.com/IQGeo/utils-project-update/commit/9227a12e3598a19868e79b2c7e5e1c801fbb07da))
