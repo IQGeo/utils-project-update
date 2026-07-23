@@ -357,7 +357,8 @@ export const fileTransformers = {
         );
 
         // New format: update fallback defaults in vars expressions
-        if (content.includes('vars.project_registry')) {
+        const usesVarsPattern = /vars\.(project_registry|project_repository|project_prefix|product_registry|product_repository_prefix)\s*\|\|/.test(content);
+        if (usesVarsPattern) {
             content = content.replace(
                 /(vars\.project_registry\s*\|\|\s*)'[^']*'/g,
                 `$1'${project_registry}'`
