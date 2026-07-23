@@ -340,8 +340,15 @@ export const fileTransformers = {
     },
 
     '.github/workflows/build-deployment-images.yml': (config, content) => {
-        const { prefix, deployment, platform } = config;
+        const { prefix, deployment, platform, registry } = config;
         const { project_registry = '', project_repository = '' } = deployment || {};
+
+        // Derive product registry (hostname) and product repository prefix (path + '_') from config.registry
+        const registryUrl = registry || '';
+        const product_registry = registryUrl.split('/')[0] || '';
+        const product_repository_prefix = registryUrl.includes('/')
+            ? registryUrl.split('/').slice(1).join('/') + '_'
+            : '';
 
         // Update default platform version in workflow_dispatch inputs
         content = content.replace(
@@ -349,22 +356,44 @@ export const fileTransformers = {
             `$1'${platform.version}'`
         );
 
-        // Update PROJECT_REGISTRY and PROJECT_REPOSITORY in env section
-        content = content
-            .replace(/PROJECT_REGISTRY: .*/, `PROJECT_REGISTRY: ${project_registry}`)
-            .replace(/PROJECT_REPOSITORY: .*/, `PROJECT_REPOSITORY: ${project_repository}`);
+        // New format: update fallback defaults in vars expressions
+        if (content.includes('vars.project_registry')) {
+            content = content.replace(
+                /(vars\.project_registry\s*\|\|\s*)'[^']*'/g,
+                `$1'${project_registry}'`
+            );
+            content = content.replace(
+                /(vars\.project_repository\s*\|\|\s*)'[^']*'/g,
+                `$1'${project_repository}'`
+            );
+            content = content.replace(
+                /(vars\.project_prefix\s*\|\|\s*)'[^']*'/g,
+                `$1'${prefix}'`
+            );
+            content = content.replace(
+                /(vars\.product_registry\s*\|\|\s*)'[^']*'/g,
+                `$1'${product_registry}'`
+            );
+            content = content.replace(
+                /(vars\.product_repository_prefix\s*\|\|\s*)'[^']*'/g,
+                `$1'${product_repository_prefix}'`
+            );
+        } else {
+            // Legacy format: hardcoded values
+            content = content
+                .replace(/PROJECT_REGISTRY: .*/, `PROJECT_REGISTRY: ${project_registry}`)
+                .replace(/PROJECT_REPOSITORY: .*/, `PROJECT_REPOSITORY: ${project_repository}`);
 
-        // Update image names (iqgeo-<prefix>-build, iqgeo-<prefix>-appserver, iqgeo-<prefix>-tools)
-        content = content.replace(
-            /image_name: .*iqgeo-.*-(build|appserver|tools)/g,
-            `image_name: ${project_registry}/${project_repository}/iqgeo-${prefix}-$1`
-        );
+            content = content.replace(
+                /image_name: .*iqgeo-.*-(build|appserver|tools)/g,
+                `image_name: ${project_registry}/${project_repository}/iqgeo-${prefix}-$1`
+            );
 
-        //replace `registry: ` in login step
-        content = content.replace(
-            /registry: .*(?=\n\s*username:)/g,
-            `registry: ${project_registry}`
-        );
+            content = content.replace(
+                /registry: .*(?=\n\s*username:)/g,
+                `registry: ${project_registry}`
+            );
+        }
 
         return content;
     },
