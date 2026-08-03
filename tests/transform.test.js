@@ -243,6 +243,105 @@ describe('fileTransformers', () => {
             expect(result).toContain('platform-build:7.2.0');
             expect(result).not.toContain('platform-build:OLD');
         });
+
+        it('uses ${VERSION} for product modules without explicit version', () => {
+            const config = makeConfig({
+                modules: [
+                    { name: 'myproduct', type: 'product', isExternal: true, registryProject: 'myproduct' }
+                ]
+            });
+            const content = [
+                '# START SECTION Aliases for Injector images',
+                '# END SECTION',
+                '# START SECTION Copy the modules',
+                '# END SECTION',
+                'FROM harbor/platform-build:OLD'
+            ].join('\n');
+
+            const result = fileTransformers['deployment/dockerfile.build'](config, content);
+
+            expect(result).toContain('ARG VERSION');
+            expect(result).toContain('FROM ${PRODUCT_REGISTRY}myproduct/myproduct:${VERSION} AS myproduct');
+            expect(result).toContain('COPY --from=myproduct / ${MODULES}/');
+        });
+
+        it('does not add ARG VERSION when no product modules exist', () => {
+            const config = makeConfig();
+            const content = [
+                '# START SECTION Aliases for Injector images',
+                '# END SECTION',
+                '# START SECTION Copy the modules',
+                '# END SECTION',
+                'FROM harbor/platform-build:OLD'
+            ].join('\n');
+
+            const result = fileTransformers['deployment/dockerfile.build'](config, content);
+
+            expect(result).not.toContain('ARG VERSION');
+        });
+
+        it('product modules with explicit version use that version instead of ${VERSION}', () => {
+            const config = makeConfig({
+                modules: [
+                    { name: 'myproduct', type: 'product', version: '2.0.0', isExternal: true, registryProject: 'myproduct' }
+                ]
+            });
+            const content = [
+                '# START SECTION Aliases for Injector images',
+                '# END SECTION',
+                '# START SECTION Copy the modules',
+                '# END SECTION',
+                'FROM harbor/platform-build:OLD'
+            ].join('\n');
+
+            const result = fileTransformers['deployment/dockerfile.build'](config, content);
+
+            expect(result).toContain('FROM ${PRODUCT_REGISTRY}myproduct/myproduct:2.0.0 AS myproduct');
+            expect(result).toContain('COPY --from=myproduct / ${MODULES}/');
+        });
+
+        it('excludes devOnly product modules from build Dockerfile', () => {
+            const config = makeConfig({
+                modules: [
+                    { name: 'devtool', type: 'product', devOnly: true, isExternal: true, registryProject: 'devtool' }
+                ]
+            });
+            const content = [
+                '# START SECTION Aliases for Injector images',
+                '# END SECTION',
+                '# START SECTION Copy the modules',
+                '# END SECTION',
+                'FROM harbor/platform-build:OLD'
+            ].join('\n');
+
+            const result = fileTransformers['deployment/dockerfile.build'](config, content);
+
+            expect(result).not.toContain('devtool');
+            expect(result).not.toContain('ARG VERSION');
+        });
+
+        it('product modules without version are not treated as FROM in dev environment', () => {
+            const config = makeConfig({
+                modules: [
+                    { name: 'myproduct', type: 'product', devSrc: 'myproduct', isExternal: true, registryProject: 'myproduct' }
+                ]
+            });
+            const content = [
+                '# START SECTION Aliases for Injector images',
+                '# END SECTION',
+                '# START SECTION Copy the modules',
+                '# END SECTION',
+                'FROM harbor/platform-devenv:7.2.0'
+            ].join('\n');
+
+            const result = fileTransformers['.devcontainer/dockerfile'](config, content);
+
+            // In dev, product modules without version should not get a FROM or ARG VERSION
+            expect(result).not.toContain('FROM ${PRODUCT_REGISTRY}myproduct/myproduct');
+            expect(result).not.toContain('ARG VERSION');
+            // No COPY --from either (module is volume-mounted in dev)
+            expect(result).not.toContain('COPY --from=myproduct');
+        });
     });
 
     describe('deployment/dockerfile.appserver', () => {
