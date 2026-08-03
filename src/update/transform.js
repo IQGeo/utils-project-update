@@ -444,7 +444,7 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
     /** @type {(module: Module) => boolean} */
     const fromAsFilter = isDevEnv
         ? isFromInjectorFn
-        : ({ version, devOnly }) => !!version && !devOnly;
+        : ({ version, devOnly, type }) => (!!version || type === 'product') && !devOnly;
 
     // use new registry paths only if version in jsonc file is higher than 0.6.0
     const isNewRegistry = version !== undefined && semver.gt(version, '0.6.0');
@@ -458,10 +458,13 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
             : isNewRegistry
               ? `\${PRODUCT_REGISTRY}${registryProject}/`
               : `\${CONTAINER_REGISTRY}`;
-        return `FROM ${registryPath}${lname}:${version} AS ${lname}`;
+        const versionStr = version || `\${VERSION}`;
+        return `FROM ${registryPath}${lname}:${versionStr} AS ${lname}`;
     };
 
-    const section1 = modules.filter(fromAsFilter).map(fromStatement).join('\n');
+    const hasProductModules = !isDevEnv && modules.filter(fromAsFilter).some(({ type }) => type === 'product');
+    const argVersion = hasProductModules ? 'ARG VERSION\n' : '';
+    const section1 = argVersion + modules.filter(fromAsFilter).map(fromStatement).join('\n');
 
     const replacedContent = content.replace(
         /(# START SECTION Aliases for Injector images.*)[\s\S]*?(# END SECTION)/,
@@ -473,8 +476,8 @@ function replaceModuleInjection(content, config, isDevEnv = false) {
 
     const section2 = modules
         .filter(copyFilter)
-        .map(({ name, version }) =>
-            version
+        .map(({ name, version, type }) =>
+            version || type === 'product'
                 ? `COPY --from=${name.toLowerCase()} / \${MODULES}/`
                 : `COPY --link ${name} \${MODULES}/${name}`
         )
