@@ -5,6 +5,7 @@
 /**
  * @typedef Module
  * @property {string} name
+ * @property {string} [type] Type of module (e.g. 'product' for product modules that are pulled from registry using VERSION build arg)
  * @property {string} [version]
  * @property {boolean} [devOnly]
  * @property {string} [devSrc]
