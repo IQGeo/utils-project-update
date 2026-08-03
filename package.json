@@ -14,9 +14,11 @@
         "src"
     ],
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=22.12.0"
     },
     "scripts": {
+        "test": "vitest run",
+        "test:watch": "vitest",
         "lint": "eslint . --ext .js",
         "link": "npm link && cd ./playground && npm link project-update",
         "playground:update": "cd ./playground && npm run update",
@@ -44,7 +46,8 @@
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-n": "^17.7.0",
         "eslint-plugin-prettier": "^5.1.3",
-        "prettier": "^3.2.5"
+        "prettier": "^3.2.5",
+        "vitest": "^4.1.10"
     },
     "overrides": {
         "minimatch": "^9.0.9"

@@ -18,7 +18,7 @@ module.exports = defineConfig({
         sourceType: 'module'
     },
     plugins: ['prettier', 'n'],
-    ignorePatterns: ['node_modules', 'playground/utils-project-template'],
+    ignorePatterns: ['node_modules', 'playground/utils-project-template', 'tests', 'vitest.config.js'],
     rules: {
         'linebreak-style': ['off', 'unix'],
         'no-console': 'off',

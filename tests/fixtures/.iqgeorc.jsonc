@@ -1,0 +1,34 @@
+{
+    // Test fixture for readConfig
+    "version": "0.7.0",
+    "prefix": "testproj",
+    "db_name": "testdb",
+    "display_name": "Test Project",
+    "platform": {
+        "version": "7.2.0",
+        "devenv": [],
+        "appserver": ["memcached"],
+        "tools": []
+    },
+    "modules": [
+        {
+            "name": "comms",
+            "version": "7.2.0"
+        },
+        {
+            "name": "workflow_manager",
+            "version": "7.2.0"
+        },
+        {
+            "name": "custom"
+        },
+        {
+            "name": "network_revenue_optimizer",
+            "version": "1.0.0"
+        },
+        {
+            "name": "orchestration_manager",
+            "version": "1.0.0"
+        }
+    ]
+}
