@@ -66,7 +66,7 @@ describe('update', () => {
         expect(result).not.toContain('/old');
     });
 
-    it('reports success via progress.log', () => {
+    it('does not report errors when config is valid', () => {
         writeConfig({
             version: '0.7.0',
             prefix: 'test',
