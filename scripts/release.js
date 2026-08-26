@@ -16,7 +16,7 @@ const args = process.argv.slice(2);
 ensureCleanWorkingTree(process.cwd());
 
 run('npm', ['run', 'lint']);
-run('npm', ['version', args[0]]);
+run('npm', ['version', args[0], '--no-git-tag-version']);
 run('npx', ['changenog']);
 
 const rl = readline.createInterface({
@@ -40,5 +40,6 @@ run('git', ['add', '.']);
 const pkg = require('../package.json');
 
 run('git', ['commit', '-m', `docs(changelog): v${pkg.version}`]);
+run('git', ['tag', `v${pkg.version}`]);
 run('git', ['push']);
 run('git', ['push', '--tags']);
