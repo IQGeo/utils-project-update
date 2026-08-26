@@ -1,3 +1,7 @@
+## [0.16.0](https://github.com/IQGeo/utils-project-update/compare/v0.15.3...v0.16.0) (26/08/2026)
+
+- PLAT-15927: support type: product module declaration in Dockerfile.build (#48) ([5fe02fc](https://github.com/IQGeo/utils-project-update/commit/
+
 ## [0.15.3](https://github.com/IQGeo/utils-project-update/compare/v0.15.2...v0.15.3) (29/06/2026)
 
 - DX-76: remove -dev suffix from SAML runtime apt deps (#46) ([2a69a0e](https://github.com/IQGeo/utils-project-update/commit/2a69a0eeda1df569475ebabfd630cf069eb28535))
