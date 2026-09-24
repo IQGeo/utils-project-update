@@ -62,7 +62,8 @@ const projectToModuleMapping = {
         'groups',
         'mywapp_common',
         'reporting_example',
-        'construction_print'
+        'construction_print',
+        'markup'
     ],
     pia_interface: ['pia_interface']
 };
