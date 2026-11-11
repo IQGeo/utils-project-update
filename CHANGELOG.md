@@ -1,3 +1,8 @@
+## [0.16.1](https://github.com/IQGeo/utils-project-update/compare/v0.16.0...v0.16.1) (24/09/2026)
+
+- Add markup module to platform mapping
+- fix: update js-yaml to 4.3.2 to address DoS advisories
+
 ## [0.16.0](https://github.com/IQGeo/utils-project-update/compare/v0.15.3...v0.16.0) (26/08/2026)
 
 - PLAT-15927: support type: product module declaration in Dockerfile.build (#48) ([5fe02fc](https://github.com/IQGeo/utils-project-update/commit/
