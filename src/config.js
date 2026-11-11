@@ -20,11 +20,22 @@ const moduleSchemaVersionNames = {
     electric: 'iqg_electric_schema',
     comms: 'myw_comms_schema',
     comsof: 'iqg_comsof_schema',
+    comsof_saas: 'iqg_comsof_saas_schema',
     comms_cloud: 'iqg_comms_cloud_schema',
     network_revenue_optimizer: 'mywnro_schema',
     pia_interface: 'myw_pia_schema',
     notification_manager: 'mywnotif_schema',
-    orchestration_manager: 'iqgom_schema'
+    orchestration_manager: 'iqgom_schema',
+    markup: 'iqg_markup_schema',
+    construction_print: 'iqg_construction_print_schema',
+    comms_inside_plant: 'myw_comms_inside_plant_schema',
+    aos_nmt: 'myw_aos_nmt_schema',
+    n360_kpi_extractor: 'n360_kpi_extractor_schema',
+    operational_data_sync: 'iqg_ods_schema',
+    mtt: 'iqg_mtt_schema',
+    design_manager: 'iqg_design_manager_schema',
+    cyclomedia_integration: 'cyclomedia_integration_schema'
+
 };
 
 const projectToModuleMapping = {
@@ -35,12 +46,15 @@ const projectToModuleMapping = {
         'comms_cloud',
         'comms_cloud_dev_db',
         'comms_inside_plant',
-        'comms_dev_tools'
+        'comms_dev_tools',
+        'aos_nmt'
     ],
-    comsof: ['comsof', 'comsof_dev_db'],
+    comsof: ['comsof', 'comsof_dev_db', 'comsof_saas'],
     electric: ['electric', 'electric_dev_db'],
     gas: ['gas', 'gas_dev_db'],
-    network_revenue_optimizer: ['network_revenue_optimizer', 'network_revenue_optimizer_dev_db'],
+    gwi: ['cyclomedia_integration'],
+    network360: ['n360_kpi_extractor','n360_kpi_extractor_dev_db'],
+    network_revenue_optimizer: ['network_revenue_optimizer', 'network_revenue_optimizer_dev_db', 'nro_nmt'],
     survey: ['survey', 'survey_dev_db'],
     orchestration_manager: ['orchestration_manager', 'orchestration_manager_dev_db'],
     workflow_manager: [
@@ -63,7 +77,12 @@ const projectToModuleMapping = {
         'mywapp_common',
         'reporting_example',
         'construction_print',
-        'markup'
+        'markup',
+        'operational_data_sync',
+        'operational_data_sync_dev_db',
+        'mtt',
+        'design_manager',
+
     ],
     pia_interface: ['pia_interface']
 };
