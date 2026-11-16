@@ -1,4 +1,4 @@
-## [0.16.1](https://github.com/IQGeo/utils-project-update/compare/v0.16.1...v0.16.2) (16/11/2026)
+## [0.16.2](https://github.com/IQGeo/utils-project-update/compare/v0.16.1...v0.16.2) (16/11/2026)
 
 - fix: Resolve security/audit issues ([956fd54](https://github.com/IQGeo/utils-project-update/commit/956fd5484bd482e4efb1f7371054f6584b1040be))
 - Add multiple modules to config mappings ([a40d880](https://github.com/IQGeo/utils-project-update/commit/a40d880ffe892187b4f2827777be53ab74044b52))
