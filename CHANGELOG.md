@@ -1,3 +1,13 @@
+## [0.16.2](https://github.com/IQGeo/utils-project-update/compare/v0.16.1...v0.16.2) (16/11/2026)
+
+- fix: Resolve security/audit issues ([956fd54](https://github.com/IQGeo/utils-project-update/commit/956fd5484bd482e4efb1f7371054f6584b1040be))
+- Add multiple modules to config mappings ([a40d880](https://github.com/IQGeo/utils-project-update/commit/a40d880ffe892187b4f2827777be53ab74044b52))
+
+## [0.16.1](https://github.com/IQGeo/utils-project-update/compare/v0.16.0...v0.16.1) (24/09/2026)
+
+- Add markup module to platform mapping ([be00bf8](https://github.com/IQGeo/utils-project-update/commit/be00bf8c280efd89a2809d118e69b73d1a1bd008))
+- fix: update js-yaml to 4.3.2 to address ([5358e63](https://github.com/IQGeo/utils-project-update/commit/5358e638e66d00be92b23ee6e4774b270b5c341b))  
+
 ## [0.16.0](https://github.com/IQGeo/utils-project-update/compare/v0.15.3...v0.16.0) (26/08/2026)
 
 - PLAT-15927: support type: product module declaration in Dockerfile.build (#48) ([5fe02fc](https://github.com/IQGeo/utils-project-update/commit/

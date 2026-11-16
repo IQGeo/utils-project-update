@@ -1,6 +1,6 @@
 {
     "name": "project-update",
-    "version": "0.16.1",
+    "version": "0.16.2",
     "description": "Update an IQGeo project based on options in a .iqgeorc.jsonc configuration file.",
     "author": "IQGeo",
     "license": "ISC",
@@ -47,9 +47,9 @@
         "eslint-plugin-n": "^17.7.0",
         "eslint-plugin-prettier": "^5.1.3",
         "prettier": "^3.2.5",
-        "vitest": "^4.1.10"
+        "vitest": "^4.1.11"
     },
     "overrides": {
-        "minimatch": "^9.0.9"
+        "minimatch": "^11.0.1"
     }
 }
