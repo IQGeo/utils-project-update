@@ -50,6 +50,7 @@
         "vitest": "^4.1.11"
     },
     "overrides": {
-        "minimatch": "^11.0.1"
+        "minimatch@<4": "^3.1.5",
+        "minimatch@>=7": "^11.0.1"
     }
 }
