@@ -67,8 +67,12 @@ describe('readConfig', () => {
         const config = readConfig(fixturesDir);
         const comms = config.modules.find(m => m.name === 'comms');
         const custom = config.modules.find(m => m.name === 'custom');
+        const custodianDevDb = config.modules.find(
+            m => m.name === 'nmt_custodian_dev_db'
+        );
 
         expect(comms.registryProject).toBe('comms');
+        expect(custodianDevDb.registryProject).toBe('comms');
         expect(custom.registryProject).toBe('custom'); // falls back to module name
     });
 

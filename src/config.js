@@ -49,7 +49,8 @@ const projectToModuleMapping = {
         'comms_inside_plant',
         'comms_dev_tools',
         'aos_nmt',
-        'nmt_custodian'
+        'nmt_custodian',
+        'nmt_custodian_dev_db'
     ],
     comsof: ['comsof', 'comsof_dev_db', 'comsof_saas'],
     electric: ['electric', 'electric_dev_db'],
