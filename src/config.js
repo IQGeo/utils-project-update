@@ -22,6 +22,7 @@ const moduleSchemaVersionNames = {
     comsof: 'iqg_comsof_schema',
     comsof_saas: 'iqg_comsof_saas_schema',
     comms_cloud: 'iqg_comms_cloud_schema',
+    nmt_custodian:'iqg_nmt_custodian_schema',
     network_revenue_optimizer: 'mywnro_schema',
     pia_interface: 'myw_pia_schema',
     notification_manager: 'mywnotif_schema',
@@ -47,7 +48,9 @@ const projectToModuleMapping = {
         'comms_cloud_dev_db',
         'comms_inside_plant',
         'comms_dev_tools',
-        'aos_nmt'
+        'aos_nmt',
+        'nmt_custodian',
+        'nmt_custodian_dev_db'
     ],
     comsof: ['comsof', 'comsof_dev_db', 'comsof_saas'],
     electric: ['electric', 'electric_dev_db'],

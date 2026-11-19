@@ -16,6 +16,12 @@
             "version": "7.2.0"
         },
         {
+            "name": "nmt_custodian_dev_db"
+        },
+        {
+            "name": "nmt_custodian"
+        },
+        {
             "name": "workflow_manager",
             "version": "7.2.0"
         },

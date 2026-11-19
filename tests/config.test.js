@@ -58,17 +58,25 @@ describe('readConfig', () => {
         const config = readConfig(fixturesDir);
         const comms = config.modules.find(m => m.name === 'comms');
         const wfm = config.modules.find(m => m.name === 'workflow_manager');
+        const custodian = config.modules.find(m => m.name === 'nmt_custodian');
 
         expect(comms.schemaVersionName).toBe('myw_comms_schema');
         expect(wfm.schemaVersionName).toBe('mywmywwfm_schema');
+        expect(custodian.schemaVersionName).toBe('iqg_nmt_custodian_schema');
     });
 
     it('maps registryProject from moduleToProjectMapping', () => {
         const config = readConfig(fixturesDir);
         const comms = config.modules.find(m => m.name === 'comms');
         const custom = config.modules.find(m => m.name === 'custom');
+        const custodian = config.modules.find(m => m.name === 'nmt_custodian');
+        const custodianDevDb = config.modules.find(
+            m => m.name === 'nmt_custodian_dev_db'
+        );
 
         expect(comms.registryProject).toBe('comms');
+        expect(custodian.registryProject).toBe('comms');
+        expect(custodianDevDb.registryProject).toBe('comms');
         expect(custom.registryProject).toBe('custom'); // falls back to module name
     });
 
